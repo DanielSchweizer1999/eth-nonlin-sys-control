@@ -1,0 +1,54 @@
+\section{Chap 5: Feedback Control Design}
+\subsection{Lyapunov's Indirect Method}
+\textbf{Theorem}: Let $x=0$ be an equilibrium point for $\Dot{x} = f(x)$ where $f:\mathcal{D} \to \mathbb{R}^n$ is a continuously differentiable function and $\mathcal{D} \subset \mathbb{R}^n$ is a neighborhood of the origin. Let $A = \frac{\partial f}{\partial x^T}|_{x = x_{eq}}$ be the Jacobian matrix of the nonlinear system. Then:
+\begin{itemize}
+    \item The origin is \textbf{asymptotically stable} if $Re\{ \lambda_i \} < 0$ for all eigenvalues $\lambda_i$ of $A$
+    \item The origin is \textbf{unstable} if $Re\{ \lambda_i \} > 0$ for any eigenvalue $\lambda_i$ of $A$
+    \item No statement about the stability possible if $Re\{ \lambda_i \} = 0$ for any eigenvalue $\lambda_i$ of $A$
+\end{itemize}
+\subsection{Linearization-Based Control}
+\textbf{Theorem}: Consider the nonlinear system $\Dot{x} = f(x,u)$ where $f(x,u)$ is continuously differentiable in a domain $\mathcal{X} \times \mathcal{U} \subseteq \mathbb{R}^n \times \mathbb{R}^m$ that contains the origin and the steady state point for $(x_{ss}\in \mathcal{X},u_{ss}\in \mathcal{U}) | \; \Dot{x}_{ss}=f(x_{ss},u_{ss}) = 0$\\
+Let the matrices $A=\frac{\partial f}{\partial x^T}|_{x=x_{ss},u=u_{ss}}$ and $B=\frac{\partial f}{\partial u^T}|_{x=x_{ss},u=u_{ss}}$ be such that the pair $(A,B)$ is stabilizable (all eigenvalues associated with uncontrollable modes have negative real part) then there exists a matrix $K \in \mathbb{R}^{m\times n}$ such that the state feedback controller given by $u = u_{ss} - K(x-x_{ss})$ renders the closed-loop system asymptotically stable in some small neighborhood around $(x_{ss},u_{ss})$\\
+\subsection{Integral Control}
+Introduce an augmented state vector $\xi$ that contains integrated error dynamics $\Dot{\sigma} = e = y-r = h(x,w)-r$
+\begin{align*}
+    \xi       & = \begin{pmatrix}
+                      x - x_{ss} \\
+                      \sigma - \sigma_{ss}
+                  \end{pmatrix}           \\
+    \Dot{\xi} & = \begin{pmatrix}
+                      A-BK_1 & -BK_2 \\
+                      C      & 0
+                  \end{pmatrix} \cdot \xi       \\
+    u_{ss}    & = -K_1 x_{ss} - K_2 \sigma_{ss}
+\end{align*}
+\subsection{Gain Scheduling}
+\begin{enumerate}
+    \item Linearize the given nonlinear system about several equilibrium points, which are parametrized by scheduling variables
+    \item Design a parametrized family of linear controllers to locally stabilize the system around each of the equilibrium points
+    \item Construct a gain-scheduled controller
+    \item Check the performance of the gain-scheduled controller by simulating the nonlinear closed-loop model
+\end{enumerate}
+\begin{align*}
+    \Dot{x} & = f(x,u,v,w) \\
+    y       & = h(x,w)
+\end{align*}
+\begin{align*}
+    \mathcal{A} & = \begin{pmatrix}
+                        A-BK_1 & -BK_2 \\
+                        C      & 0
+                    \end{pmatrix}                        \\
+    A           & = \frac{\partial}{\partial x}f(x,u,v,w) \\
+    B           & = \frac{\partial}{\partial u}f(x,u,v,w) \\
+    C           & = \frac{\partial}{\partial x}h(x,w)
+\end{align*}
+Design $K_1$ and $K_2$ such that matrix $\mathcal{A}$ is \textbf{Hurwitz}.\\
+\subsection{Lyapunov Matrix Equation}
+\begin{align*}
+    \Dot{x}    & = Ax                               \\
+    V(x)       & = x^T P x                          \\
+    \Dot{V}(x) & = \Dot{x}^T P x + x^T P \Dot{x}    \\
+               & = x^TA^T P x + x^T P A x = x^T Q x \\
+    A^T P + PA & = Q
+\end{align*}
+

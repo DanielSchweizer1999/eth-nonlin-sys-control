@@ -1,0 +1,25 @@
+\section{Chap 7: Sliding Mode Control}
+Consider the system with the dynamics
+\begin{align*}
+    \Dot{x_1} & = x_2          \\
+    \Dot{x_2} & = f(x) + g(x)u
+\end{align*}
+and the bounds $f(x) \geq 0$ and $g(x)\geq g_0 \geq 0$. Goal is to design a feedback controller $u(x)$ such that the system is stable under the influence of uncertainties. This means the nonlinearities are not known exactly. This is achieved by a sliding maniforl:
+\begin{align*}
+    \sigma = \alpha x_1 + x_2 = 0 \\
+\end{align*}
+This results in exponentially asymptotically stable properties of the state dynamics $\Dot{x_1}$.
+\begin{align*}
+    \Dot{\sigma}                                         & = \alpha \Dot{x}_1 + \Dot{x_2} = \alpha x_2 + f(x) + g(x)u \\
+    \Big\lvert \frac{\alpha x_2 + f(x)}{g(x)} \Big\rvert & \leq \rho(x) , \quad \forall x \in \mathbb{R}
+\end{align*}
+Taking this function $\sigma$ to defin a Lyapunov funciton:
+\begin{align*}
+    V(x)       & = \frac{\sigma^2}{2}                                                                                           \\
+    \Dot{V}(x) & = \sigma \Dot{\sigma} = \sigma (\alpha x_2 + f(x) + g(x)u) \leq g(x) [\lvert \sigma \rvert \rho(x) + \sigma u]
+\end{align*}
+This allows us to design a feedback controller:
+\begin{align*}
+    u & = -(\beta_0 + \rho(x)) sgn(x), \quad \beta_0 > 0 \\
+    \Dot{V}(x) \leq -g_0\beta_0 \lvert \sigma \rvert
+\end{align*}

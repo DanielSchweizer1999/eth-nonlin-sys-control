@@ -1,0 +1,19 @@
+\section{Chap 11: State Estimation and Observer}
+\begin{align*}
+    \Dot{x}         & = Ax + Bu                          \\
+    y               & = Cx                               \\
+    u               & = -K\hat{x}                        \\
+    \begin{pmatrix}
+        \Dot{x} \\
+        \Dot{e}
+    \end{pmatrix} & = \begin{pmatrix}
+                          A-BK & BK   \\
+                          0    & A-LC
+                      \end{pmatrix} \cdot \begin{pmatrix}
+                                              x \\
+                                              e
+                                          \end{pmatrix}
+\end{align*}
+\subsection{(Extended) Kalman Filter}
+The main idea behind a Kalman Filter is to estimate a state $x$ that has additive noise $w$ on its state dynamics. Recursive Estimation will hopefully still be enough present in your brain to answer any questions that may come up.
+
