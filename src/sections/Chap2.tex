@@ -1,0 +1,21 @@
+\section{Chap 2: ODEs}
+\subsection{Existence and Uniqueness of Solution}
+\textbf{Theorem}: Let $f(t,x)$ be a piecewise continuous function in $t$ and satisfy the Lipschitz condition:\\
+$\lVert f(t,x) - f(t,y) \rVert \le L \lVert x-y \rVert \; \forall \; x,y \; \in \; \mathcal{B}(x_0,r) = \{ x \in \mathrm{R}^n | \lVert x-x_0 \rVert \le r\}$\\
+$, \; \forall \; t \; \in [t_0,t_1]$\\
+Then there exists some $\delta > 0$ such that the state equation $\Dot{x} = f(x)$ with $x(t_0) = x_0$ has a unique solution over $[t_0, t_0 + \delta]$\\
+\textbf{Def}: A space is called \textbf{Banach} if every Cauchy-sequence converges.\\
+\textbf{Def}: A sequence is called \textbf{Cauchy} if its elements come very close to each other. For a finite $N$ there exists an arbitrarily small $\epsilon$ such that $\forall \; m,n > N: |a_n - a_m | < \epsilon$\\
+\textbf{Theorem}: Let $f(t,x)$ be piecewise continuous in $t$ and locally Lipschitz in $x$ for $x\in \mathcal{D}$. If there exists an invariant subset $w \subseteq \mathcal{D}, \; \forall \; x(t_0)\in w | \; x(t) = (Px)(t) \in w, \; \forall \; t>t_0$, then the solution $x(t)$ exists for all $t>t_0$\\
+\subsection{Sensitivity Function}
+\begin{align*}
+    A(t,\lambda) & = \frac{\partial f(t,x(t,\lambda),\lambda)}{\partial x}       \\
+    B(t,\lambda) & = \frac{\partial f(t,x(t,\lambda),\lambda)}{\partial \lambda} \\
+    S(t)         & = \frac{\partial x}{\partial \lambda}                         \\
+    S(t_0)       & = 0
+\end{align*}
+\begin{align*}
+    \boxed{\Dot{S}(t) = A(t,\lambda_0)S(t) + B(t,\lambda_0)}
+\end{align*}
+Sensitivity function is calculated using the function $\Dot{x} = f(x)$
+

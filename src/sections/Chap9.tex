@@ -1,0 +1,21 @@
+\section{Chap 9: State-Dependant Riccati Equation}
+\subsection{Linear Quadratic Regulator (LQR)}
+Time continuous system:
+\begin{align*}
+    \Dot{x} & = Ax + Bu + w   \\
+    y(t)    & = Cx + \upsilon
+\end{align*}
+For a general system with no additive noise $w$ on the state dynamics and perfect knowledge of the state $x$ we can minimize the quadratic cost $J(x_0,u(.)) = \int_0^\infty (x^TQx + u^T R u) dt, \; \forall Q \succ 0, R\succ 0$:
+\begin{align*}
+    u^\ast(t) & = -R^{-1} B^T P x(t)           \\
+    0         & = PA + A^TP + Q - PBR^{-1}B^TP
+\end{align*}
+\subsection{Observer Design}
+If the state is not perfectly known, a state observer is used (Kalman Filter):
+\begin{align*}
+    \Dot{x}_e & = Ax_e + Bu + L(y-Cx_e)                             \\
+    L         & = PC^TR_e^{-1}                                      \\
+    0         & = AP + PA^T - PC^TR_e^{-1} CP + Q_e, \; P \succeq 0 \\
+    Q_e       & = \mathbb{E}(ww^T)                                  \\
+    R_e       & = \mathbb{E}(\upsilon \upsilon^T)
+\end{align*}

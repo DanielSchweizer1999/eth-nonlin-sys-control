@@ -1,0 +1,24 @@
+\section{Chap 10: Nonlinear MPC}
+\begin{align*}
+    \text{Plant Model: }                          & \Dot{x} = f(t,x,u), \; x(0) = x_0 \\
+    \text{Equality Constraints: }                 & g(t,x,u) = 0                      \\
+    \text{Inequality Constraints: }               & g_i(t,x,u) \leq 0                 \\
+    \text{Objective Function: }                   &                                   \\
+    J[x_0,u(.)] = \int_t^{t+T} f_0(\tau, x(\tau), & u(\tau))d\tau + F(x(t+T),u(t+T))
+\end{align*}
+\subsection{Lyapunov Stability of Discrete Time Systems}
+Consider the discrete time nonlinear system: $x(k+1) = f(x(k))$. We can check stability by defining the following Lyapunov function:
+\begin{align*}
+    V(0)        & = 0, \; V(x) > 0 \; \forall x \in \mathcal{D}      \\
+    \Delta V(x) & = V(f(x))-V(x) \leq 0, \; \forall x\in \mathcal{D}
+\end{align*}
+Sufficient condition for stability:
+\begin{enumerate}
+    \item Terminal equality constraint
+    \item Terminal cost function
+    \item Terminal constraint set
+    \item Dual mode control with a set where a LQR controller is feasible
+\end{enumerate}
+Stability of MPC controller is proven by a Lyapunov function $V(x) = J^\ast (x)$ where $J^\ast(x) = \min_u J(x)$.\\
+The cost funciton $J(x) = \sum_{i=0}^{N} L(x(k+i),u_k(i))$ is positive definite and $J(x(k+1)) \leq J(x(k))$ which results in it fulfilling all requirements for a Lyapunov funciton.
+

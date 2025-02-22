@@ -1,0 +1,43 @@
+\newpage
+\section{Chap 8: Optimal Control}
+Condition for optimality:
+\begin{align*}
+    \min_x L(x)                                                   \\
+    \frac{\partial }{\partial x} L(x) \rvert_{x=x^\ast}     & = 0 \\
+    \frac{\partial^2 }{\partial x^2} L(x) \rvert_{x=x^\ast} & > 0 \\
+\end{align*}
+The problem can be extended to include constraints:
+\begin{align*}
+    \min_x L(x)               \\
+    \text{s.t.} \; f(x) & = 0
+\end{align*}
+This problem is solved by constructing a \textbf{Lagrangian} function $H(x,\lambda) = L(x) + \lambda^T f(x)$ and introducing a costate $\lambda \in \mathbb{R}^m$. Minimizing the Lagrangian function also minimizes the original function $L(x)$:
+\begin{align*}
+    \min_{x,\lambda} H(x,\lambda) := L(x) + \lambda^T f(x)
+\end{align*}
+\subsection{Pontryagin's Minimum Principle}
+\begin{itemize}
+    \item $J[x_0,u(.)]$ is called the cost function
+    \item $\phi(x(T))$ is called end constraint penalty
+    \item $\psi(x(T))$ is called the final state constraint
+    \item $L(x,u)$ is called running cost
+    \item $\lambda \in \mathbb{R}^m$ is called costate or Lagrangian Multiplier
+    \item $H(x,u,\lambda) = L(x,u) + \lambda^T f(x,u)$ is called the \textbf{Hamiltonian}
+\end{itemize}
+Solving the optimization problem:
+\begin{align*}
+    \text{State Dynamics: }           & \Dot{x} = H_\lambda = f(x,u)                                                                 \\
+    \text{State Dynamics: }           & -\Dot{\lambda} = H_x = \frac{\partial L}{\partial x} + \lambda \frac{\partial f}{\partial x} \\
+    \text{Optimality Condition: }     & 0 = H_u = \frac{\partial L}{\partial u} + \lambda \frac{\partial f}{\partial u}              \\
+    \text{State Initial Condition: }  & x(0) = x_0                                                                                   \\
+    \text{Co-State Final Condition: } & \lambda(T) = (\phi_x + \psi_x \upsilon)\rvert_{x(T)}
+\end{align*}
+Optimality:
+\begin{align*}
+    \boxed{u^{\ast} = \min_u H(x,u,\lambda)}
+\end{align*}
+\begin{align*}
+    \frac{\partial H(x,u,\lambda)}{\partial u}     & = 0    \\
+    \frac{\partial^2 H(x,u,\lambda)}{\partial u^2} & > 0    \\
+    J(x_0,u) - J(x_0,u^\ast)                       & \geq 0
+\end{align*}
