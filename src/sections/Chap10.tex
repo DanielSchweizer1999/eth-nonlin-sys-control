@@ -1,11 +1,14 @@
 \section{Chap 10: Nonlinear MPC}
-\begin{align*}
-    \text{Plant Model: }                          & \Dot{x} = f(t,x,u), \; x(0) = x_0 \\
-    \text{Equality Constraints: }                 & g(t,x,u) = 0                      \\
-    \text{Inequality Constraints: }               & g_i(t,x,u) \leq 0                 \\
-    \text{Objective Function: }                   &                                   \\
-    J[x_0,u(.)] = \int_t^{t+T} f_0(\tau, x(\tau), & u(\tau))d\tau + F(x(t+T),u(t+T))
-\end{align*}
+ {\small
+  \begin{align*}
+      \text{Plant Model: }                          & \Dot{x} = f(t,x,u), \; x(0) = x_0 \\
+      \text{Equality Constraints: }                 & g(t,x,u) = 0                      \\
+      \text{Inequality Constraints: }               & g_i(t,x,u) \leq 0                 \\
+      \text{Objective Function: }                   &                                   \\
+      J[x_0,u(.)] = \int_t^{t+T} f_0(\tau, x(\tau), & u(\tau))d\tau + F(x(t+T),u(t+T))
+  \end{align*}
+ }
+
 \subsection{Lyapunov Stability of Discrete Time Systems}
 Consider the discrete time nonlinear system: $x(k+1) = f(x(k))$. We can check stability by defining the following Lyapunov function:
 \begin{align*}

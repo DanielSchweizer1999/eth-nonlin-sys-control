@@ -5,26 +5,36 @@
     \item \textbf{Asymptotically stable} if it is stable and in addition $\delta$ can be chosen such that $\lVert x(t_0) \rVert < \delta \implies \lim_{t \to \infty} \lVert x(t) \rVert = 0$
 \end{itemize}
 \subsection{Lyapunov's direct method}
-\textbf{Theorem}: Let the point $\Bar{x} = 0$ be an equilibrium point for $x\in \mathcal{D} \subseteq \mathbb{R}^n$. Let $V: \mathcal{D} \to \mathbb{R}$ be a continuously differentiable function such that $V(0) = 0$ and $V(x \neq 0) > 0 \; \forall x \in \mathcal{D}$ and $\Dot{V}(x) \le 0 \; \forall x \in \mathcal{D}$ we can conclude that the point $x=0$ is stable. \\Furthermore if $\Dot{V} < 0 \; \forall x \in \mathcal{D}$ then the point $x=0$ is asymptotically stable. If this condition is met the function $V$ is said to be radially unbounded. \\
+\textbf{Theorem}: Let the point $\Bar{x} = 0$ be an equilibrium point for $x\in \mathcal{D} \subseteq \mathbb{R}^n$. Let $V: \mathcal{D} \to \mathbb{R}$ be a continuously differentiable function such that $V(0) = 0$ and $V(x \neq 0) > 0 \; \forall x \in \mathcal{D}$ and $\Dot{V}(x) \le 0 \; \forall x \in \mathcal{D}$ we can conclude that the point $x=0$ is stable. \\Furthermore if $\Dot{V} < 0 \; \forall x \in \mathcal{D}$ then the point $x=0$ is asymptotically stable. If this condition is met the function $V$ is said to be radially unbounded.
 \subsection{The Invariance Principle}
-\textbf{Def}: A domain $\mathcal{D} \subseteq \mathbb{R}^n$ is said to be \textbf{invariant} for the function $\Dot{x} = f(x)$ if $\forall x(t_0)\in \mathcal{D} \implies x(t \in \mathbb{R})\in \mathcal{D}$\\
-\textbf{Def}: A domain $\mathcal{D} \subseteq \mathbb{R}^n$ is said to be \textbf{positively invariant} for the function $\Dot{x} = f(x)$ if $\forall x(t_0)\in \mathcal{D} \implies x(t > t_0)\in \mathcal{D}$\\
-\textbf{Theorem}: \textbf{LaSalle's Invariance Principle} Let $\Omega \subseteq \mathcal{D}$ be a compact set that is positively invariant with respect to the function $\Dot{x} = f(x)$. \\
-Let $V: \mathcal{D} \to \mathbb{R}$ be a continuously differentiable function such that $\Dot{V}(x) \le 0, \; \forall x\in \Omega$. \\
-Let $\mathcal{E} \subseteq \Omega | \Dot{V}(x) = 0$. \\
-Let $\mathcal{M}$ be the largest invariant set in $\mathcal{E}$. \\
-If all these conditions are met, all solutions starting in $\Omega$ will approach $\mathcal{M}$ for $t \to \infty$.\\
+\textbf{Def}: A domain $\mathcal{D} \subseteq \mathbb{R}^n$ is said to be \textbf{invariant} for the function $\Dot{x} = f(x)$ if $\forall x(t_0)\in \mathcal{D} \implies x(t \in \mathbb{R})\in \mathcal{D}$
+
+\newpar{}
+\textbf{Def}: A domain $\mathcal{D} \subseteq \mathbb{R}^n$ is said to be \textbf{positively invariant} for the function $\Dot{x} = f(x)$ if $\forall x(t_0)\in \mathcal{D} \implies x(t > t_0)\in \mathcal{D}$
+
+\newpar{}
+\textbf{Theorem}: \textbf{LaSalle's Invariance Principle} Let $\Omega \subseteq \mathcal{D}$ be a compact set that is positively invariant with respect to the function $\Dot{x} = f(x)$.
+
+Let $V: \mathcal{D} \to \mathbb{R}$ be a continuously differentiable function such that $\Dot{V}(x) \le 0, \; \forall x\in \Omega$.
+
+Let $\mathcal{E} \subseteq \Omega | \Dot{V}(x) = 0$.
+
+Let $\mathcal{M}$ be the largest invariant set in $\mathcal{E}$.
+
+If all these conditions are met, all solutions starting in $\Omega$ will approach $\mathcal{M}$ for $t \to \infty$.
+
 \subsection{Instability Theorem}
-\textbf{Theorem}: Let $V:\mathcal{D} \to \mathbb{R}$ be a Lyapunov function. If we can draw a Ball $\mathcal{B}_r$ around the equilibrium point $x=0$ and with radius $r$ and we can show that there exists $\Dot{V}(x\in \mathcal{B}_r) > 0$  we can conclude that the equilibrium point is unstable.\\
+\textbf{Theorem}: Let $V:\mathcal{D} \to \mathbb{R}$ be a Lyapunov function. If we can draw a Ball $\mathcal{B}_r$ around the equilibrium point $x=0$ and with radius $r$ and we can show that there exists $\Dot{V}(x\in \mathcal{B}_r) > 0$  we can conclude that the equilibrium point is unstable.
+
 \subsection{Stability of Non-Autonomous Systems}
-\textbf{Def}: A continuous function $\alpha_1: [0,\alpha) \to [0,\infty)$ belongs to the class $\mathcal{K}$ if it is strictly increasing and $\alpha_1(0) = 0$. \\
+\textbf{Def}: A continuous function $\alpha_1: [0,\alpha) \to [0,\infty)$ belongs to the class $\mathcal{K}$ if it is strictly increasing and $\alpha_1(0) = 0$. \\ % ChkTex 9
 A continuous function $\alpha_2 \subset \alpha_1$ belongs to the class $\mathcal{K}_{\infty}$ if the parameter $\alpha = \infty$ and $\alpha_2(\alpha \to \infty) \to \infty$\\
-\textbf{Def}: a continuous function $\beta: [0,\alpha) \times [0,\infty) \to [0,\infty)$ belongs to the class $\mathcal{KL}$ if
+\textbf{Def}: a continuous function $\beta: [0,\alpha) \times [0,\infty) \to [0,\infty)$ belongs to the class $\mathcal{KL}$ if % ChkTex 9
 \begin{itemize}
     \item For each constant $s$ the function $\beta(r,s)$ belongs to the class $\mathcal{K}$ with respect to $r$.
     \item For each constant $r$ the function $\beta(r,s)$ is monotonically decreasing with respect to $s$ such that $\beta(r,s\to \infty) \to 0$
 \end{itemize}
-\textbf{Def}: Let $V : \mathcal{D} \to \mathbb{R}$ be a continuous positive definite function on the domain $\mathcal{D} \subset \mathbb{R}^n$ that contains the origin. Let $\mathcal{B}_r \subset \mathcal{D}$ be a ball of radius $r > 0$. Then there exists class $\mathcal{K}$ functions $\alpha_1$ and $\alpha_2$ defined on $[0,r)$ such that $\alpha_1(\lVert x \rVert) \le V(x) \le \alpha_2(\lVert x \rVert) $.\\
+\textbf{Def}: Let $V : \mathcal{D} \to \mathbb{R}$ be a continuous positive definite function on the domain $\mathcal{D} \subset \mathbb{R}^n$ that contains the origin. Let $\mathcal{B}_r \subset \mathcal{D}$ be a ball of radius $r > 0$. Then there exists class $\mathcal{K}$ functions $\alpha_1$ and $\alpha_2$ defined on $[0,r)$ such that $\alpha_1(\lVert x \rVert) \le V(x) \le \alpha_2(\lVert x \rVert) $.\\ % ChkTex 9
 If $\mathcal{D} = \mathbb{R}^n$ and $V(x) > 0, \; \forall x\in \mathbb{R}^n$ (\textit{radially unbounded}), the inequality holds for functions $\alpha_1, \alpha_2 \in \mathcal{K}_\infty$  \\
 \textbf{Def}: Let $x=0$ be an equilibrium point of $\Dot{x} = f(x)$. Then this point is
 \begin{itemize}

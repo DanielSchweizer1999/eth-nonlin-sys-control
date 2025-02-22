@@ -1,5 +1,5 @@
 \section{Chap 6: Feedback Linearization}
-Idea: Does there exist a nonlinear change of variables $z = [\eta,\xi]^T$, and a controller input $u = \alpha(x) + \beta(x)v$ that would transform a generic nonlinear SISO system into a partially linear system (\textbf{input-output linearizable}):
+Idea: Does there exist a nonlinear change of variables $z = {[\eta,\xi]}^T$, and a controller input $u = \alpha(x) + \beta(x)v$ that would transform a generic nonlinear SISO system into a partially linear system (\textbf{input-output linearizable}):
 \begin{align*}
     \Dot{\eta} & = f_0(\eta,\xi) \\
     \Dot{\xi}  & = A\xi + Bv     \\
@@ -17,14 +17,18 @@ Or a nonlinear change of variables $z = T(x)$ and a controller input $u = \alpha
 \end{align*}
 If the Lie derivative along $g$ is zero $\Dot{y} = L_f h(x) + 0 = L_f h(x)$ which is independent of the input $u$. The process is repeated until the derivative is a function of the input $u$:
 \begin{align*}
-    y^{(2)} & = \frac{\partial (L_f h(x))}{\partial x}[f(x) + g(x)u] = L_f^2 h(x) + L_g L_f h(x) u                 \\
-    y^{(N)} & = \frac{\partial (L_f^{(N-1)} h(x))}{\partial x}[f(x) + g(x)u] = L_f^N h(x) + L_g L_f^{(N-1)} h(x) u \\
+    y^{(2)} & = \frac{\partial (L_f h(x))}{\partial x}[f(x) + g(x)u]         \\
+            & = L_f^2 h(x) + L_g L_f h(x) u                                  \\
+    y^{(N)} & = \frac{\partial (L_f^{(N-1)} h(x))}{\partial x}[f(x) + g(x)u] \\
+            & = L_f^N h(x) + L_g L_f^{(N-1)} h(x) u
 \end{align*}
 The input $u$ does only appear in the last equation $y^{N}$ since all previous Lie Derivatives along $g$ were zero. The system is input output linearizable with the feedback controller:
-\begin{align*}
+\noindent\begin{equation*}
     \boxed{u = \frac{1}{L_g L_f^{(N-1)}h(x)} \Big(-L_f^N h(x) + v \Big)}
-\end{align*}
-This is equal to a chain of $N$ integrators. $N$ is said to be the systems \textbf{relative degree}.\\
+\end{equation*}
+
+This is equal to a chain of $N$ integrators. $N$ is said to be the systems \textbf{relative degree}.
+
 \subsection{Full State Feedback Linearization}
 \textbf{Def}: For any two vertor fields $f$ and $g$ on $\mathcal{D} \subset \mathbb{R}^n$ the \textbf{Lie Bracket} $[f,g](x)$ is a third vector field defined as:
 \begin{align*}
@@ -32,9 +36,9 @@ This is equal to a chain of $N$ integrators. $N$ is said to be the systems \text
 \end{align*}
 Taking Lie Brackets of a function is denoted by:
 \begin{align*}
-    ad_f^0g & = g(x)                 \\
-    ad_fg   & = [f,g](x)             \\
-    ad_f^kg & = [f,ad_f^{(k-1)}g](x)
+    ad_f^0g  & = g(x)                 \\
+    ad_f g   & = [f,g](x)             \\
+    ad_f^k g & = [f,ad_f^{(k-1)}g](x)
 \end{align*}
 \textbf{Def}: A distribution $\Delta$ is called \textbf{involutive} iff:
 \begin{align*}
@@ -42,15 +46,17 @@ Taking Lie Brackets of a function is denoted by:
 \end{align*}
 \textbf{Theorem}: A SISO system is feedback linearizable iff:
 \begin{enumerate}
-    \item The matrix $\mathcal{M}(x) = [g(x), ad_fg(x), \dots , ad_f^{(n-1)}g(x)]$ has full column rank ($RANK(\mathcal{M}(x)) = n$)
-    \item The distribution $\Delta = SPAN\{g, ad_fg, \dots, ad_f^{(n-2)}g \}$ is involutive
+    \item The matrix $\mathcal{M}(x) = [g(x), ad_f g(x), \dots , ad_f^{(n-1)}g(x)]$ has full column rank ($RANK(\mathcal{M}(x)) = n$)
+    \item The distribution $\Delta = SPAN\{g, ad_f g, \dots, ad_f^{(n-2)}g \}$ is involutive
 \end{enumerate}
 \subsection{Stability and Robustness}
 \textbf{Theorem}: The origin is asymptotically stable iff the origin of the zero dynamics $\Dot{\eta} = f(\eta,0)$ are asymptotically stable (minimum phase).\\
 The true system will not be known exactly in practice but only approximations $u = \hat{\alpha}(x) + \hat{\beta}(x)K\xi$. This will result in the following system:
 \begin{align*}
-    \Dot{\eta} & = f(\eta,\xi)                                                                                                      \\
-    \Dot{\xi}  & = (A-BK)\xi + B \delta(z)                                                                                          \\
-    \delta(z)  & = \gamma(x) [(\hat{\alpha}(x)-\alpha(x)) + (\hat{\beta}(x) - \beta(x) ) KT - \hat{\beta}(x)K(\hat{T}_2(x) - T(x))]
+    \Dot{\eta} & = f(\eta,\xi)                                                                   \\
+    \Dot{\xi}  & = (A-BK)\xi + B \delta(z)                                                       \\
+    \delta(z)  & = \gamma(x) [(\hat{\alpha}(x)-\alpha(x))                                        \\
+               & \quad + (\hat{\beta}(x) - \beta(x) ) KT - \hat{\beta}(x)K(\hat{T}_2(x) - T(x))]
 \end{align*}
 The uncertain system only differs from the deterministic system by an additive term which means stability can locally be guaranteed.
+

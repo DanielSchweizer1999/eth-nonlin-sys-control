@@ -1,15 +1,18 @@
 \section{Chap 1: Introduction}
 \subsection{Modeling}
-\begin{align*}
+\noindent\begin{equation*}
     \boxed{\Dot{x} = f(x)}
-\end{align*}
-\textbf{Def}: A system is said to be \textbf{autonomous} or \textbf{time invariant} if the function $\Dot{x} = f(x)$ does not depend explicitly on $t$.\\
-\textbf{Def}: A point is called an \textbf{equilibrium point} of $\Dot{x} = f(x)$ if $x(\tau) = \Bar{x}$ for some $\tau \implies x(t) = \Bar{x} \quad \forall \; t>\tau$ (or $\Dot{x} = 0$)\\
-\\
+\end{equation*}
+
+\textbf{Def}: A system is said to be \textbf{autonomous} or \textbf{time invariant} $\Dot{x} = f(x)$ does not depend explicitly on $t$.
+
+\newpar{}
+\textbf{Def}: A point is called an \textbf{equilibrium point} of $\Dot{x} = f(x)$ if $x(\tau) = \Bar{x}$ for some $\tau \implies x(t) = \Bar{x} \quad \forall \; t>\tau$ (or $\Dot{x} = 0$)
+
 Solution to the system of equations $\Dot{x} = Ax + Bu$:
-\begin{align*}
+\noindent\begin{equation*}
     \boxed{x(t) = e^{At}\cdot x_0 + \int_0^t e^{A(t-\tau)} Bu(\tau) d\tau}
-\end{align*}\\
+\end{equation*}\\
 List of common non-linearities:
 \begin{itemize}
     \item \textbf{Relay}: Appear in modeling mode changes. Comparable to a sign function.
@@ -18,17 +21,19 @@ List of common non-linearities:
     \item \textbf{Quantization}: Discretization when converting analog measurements to digital readings.
 \end{itemize}
 \vspace{5pt}
-\textbf{Def}: A 2D \textbf{vector field} can be drawn by assigning a vector $(f(x_1), f(x_2))$ to each point $(x_1, x_2)$ of the 2D plain.\\
-\textbf{Def}: The family of all trajectories of a dynamical system is called the \textbf{phase portrait}.\\
+\textbf{Def}: A 2D \textbf{vector field} can be drawn by assigning a vector $(f(x_1), f(x_2))$ to each point $(x_1, x_2)$ of the 2D plain.
+\newpar{}
+\textbf{Def}: The family of all trajectories of a dynamical system is called the \textbf{phase portrait}.
+
 \subsection{Linearization}
 Linearization generates a Matrix by partially deriving by the state and plugging in the equilibrium point $\Bar{x}$:
-\begin{align*}
+\noindent\begin{equation*}
     \boxed{\Dot{x} = f(x) \approx f(x) \cdot \frac{\partial}{\partial x^T} = \begin{bmatrix}
-                                                                                     \frac{\partial}{\partial x_1} f_1 & \dots  & \frac{\partial}{\partial x_n} f_1 \\
-                                                                                     \vdots                            & \ddots & \vdots                            \\
-                                                                                     \frac{\partial}{\partial x_1} f_m & \dots  & \frac{\partial}{\partial x_n} f_m
-                                                                                 \end{bmatrix}}
-\end{align*}
+            \frac{\partial}{\partial x_1} f_1 & \cdots & \frac{\partial}{\partial x_n} f_1 \\
+            \vdots                            & \ddots & \vdots                            \\
+            \frac{\partial}{\partial x_1} f_m & \cdots & \frac{\partial}{\partial x_n} f_m
+        \end{bmatrix}}
+\end{equation*}
 \subsection{Limit Cycles}
 \textbf{Def}: An isolated periodic orbit is called a \textbf{limit cycle}.\\
 \textbf{Theorem}: \textbf{Poincare-Bendixson Criterion} Consider the system plane $\Dot{x} = f(x)$ and let $M$ be a closed bounded subset of the plane such that:
