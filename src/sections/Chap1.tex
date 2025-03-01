@@ -1,40 +1,352 @@
 \section{Chap 1: Introduction}
-\subsection{Modeling}
-\begin{align*}
-    \boxed{\Dot{x} = f(x)}
-\end{align*}
-\textbf{Def}: A system is said to be \textbf{autonomous} or \textbf{time invariant} if the function $\Dot{x} = f(x)$ does not depend explicitly on $t$.\\
-\textbf{Def}: A point is called an \textbf{equilibrium point} of $\Dot{x} = f(x)$ if $x(\tau) = \Bar{x}$ for some $\tau \implies x(t) = \Bar{x} \quad \forall \; t>\tau$ (or $\Dot{x} = 0$)\\
-\\
-Solution to the system of equations $\Dot{x} = Ax + Bu$:
-\begin{align*}
+\subsection{Fundamentals}
+The systems considered in this course are of the form
+\noindent\begin{equation*}
+    \boxed{\dot{x} = f(x), \quad x\in \mathbb{R}^n}
+\end{equation*}
+Note that
+\begin{itemize}
+    \item time invariance is assumed (most times)
+    \item inputs are seen as function of the state i.e.\ $u=u(x)$
+\end{itemize}
+
+\subsubsection{Definitions}
+
+A system is said to be \textbf{autonomous} or \textbf{time invariant} $\dot{x} = f(x)$ does not depend explicitly on $t$.
+
+A point is called an \textbf{equilibrium point} of $\dot{x} = f(x)$ if $x(\tau) = \Bar{x}$ for some $\tau \implies x(t) = \Bar{x} \quad \forall \; t>\tau$ (or $\dot{x} = 0$). For autonomous systems these are the \textbf{real} solutions of $f(x)=0$.
+
+\subsubsection{Linear vs.\ Nonlinear Systems}
+
+\ptitle{Time Response}
+
+Solution to the LTI system of equations $\dot{x} = Ax + Bu$:
+\noindent\begin{equation*}
     \boxed{x(t) = e^{At}\cdot x_0 + \int_0^t e^{A(t-\tau)} Bu(\tau) d\tau}
-\end{align*}\\
-List of common non-linearities:
+\end{equation*}
+which is linear is $x_0$ and $u(\cdot)$. Nonlinear systems do in general not share these properties.
+
+\paragraph{Comparison of Further Properties}
+
+\begin{itemize}
+    \item \textbf{Finite Escape Time} A nonlinear system's state, can go to infinity in \textit{finite} time (in contrast to unstable LTI).
+    \item \textbf{Multiple Isolated Equilibrium Points}
+          \begin{itemize}
+              \item LTI can have only one isolated equilibrium point, and thus only one steady-state operating point that attracts or repels the state of the system irrespective of the initial state.
+              \item A nonlinear system can have more than one isolated equilibrium point.
+          \end{itemize}
+    \item \textbf{Limit cycles}
+          \begin{itemize}
+              \item LTI:\ Stable oscillation only for purely imaginary pair of eigenvalues. Amplitude depends on $x_0$.
+              \item A nonlinear system can exhibit an oscillation of fixed amplitude and frequency which appears \textit{independently} of the initial conditions.
+          \end{itemize}
+    \item \textbf{Chaos} Complicated steady-state behavior of nonlinear systems that is not equilibrium or periodic oscillation.
+    \item \textbf{Multiple Modes of Behaviour} A nonlinear system may
+          \begin{itemize}
+              \item exhibit very different forms of behaviour depending on external parameter values
+              \item jump from one form of behaviour to another autonomously
+          \end{itemize}
+\end{itemize}
+
+\subsubsection{List of Common nonlinearities}
+In memoryless nonlinearities, the output at time $t$ depends only on the $u(t)$, but not on past or future inputs. Some examples are
 \begin{itemize}
     \item \textbf{Relay}: Appear in modeling mode changes. Comparable to a sign function.
     \item \textbf{Saturation}: Modeling components with hard physical limits. Peak actuator force.
     \item \textbf{Dead Zone}: Friction, sensitivities of sensors and actuators.
     \item \textbf{Quantization}: Discretization when converting analog measurements to digital readings.
 \end{itemize}
-\vspace{5pt}
-\textbf{Def}: A 2D \textbf{vector field} can be drawn by assigning a vector $(f(x_1), f(x_2))$ to each point $(x_1, x_2)$ of the 2D plain.\\
-\textbf{Def}: The family of all trajectories of a dynamical system is called the \textbf{phase portrait}.\\
-\subsection{Linearization}
-Linearization generates a Matrix by partially deriving by the state and plugging in the equilibrium point $\Bar{x}$:
-\begin{align*}
-    \boxed{\Dot{x} = f(x) \approx f(x) \cdot \frac{\partial}{\partial x^T} = \begin{bmatrix}
-                                                                                     \frac{\partial}{\partial x_1} f_1 & \dots  & \frac{\partial}{\partial x_n} f_1 \\
-                                                                                     \vdots                            & \ddots & \vdots                            \\
-                                                                                     \frac{\partial}{\partial x_1} f_m & \dots  & \frac{\partial}{\partial x_n} f_m
-                                                                                 \end{bmatrix}}
-\end{align*}
-\subsection{Limit Cycles}
-\textbf{Def}: An isolated periodic orbit is called a \textbf{limit cycle}.\\
-\textbf{Theorem}: \textbf{Poincare-Bendixson Criterion} Consider the system plane $\Dot{x} = f(x)$ and let $M$ be a closed bounded subset of the plane such that:
+
+A nonlinearity with memory has an output that depends on the history of inputs. One example is
 \begin{itemize}
-    \item $M$ contains no equilibtium points, or contains only one equilibrium point such that the Jacobian matrix at this pint has eigenvalues with positive real parts.
-    \item Every trajectory starting in $M$ remains in $M$ for all future time.
+    \item \textbf{Relay With Hysteresis}
 \end{itemize}
-Then $M$ contains a periodic orbit.\\
-\textbf{Theorem}: \textbf{Negative Poincare-Bendixson Criterion} If, on a simply connected region $D$ of the plane, the expression $\frac{\partial f_1}{\partial x_1} + \frac{\partial f_2}{\partial x_2}$ is not identically zero and does not change sign, then the system $\Dot{x} = f(x)$ has no periodic orbits lying entierly in $D$.
+
+\subsection{Second Order Systems}
+
+A second order autonomous system is given by:
+\noindent\begin{equation*}
+    \dot{x}_1 = f_1(x_1, x_2), \quad x_1(0) = x_{10}
+\end{equation*}
+\noindent\begin{equation*}
+    \dot{x}_2 = f_2(x_1, x_2), \quad x_2(0) = x_{20}
+\end{equation*}
+In vector notation:
+\noindent\begin{equation*}
+    \dot{x} = f(x), \quad x(0) = x_0, \quad x, x_0 \in \mathbb{R}^2.
+\end{equation*}
+
+\subsubsection{Definitions}
+\begin{itemize}
+    \item The locus in the 2D plane of the solution $x(t)$ is a curve that passes through the point $x_0$. The vector $f$ is tangent to $x(t)$ at each point.
+    \item A \textbf{vector field diagram} assigns the vector $(f_1(x), f_2(x))$ to every point $(x_1, x_2)$ on the plane.
+    \item The \textbf{phase portrait} is the family of all trajectories of a dynamical system.
+\end{itemize}
+
+\subsubsection{Qualitative Behavior of 2nd Order Systems Near Equilibrium Points}
+
+\newpar{}
+\ptitle{Linearization}
+
+\noindent\begin{equation*}
+    \begin{array}
+        {rcl}\dot{x}_1 & = & \frac{\partial f_1}{\partial x_1}|_{x=\bar{x}}x_1+\left.\frac{\partial f_1}{\partial x_2}\right|_{x=\bar{x}}x_2 \\
+        \dot{x}_2      & = & \frac{\partial f_2}{\partial x_1}|_{x=\bar{x}}x_1+\left.\frac{\partial f_2}{\partial x_2}\right|_{x=\bar{x}}x_2
+    \end{array}
+\end{equation*}
+
+\newpar{}
+\ptitle{Linearization in Jordan Form}
+
+For the LTI system
+\noindent\begin{equation*}
+    \dot{x} = A x, \quad A \in \mathbb{R}^{2\times 2}
+\end{equation*}
+the solution in is
+\noindent\begin{equation*}
+    x(t) = M e^{J_r t} M^{-1} x_0,
+\end{equation*}
+where $J_r$ is the Jordan form of $A$, and $M$ is a real nonsingular matrix such that $M^{-1} A M = J_r$.
+
+\paragraph{Eigenvalue Classification}
+
+Depending on the eigenvalues of $A$, $J_r$ can take different forms.
+\newpar{}
+\ptitle{Distinct Real Eigenvalues}
+
+\noindent\begin{equation*}
+    J_r = \begin{bmatrix} \lambda_1 & 0 \\ 0 & \lambda_2 \end{bmatrix},\quad \lambda_1, \lambda_2 \neq 0
+\end{equation*}
+
+Modal analysis yields
+\noindent\begin{equation*}
+    \dot{z}_1 = \lambda_1 z_1, \quad \dot{z}_2 = \lambda_2 z_2
+\end{equation*}
+with the solution:
+\noindent\begin{equation*}
+    z_1 = z_{10} e^{\lambda_1 t}, \quad z_2 = z_{20} e^{\lambda_2 t}
+\end{equation*}
+Eliminating $t$ yields the trajectory equation:
+\noindent\begin{equation*}
+    z_2 = c z_1^{\lambda_2 / \lambda_1}, \quad c = \frac{z_{20}}{z_{10}^{\lambda_2 / \lambda_1}}
+\end{equation*}
+
+There are three types of phase portraits:
+\begin{itemize}
+    \item Stable node: Both eigenvalues are negative, Figure 1.11.
+    \item Unstable node: Both eigenvalues are positive, Figure 1.11.
+    \item Saddle point: Eigenvalues have different sign, Figure 1.12
+\end{itemize}
+\begin{center}
+    \includegraphics[width = \linewidth]{nodes_saddles.png}
+\end{center}
+
+\newpar{}
+\ptitle{Complex Eigenvalues}
+
+\noindent\begin{equation*}
+    J_r = \begin{bmatrix} \alpha & -\beta \\ \beta & \alpha \end{bmatrix}
+\end{equation*}
+where $\lambda_1, \lambda_2 = \alpha \pm j\beta$.
+
+Modal analysis yields
+\noindent\begin{equation*}
+    \dot{z}_1 = \alpha z_1 - \beta z_2, \quad \dot{z}_2 = \beta z_1 + \alpha z_2
+\end{equation*}
+Transformation to polar coordinates
+\noindent\begin{equation*}
+    r = \sqrt{z_1^2 + z_2^2}, \quad \theta = \tan^{-1} \left( \frac{z_2}{z_1} \right)
+\end{equation*}
+\noindent\begin{equation*}
+    \dot{r} = \alpha r, \quad \dot{\theta} = \beta
+\end{equation*}
+yields the solution:
+\noindent\begin{equation*}
+    r(t) = r_0 e^{\alpha t}, \quad \theta (t) = \theta_0 + \beta t
+\end{equation*}
+
+There are three types of phase portraits:
+\begin{itemize}
+    \item Stable Focus, when $\alpha < 0$, the spiral converges to the origin, see Figure 1.13 (a).
+    \item Unstable Focus, when $\alpha > 0$, it diverges away from the origin, see Figure 1.13 (b).
+    \item Circle, when $\alpha = 0$, the trajectory is a circle of radius r0, see Figure 1.13 (c).
+\end{itemize}
+\begin{center}
+    \includegraphics[width = \linewidth]{foci_center.png}
+\end{center}
+
+\newpar{}
+\ptitle{Nonzero Repeated Eigenvalues}
+
+% TODO: Is this the right matrix?
+\noindent\begin{equation*}
+    J_r = \begin{bmatrix} \lambda & k \\ 0 & \lambda \end{bmatrix}
+\end{equation*}
+where $k\in {0, 1}$.
+
+Modal analysis yields
+\noindent\begin{equation*}
+    \dot{z}_1 = \lambda z_1 + k z_2, \quad \dot{z}_2 = \lambda z_2
+\end{equation*}
+where the solution contains a polynomial prefactor:
+\noindent\begin{equation*}
+    z_1 (t) = (z_{10} + k z_{20} t) e^{\lambda t}, \quad z_2 (t) = e^{\lambda t} z_{20}
+\end{equation*}
+The trajectory equation is
+\noindent\begin{equation*}
+    z_1 = z_2 \left( \frac{z_{10}}{z_{20}} + \frac{k}{\lambda} \ln \left( \frac{z_2}{z_{20}} \right) \right)
+\end{equation*}
+
+There are two types of phase portraits:
+\begin{itemize}
+    \item As many eigenvectors as eigenvalues: $k = 0, (\lambda < 0, \lambda > 0)$, see Figure 1.14.
+    \item Fewer eigenvectors than eigenvalues: $k = 1, (\lambda < 0, \lambda > 0)$, see Figure 1.15.
+\end{itemize}
+\begin{center}
+    \includegraphics[width = \linewidth]{rep_eigenval.png}
+\end{center}
+
+\newpar{}
+\ptitle{Zero Eigenvalues}
+
+Phase portrait is in some sense degenerate.
+\begin{itemize}
+    \item $A$ has nontrivial nullspace, i.e.\ an \textbf{equilibrium subspace}
+    \item Any vector in the null space of $A$ is an equilibrium point
+\end{itemize}
+
+When the dimension of the null space is two, then $A = 0$.
+
+When the dimension of the null space is one, the shape of $J_r$ depends on the multiplicity of the zero eigenvalue
+\begin{itemize}
+    \item $\lambda_1 = 0$, $\lambda_2 < 0$ or $\lambda_2 > 0$, see Figure 1.16.
+    \item $\lambda_1 = \lambda_2 = 0$, see Figure 1.17.
+\end{itemize}
+\begin{center}
+    \includegraphics[width = \linewidth]{zero_eigenval.png}
+\end{center}
+
+\subsubsection{Limit Cycles}
+
+Oscillations in dynamical systems occur when the system exhibits \textbf{nontrivial} periodic solutions
+\noindent\begin{equation*}
+    x (t+ T ) = x (t), \quad \forall t \geq 0
+\end{equation*}
+for some $T > 0$. In the phase plane, an oscillation is represented by a \textit{closed} trajectory, known as a \textbf{closed/periodic orbit} (trivial example: center).
+
+An \textit{isolated} periodic orbit is called a \textbf{limit cycle} and is a special case of a \textbf{limit set}. A continuum of periodic orbits is not a limit cycle.
+
+\paragraph{Sufficient and Negative Conditions}
+The following conditions hold for 2D systems only.
+
+\newpar{}
+\ptitle{Sufficient Condition: Poincaré-Bendixson Criterion}
+
+Let $M$ be a closed, bounded subset of the plane such that:
+\begin{itemize}
+    \item $M$ contains no equilibrium points or contains only \textit{one} unstable equilibrium point.
+    \item Assume every trajectory starting in $M$ remains in $M$ for all future time.
+\end{itemize}
+Then $M$ must contain a periodic orbit of $\dot{x} = f(x)$.
+
+Intuition: A trajectory in M is bounded, and so it must either converge to an equilibrium point or approach a periodic solution for $t\rightarrow \infty$. As there are no stable equilibrium points, it must converge to a periodic orbit.
+
+\newpar{}
+\ptitle{Negative Poincaré-Bendixson Criterion}
+
+If, on a simply connected region $D$ of the plane, the divergence
+\noindent\begin{equation*}
+    \frac{\partial f_1}{\partial x_1} + \frac{\partial f_2}{\partial x_2}
+\end{equation*}
+is not identically zero and does not change sign, then the system $\dot{x} = f (x)$ has no periodic orbits entirely in $D$.
+
+Intuition: A field of only sources or only sinks cannot contain a closed trajectory.
+\begin{examplesection}[Proof: Negative Poincaré-Bendixson Criterion]
+    On any orbit of $\dot{x} = f(x)$, we have:
+    \noindent\begin{equation*}
+        \frac{dx_2}{dx_1} = \frac{f_2}{f_1}.
+    \end{equation*}
+    For any closed orbit $\Gamma$, we integrate:
+    \noindent\begin{equation*}
+        \oint_{\Gamma} \left( f_2 dx_1 - f_1 dx_2 \right) = 0.
+    \end{equation*}
+    Applying Green's theorem over the enclosed region $S$:
+    \noindent\begin{equation*}
+        \iint_{S} \left( \frac{\partial f_1}{\partial x_1} + \frac{\partial f_2}{\partial x_2} \right) dx_1 dx_2 = 0.
+    \end{equation*}
+    If $\frac{\partial f_1}{\partial x_1} + \frac{\partial f_2}{\partial x_2}$ is not identically zero and does not change sign, the integral cannot be zero, contradicting the assumption of a closed orbit. Hence, no periodic orbits exist in $D$.
+\end{examplesection}
+
+\subsubsection{Bifurcations}
+
+A system of the form $\dot{x} = f(x, \mu)$ depends on a parameter $\mu$ and so do the eigenvalues of its Jacobian.
+
+\newpar{}
+\ptitle{Definition: Bifurcation}
+% TODO: I think the def. in the script is bad
+
+A \textbf{bifurcation} occurs when a small change in a parameter $\mu$ causes a qualitative change in system behavior. The corresponding points in \textit{parameter} space are called bifurcation points. Examples are changes in the
+\begin{itemize}
+    \item number of \textbf{equilibrium points}
+    \item number of \textbf{periodic orbits}
+    \item \textbf{stability} of these objects
+\end{itemize}
+
+\newpar{}
+\ptitle{Structural Stability}
+
+For $f$ depending on $\mu$, the system is called structurally stable if small perturbations of $\mu$
+\begin{itemize}
+    \item do not cause the equilibria to change their stability properties
+    \item and if there are no additional equilibria created.
+\end{itemize}
+If the eigenvalues depend continuously on $\mu$, the cricital situation occurs for $Re(\lambda(\mu))=0$.
+
+\newpar{}
+\ptitle{Chaos}
+
+A cascade of bifurcations is usually a precursor to chaotic behavior.
+
+\paragraph{Example Bifurcations}
+
+Simple types of bifurcations are the \textbf{creation or vanishing of a stable-unstable pair} of equilibra. Other examples are
+
+\newpar{}
+\ptitle{Pitchfork Bifurcations}
+
+\begin{itemize}
+    \item A stable equilibrium becomes 2 stable and one unstable equilibrium
+    \item An unstable equilibrium becomes 2 unstable and one stable equilibrium
+\end{itemize}
+
+\newpar{}
+\ptitle{Saddle-Node (Fold) Bifurcation}
+
+Two equilibria (one stable, one unstable) collide and annihilate.
+
+\newpar{}
+\ptitle{Hopf Bifurcation Theorem}
+
+Consider the system:
+\noindent\begin{equation*}
+    \dot{x} = f_\mu(x_1, x_2)
+\end{equation*}
+where $\mu$ is a parameter, and $(0,0)$ is an equilibrium point for any value of $\mu$. Let $\mu_c$ be such that:
+\noindent\begin{equation*}
+    \text{eig} \left( \frac{Df}{Dx} (0,0) \right) = \pm j\beta.
+\end{equation*}
+i.e.\ the cricital value for $\mu$ making $(0,0)$ nonhyperbolic.
+
+If the real parts of the eigenvalues $\lambda_{1,2}$ of $Df/Dx(0,0)$ satisfy:
+\noindent\begin{equation*}
+    \frac{d}{d\mu} \operatorname{Re} (\lambda_{1,2}) > 0,
+\end{equation*}
+% TODO: How do we access stability for mu=mu_c
+and the origin is stable for $\mu = \mu_c$, then:
+\begin{itemize}
+    \item There exists $\mu_l$ such that the origin remains stable for $\mu \in [\mu_l, \mu_c]$.
+    \item There exists $\mu_L$ such that the origin becomes unstable and is surrounded by a stable limit cycle for $\mu_c < \mu < \mu_L$.
+\end{itemize}
+Hence, for a Hopf bifurcation a stable equilibrium transitions into a stable limit cycle which surrounds an unstable point.
+%TODO Vice versa?
+

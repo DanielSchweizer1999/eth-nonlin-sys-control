@@ -4,23 +4,32 @@ Take the following state space system:
     \Dot{x} & = f(x,u) \\
     y       & = h(x,u)
 \end{align*}
-Let $x\in \mathcal{X} \subseteq \mathbb{R}^n, \; u\in \mathcal{U} \subseteq \mathbb{R}^m, \; y\in \mathcal{Y} \subseteq \mathbb{R}^p$. \\
-\textbf{Def}: A state space system is said to be \textbf{dissipative} with respect to the supply function $w(u,y)$, if there exists a function $S:\mathcal{X}\to \mathbb{R}_{\ge 0}$ called the \textit{storage function}, such that: \\
-$S(x(t_1)) \le S(x(t_0)) + \int_{t_0}^{t_1} w(u(\tau),y(\tau)) d\tau, \; \forall x_0 \in \mathcal{X}, \; \forall t_1 > t_0$\\
-They can not internally create energy but can only store or dissipate it.\\
-\textbf{Def}: All storage functions have a lower bound by the storage function $S_a(x) = \sup_{u(\cdot),T\ge 0}(-\int_0^T w(u,y) dt) \le S(x), \; x(0)=x$\\
-\textbf{Def}: The function $d:\mathcal{X} \times \mathcal{U} \to \mathbb{R}$ is the \textbf{dissipation rate} of the dissipative state space system with the supply rate $w(u,y)$ and the storage function $S(x)$ if: \\
-$S(x(t_0)) + \int_{t_0}^{t_1} (w(t)-d(t)) dt = S(x(t_1)), \; \forall t_0,t_1 \in \mathbb{R}^{+}, \; x\in \mathcal{X}, \; u\in \mathcal{U}$\\
+
+Let $x\in \mathcal{X} \subseteq \mathbb{R}^n, \; u\in \mathcal{U} \subseteq \mathbb{R}^m, \; y\in \mathcal{Y} \subseteq \mathbb{R}^p$.
+
+\textbf{Def}: A state space system is said to be \textbf{dissipative} with respect to the supply function $w(u,y)$, if there exists a function $S:\mathcal{X}\to \mathbb{R}_{\ge 0}$ called the \textit{storage function}, such that:
+
+$S(x(t_1)) \le S(x(t_0)) + \int_{t_0}^{t_1} w(u(\tau),y(\tau)) d\tau, \; \forall x_0 \in \mathcal{X}, \; \forall t_1 > t_0$
+
+They can not internally create energy but can only store or dissipate it.
+
+\newpar{}
+\textbf{Def}: All storage functions have a lower bound by the storage function $S_a(x) = \sup_{u(\cdot),T\ge 0}(-\int_0^T w(u,y) dt) \le S(x), \; x(0)=x$
+\newpar{}
+\textbf{Def}: The function $d:\mathcal{X} \times \mathcal{U} \to \mathbb{R}$ is the \textbf{dissipation rate} of the dissipative state space system with the supply rate $w(u,y)$ and the storage function $S(x)$ if:
+
+$S(x(t_0)) + \int_{t_0}^{t_1} (w(t)-d(t)) dt = S(x(t_1)), \; \forall t_0,t_1 \in \mathbb{R}^{+}, \; x\in \mathcal{X}, \; u\in \mathcal{U}$
+
 \subsection{Passive Systems}
 A state space system is called:
 \begin{itemize}
-    \item \textbf{Passive} if it is dissipative with respect to the supply rate $w(u,y) = u^Ty$
-    \item \textbf{Lossless} if $\Dot{S}(x) = u^Ty$
-    \item \textbf{Input-Feedforward passive} if it is dissipative with respect to the supply rate $w(u,y) = u^Ty - u^T\varphi(u)$ for some function $\varphi$
-    \item \textbf{Input Strictly Passive} if it is dissipative with respect to the supply rate $w(u,y) = u^Ty - u^T\varphi(u)$ and $u^T\varphi(u) > 0, \; \forall u \neq 0$
-    \item \textbf{Output Feedback Passive} if it is dissipative with respect to the supply rate $w(u,y) = u^Ty - y^T\rho(y)$ for some function $\rho$
-    \item \textbf{Output Strictly Passive} if it is dissipative with respect to the supply rate $w(u,y) = u^Ty - y^T\rho(y)$ and $y^T\rho(y) > 0, \; \forall y \neq 0$
-    \item \textbf{Strictly Passive} if it is dissipative with respect to the supply rate $w(u,y) = u^Ty - \psi(x)$ for some positive definite function $\psi(x)$
+    \item \textbf{Passive} if it is dissipative with respect to the supply rate $w(u,y) = u^T y$
+    \item \textbf{Lossless} if $\Dot{S}(x) = u^T y$
+    \item \textbf{Input-Feedforward passive} if it is dissipative with respect to the supply rate $w(u,y) = u^T y - u^T\varphi(u)$ for some function $\varphi$
+    \item \textbf{Input Strictly Passive} if it is dissipative with respect to the supply rate $w(u,y) = u^T y - u^T\varphi(u)$ and $u^T\varphi(u) > 0, \; \forall u \neq 0$
+    \item \textbf{Output Feedback Passive} if it is dissipative with respect to the supply rate $w(u,y) = u^T y - y^T\rho(y)$ for some function $\rho$
+    \item \textbf{Output Strictly Passive} if it is dissipative with respect to the supply rate $w(u,y) = u^T y - y^T\rho(y)$ and $y^T\rho(y) > 0, \; \forall y \neq 0$
+    \item \textbf{Strictly Passive} if it is dissipative with respect to the supply rate $w(u,y) = u^T y - \psi(x)$ for some positive definite function $\psi(x)$
 \end{itemize}
 \textbf{Lemma}: Assume a dissipative system is passive with a positive definite storage function $S(x)$, then the origin of $\Dot{x} = f(x,0)$ is stable.\\
 If the system is strictly passive, the origin of $\Dot{x} = f(x,0)$ is asymptotically stable independant of the storage function $S(x)$.\\
