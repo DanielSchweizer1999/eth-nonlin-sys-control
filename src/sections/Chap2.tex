@@ -1,33 +1,297 @@
-\section{Chap 2: ODEs}
-\subsection{Existence and Uniqueness of Solution}
+\section{Existence and Uniqueness}
 
-\textbf{Theorem}: Let $f(t,x)$ be a piecewise continuous function in $t$ and satisfy the Lipschitz condition:
+\subsection{Contraction Mappings and Fixed Point Theorem}
 
-\noindent\begin{gather*}
-    \lVert f(t,x) - f(t,y) \rVert \le L \lVert x-y \rVert \; \forall \; x,y \; \in \;  \mathcal{B}(x_0,r) \\
-    \mathcal{B}(x_0,r)  = \{ x \in \mathrm{R}^n | \lVert x-x_0 \rVert \le r\}                             \\
-    \forall \; t \; \in [t_0,t_1]
-\end{gather*}
+Let $(\mathcal{X}, \|\cdot\|)$ be a non-empty Banach space and $S \subset \mathcal{X}$ a
+closed subset. Let $P : \mathcal{X} \to \mathcal{X}$ be a mapping that
 
-Then there exists some $\delta > 0$ such that the state equation $\Dot{x} = f(x)$ with $x(t_0) = x_0$ has a unique solution over $[t_0, t_0 + \delta]$
+\begin{enumerate}
+    \item It is a contraction mapping on $S$, i.e., there exists $\rho \in [0, 1)$ such that
+          \noindent\begin{equation*}
+              \|P x - P y\| \leq \rho \|x - y\|, \quad \forall x, y \in S.
+          \end{equation*}
+    \item $P(S) \subset S$, i.e., $P x \in S$, for all $x \in S$.
+\end{enumerate}
 
-\textbf{Def}: A space is called \textbf{Banach} if every Cauchy-sequence converges.
+Then the map $P$ admits one and only one fixed point $x^*$ in $S$, meaning that
+\noindent\begin{equation*}
+    P x^* = x^*
+\end{equation*}
+
 
 \newpar{}
-\textbf{Def}: A sequence is called \textbf{Cauchy} if its elements come very close to each other. For a finite $N$ there exists an arbitrarily small $\epsilon$ such that $\forall \; m,n > N: |a_n - a_m | < \epsilon$
+\ptitle{Remarks}
+
+\begin{itemize}
+    \item Banach spaces $\mathcal{X}$ are
+          \begin{enumerate}
+              \item complete (every Cauchy series converges to $x\in \mathcal{X}$)
+              \item have a norm
+          \end{enumerate}
+    \item Using $P$, one can start with an arbitrary $x_0\in S$ and converges towards $x^*$.
+    \item Defining $S$ so that $P$ maps $S \to S$, i.e.\ that $Px \in S$ always, is often difficult.
+\end{itemize}
+
+\subsection{Local Existence and Uniqueness}
+
+Let $f (t, x)$ be a piecewise continuous function in $t$ and satisfy the Lipschitz condition
+\noindent\begin{equation*}
+    \|f (t, x)- f (t, y)\| \leq L \|x- y\|
+\end{equation*}
+for all $x, y \in B (x_0, r) = \{x \in \mathbb{R}^n | \|x- x_0\| \leq r\}$, $\forall t \in [t_0, t_1]$. Then there exists some $\delta > 0$ such that the state equation
+\noindent\begin{equation*}
+    \dot{x} = f (t, x), \quad x (t_0) = x_0
+\end{equation*}
+has a unique solution over $[t_0, t_0 + \delta]$.
 
 \newpar{}
-\textbf{Theorem}: Let $f(t,x)$ be piecewise continuous in $t$ and locally Lipschitz in $x$ for $x\in \mathcal{D}$. If there exists an invariant subset $w \subseteq \mathcal{D}, \; \forall \; x(t_0)\in w | \; x(t) = (Px)(t) \in w, \; \forall \; t>t_0$, then the solution $x(t)$ exists for all $t>t_0$
+\ptitle{Autonomous Case}
 
-\subsection{Sensitivity Function}
-\begin{align*}
-    A(t,\lambda) & = \frac{\partial f(t,x(t,\lambda),\lambda)}{\partial x}       \\
-    B(t,\lambda) & = \frac{\partial f(t,x(t,\lambda),\lambda)}{\partial \lambda} \\
-    S(t)         & = \frac{\partial x}{\partial \lambda}                         \\
-    S(t_0)       & = 0
+\noindent\begin{equation*}
+    \|f (x)- f (y)\| \leq L \|x- y\|
+\end{equation*}
+In simple words: If the $\Delta f$ can be bounded by a linear function within the domain of interest $B$, the function is locally Lipschitz.
+
+\begin{examplesection}[Proof]
+
+    If $x (t)$ is a solution of
+    \noindent\begin{equation*}
+        \dot{x} = f (t, x), \quad x (t_0) = x_0,
+    \end{equation*}
+    then by integration,
+    \noindent\begin{equation*}
+        x (t) = x_0 + \int_{t_0}^{t} f (s, x (s)) ds.
+    \end{equation*}
+    Existence and uniqueness of the solution of the differential equation is equivalent to the study of the integral equation above.
+
+    Define the mapping (applying $P$ yields a function of time):
+    \noindent\begin{equation*}
+        (Px)(t) := x(t_0) + \int_{t_0}^{t} f (s, x (s)) ds, \quad t \in [t_0, t_1],
+    \end{equation*}
+    which maps a continuous function $x : [t_0, t_1] \to \mathbb{R}^n$ into another continuous function $\mathbb{R}^n$.
+
+    \newpar{}
+    \ptitle{Banach Space and Closed Set}
+
+    If we can find an $x$, s.t.\ $x=(Px)$, i.e.\ $x$ is a fixed point of the above mapping, then we proved existence and uniqueness of the solution by the contraction mapping theorem (CMT). To use the CMT we must define appriopriate
+    \begin{enumerate}
+        \item Banach space $\mathcal{X}$
+        \item closed subset $S \subset \mathcal{X}$
+    \end{enumerate}
+    such that $P$ maps $S$ into $S$ and is a contraction over $S$.
+
+    We get
+    \begin{enumerate}
+        \item the Banach space of cont.\ functions $x:[t_0, t_0+\delta] \rightarrow \mathbb{R}^n$
+              \noindent\begin{align*}
+                  \mathcal{X} & = C [t_0, t_0 + \delta]                    \\
+                  \|x\|_C     & = \max_{t \in [t_0, t_0+\delta]} \|x (t)\|
+              \end{align*}
+              where $\|x\|_C$ is the associated norm.
+        \item and the closed set
+              \noindent\begin{equation*}
+                  S = \{x \in \mathcal{X} | \|x- x_0\|_C \leq r\}
+              \end{equation*}
+              with $r$ the radius of $\mathcal{B}(x_0, r)$.
+    \end{enumerate}
+
+    Note that
+    \begin{itemize}
+        \item $\delta$ is a positive constant to be chosen.
+        \item we restrict $\delta \leq t_1-t_0$, i.e.\ $[t_0, t_0+\delta]\subset [t_0, t_1]$.
+        \item $\|x\|$ is a norm on, $\mathcal{B}$ is a ball in $\mathbb{R}^n$.
+        \item $\|x\|_C$ is a norm on, $S$ a ball in $\mathcal{X}$.
+    \end{itemize}
+
+    \newpar{}
+    \ptitle{Showing that $P$ Maps $S$ Into $S$}
+
+    Our definition of $P$ implies $P:\mathcal{X}\rightarrow \mathcal{X}$. Now show $S \rightarrow S$, i.e.\ show that (staying in the $S$ ball)
+    \noindent\begin{equation*}
+        \left\|Px-x_0\right\|_C=\max_{ t{\in}[t_0,t_0{+}\delta]}\left\|\left(Px\right)\left(t\right)-x_0\right\|\leq r
+    \end{equation*}
+    We use the properties
+    \begin{itemize}
+        \item Lipschitz
+        \item $h=\max_{t\in[t_0,t_1]}\|f(t,x_0)\|$ (as $f$ is piecewise cont)
+        \item $\|x\left(t\right)-x_0\|\leq r,\forall t\in[t_0,t_0+\delta], \quad \forall x \in S$
+    \end{itemize}
+    We can now show
+    \noindent\begin{align*}
+        \left\|(Px)(t)-x_0\right\| & = \left\|\int_{t_0}^t f(s,x(s))ds\right\|                                                    \\
+                                   & = \left\|\int_{t_0}^t\left[f(s,x(s))-f(s,x_0)+f(s,x_0)\right]ds\right\|                      \\
+                                   & \leq                        \int_{t_0}^t\left[L\left\|x\left(s\right)-x_0\right\|+h\right]ds \\
+                                   & \leq                        \int_{t_0}^t\left(Lr+h\right)ds                                  \\
+                                   & \leq\begin{pmatrix}
+                                             t-t_0
+                                         \end{pmatrix}(Lr+h)                                                                      \\
+                                   & \leq\quad\delta\left(Lr+h\right)
+    \end{align*}
+    Hence, choosing $\delta \leq r / (Lr + h)$ ensures that $P$ maps $S$ into $S$.
+
+    \newpar{}
+    \ptitle{Contraction Mapping}
+
+    For $x, y \in S$ we must show
+    \noindent\begin{equation*}
+        \| (Px)(t)- (Py)(t) \|\leq \rho \| x-y\|_C, \; \rho < 1
+    \end{equation*}
+    We use the same properties as before and get:
+    \noindent\begin{align*}
+        \| (Px)(t)- (Py)(t) \| & = \left\|\int_{t_0}^t\left[f(s,x(s))-f(s,y(s))\right]ds\right\| \\
+                               & \vdots                                                          \\
+                               & \leq \int_{t_0}^t L\left\|x-y\right\|_C ds                      \\
+                               & = (t-t_0) L \|x-y\|_C                                           \\
+                               & \leq \delta L \|x-y\|_C
+    \end{align*}
+    Thus,
+    \noindent\begin{equation*}
+        \|Px- Py\|_C \leq L\delta \|x- y\|_C \leq \rho \|x- y\|_C,
+    \end{equation*}
+    for $\delta < \rho/L$ with $\rho < 1$. Choosing $\delta \leq \rho/L$ ensures that $P$ is a contraction mapping over $S$.
+
+    \newpar{}
+    \ptitle{Conclusion on $S$}
+
+    By the contraction mapping theorem, if $\delta$ satisfies:
+    \noindent\begin{equation*}
+        \delta \leq \min \left\{ t_1 - t_0, \frac{r}{Lr + h}, \frac{\rho}{L} \right\}, \quad \text{for } \rho < 1,
+    \end{equation*}
+    then the integral equation has a unique solution in $S$.
+
+    \newpar{}
+    \ptitle{Conclusion on $\mathcal{X}$}
+
+    The aforementioned holds for functions in the ball $\mathcal{B}(x_0, r)$.
+
+    Note that since $x(t_0) = x_0$ is inside the ball $B(x_0, r)$, any continuous solution $x(t)$ must lie inside $B(x0, r)$ for some interval of time. If we choose this time small enough, we know that any solution in $X$ lies in $S$.
+
+    Explicitly: let $t_0 +\mu$ be the first time $x(t)$ intersects the boundary of $\mathcal{B}$ before leaving the ball. We know that (using previous properties),
+    \noindent\begin{equation*}
+        \left\|x\left(t\right)-x_0\right\| \leq\quad\int_{t_0}^t\left(Lr+h\right)ds
+    \end{equation*}
+    This can be evaluated for $t=t_0 + \mu$ yielding
+    \noindent\begin{equation*}
+        r=\left\|x\left(t_0+\mu\right)-x_0\right\|\leq\left(Lr+h\right)\mu
+    \end{equation*}
+    Therefore we know that we need at least $\mu\geq\frac{r}{Lr+h}$ units of time to leave $\mathcal{B}$ but from before we know that we choose $\delta$ even smaller than the RHS.
+
+    Hence, any solution in $X$ lies in $S$, ensuring uniqueness in $X$ as well
+\end{examplesection}
+
+
+\subsubsection{Properties}
+\begin{enumerate}
+    \item The Lipschitz condition is stronger than continuity.
+    \item Some continuous functions are not Lipschitz, e.g.,
+          \noindent\begin{equation*}
+              f (x) = x^{1/3}
+          \end{equation*}
+          which can be solved by separation of variables.
+    \item The norm for Lipschitz continuity is not relevant.
+    \item Locally bounded $\frac{\partial f}{\partial x}$ implies local Lipschitz continuity. Hence, check the \textbf{Jacobian} over the domain of interest first for a sufficient condition.
+    \item A function can be Lipschitz but not differentiable, e.g., $f (x) = [x^2, - \text{sat}(x_1 + x_2)]$.
+    \item Lipschitz is only a \textbf{sufficient} condition! % TODO: Right?
+\end{enumerate}
+
+\subsubsection{Global Existence and Uniqueness}
+
+Let $f (t, x)$ be piecewise continuous in $t$ over $[t_0, t_1]$ and \textit{globally} Lipschitz in $x$. Then the equation:
+\noindent\begin{equation*}
+    \dot{x} = f (t, x), \quad x (t_0) = x_0
+\end{equation*}
+has a unique solution over $[t_0, t_1]$.
+
+\subsubsection{Temporally Unbounded Existence}
+
+Let $f(t, x)$ be piecewise continuous in $t$ and locally Lipschitz
+in $x$ for $x \in D$. Let $w$ be a compact subset of $D$. Then if
+\noindent\begin{equation*}
+    x(t) = (Px)(t) \in w, \forall t > t_0
+\end{equation*}
+i.e., $w$ is invariant, then the solution $x(t)$ exists $\forall t > t_0$.
+
+Note that the solution exists only in $w$ for all time, not in the entire domain.
+
+\subsection{Continuity and Differentiability}
+
+The solution of $\dot{x} = f(t, x)$ should continuously depend on $t_0$, $x_0$, $f(x,t)$.
+
+\newpar{}
+\ptitle{Dependence on Initial Time}
+
+Follows directly from
+\noindent\begin{equation*}
+    x\left(t\right)=x_0+\int_{t_0}^t f\left(s,x\left(s\right)\right)ds
+\end{equation*}
+
+\newpar{}
+\ptitle{Dependence on Parameters}
+
+Let $f (t, x, \lambda)$ be continuous in $(t, x, \lambda)$ and locally Lipschitz in $x$ (uniformly in $t$ and $\lambda$) on $[t_0, t_1] \times D \times \{\|\lambda - \lambda_0\| \leq c\}$, where $D \subset \mathbb{R}^n$ is an open connected set.
+
+Let $y (t, \lambda_0)$ be a solution of
+\noindent\begin{equation*}
+    \dot{x} = f (t, x, \lambda_0) \text{ with } y (t_0, \lambda_0) = y_0 \in D.
+\end{equation*}
+
+Suppose $y (t, \lambda_0)$ is defined and belongs to $D$ for all $t \in [t_0, t_1]$. Then, given $\epsilon > 0$, there exists $\delta > 0$ such that if
+
+\noindent\begin{equation*}
+    \|z_0 - y_0\| < \delta, \quad \|\lambda - \lambda_0\| < \delta,
+\end{equation*}
+then there is a unique solution $z (t, \lambda)$ of $\dot{x} = f (t, x, \lambda)$ defined on $[t_0, t_1]$, with $z (t_0, \lambda) = z_0$, and satisfying
+
+\noindent\begin{equation*}
+    \|z (t, \lambda) - y (t, \lambda_0)\| < \epsilon, \quad \forall t \in [t_0, t_1].
+\end{equation*}
+
+
+\begin{examplesection}[Proof]
+
+    By continuity of $y (t, \lambda_0)$ in $t$ and the compactness of $[t_0, t_1]$, we know that $y (t, \lambda_0)$ is bounded on $[t_0, t_1]$.
+
+    \newpar{}
+    \ptitle{Deviation From Nominal Solution}
+
+    Define a tube $U$ around the solution $y(t, \lambda_0)$ by
+    \noindent\begin{equation*}
+        U=\{(t,x)\in[t_0,t_1]\times\mathbb{R}^n|\left\|x-y\left(t,\lambda_0\right)\right\|\leq\varepsilon\}
+    \end{equation*}
+    We can estimate
+        {\small
+            \noindent\begin{equation*}
+                \left\|y\left(t\right)-z\left(t\right)\right\|\leq\left\|y_0-z_0\right\|\exp\left[L\left(t-t_0\right)\right]+\frac{\mu}{L}\left\{\exp\left[L\left(t-t_0\right)-1\right]\right\}
+            \end{equation*}
+        }
+    where $L$ is the Lipschitz constant and $\mu$ is a constant related to the size of the perturbation of the parameters.
+\end{examplesection}
+
+
+\subsection{Differentiability and Sensitivity Equations}
+
+Defining
+\noindent\begin{equation*}
+    S(t) = {\left[\frac{\partial x}{\partial \lambda}\right]}_{\lambda = \lambda_0}
+\end{equation*}
+(sensitivity wrt.\ change in parameters), we can write the \textbf{sensitivity equation}:
+\noindent\begin{equation*}
+    \dot{S} (t) = A (t, \lambda_0) S (t) + B (t, \lambda_0), \quad S (t_0) = 0,
+\end{equation*}
+where
+\noindent\begin{align*}
+    A\left(t,\lambda\right) & = \frac{\partial f}{\partial x}\left(t,x\left(t,\lambda\right),\lambda\right)      \\
+    B\left(t,\lambda\right) & = \frac{\partial f}{\partial\lambda}\left(t,x\left(t,\lambda\right),\lambda\right)
 \end{align*}
-\begin{align*}
-    \boxed{\Dot{S}(t) = A(t,\lambda_0)S(t) + B(t,\lambda_0)}
-\end{align*}
-Sensitivity function is calculated using the function $\Dot{x} = f(x)$
+are continuous functions. Hence, the continuous differentiability of $f$ with respect to $x$ and $\lambda$ implies that $x(t, \lambda)$ is differentiable with respect to $\lambda$ near $\lambda_0$.
+
+The solution $S(t)$ tells us at which points in time $x(t,\lambda)$ will be how sensitive to change in parameters.
+
+\newpar{}
+\ptitle{Approximation of Trajectory Solution}
+
+In a neighborhood of $\lambda_0$ we can approximate the nominal solution $x(t, \lambda_0)$ as
+\noindent\begin{equation*}
+    x\left(t,\lambda\right)\approx x\left(t,\lambda_0\right)+S\left(t\right)\left(\lambda-\lambda_0\right)
+\end{equation*}
 
