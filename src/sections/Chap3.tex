@@ -1,0 +1,304 @@
+\section{Lyapunov Stability Theory}
+In this section we consider
+\begin{itemize}
+    \item autonomous systems of the form $\dot{x} = f(x)$
+    \item $f:\mathcal{D}\subseteq \mathbb{R}^n\to \mathbb{R}^n$ is locally Lipschitz
+    \item $f$ has an equilibrium point $\bar{x}\in \mathcal{D}$
+\end{itemize}
+
+\newpar{}
+\ptitle{Change of Coordinates}
+
+In order to have zero as the origin we can use
+\begin{align*}
+    \xi       & = x-\bar{x}                                \\
+    \dot{\xi} & = f(x) = f(\xi + \bar{x})\triangleq g(\xi)
+\end{align*}
+and study the stability of $g(\xi)$ wrt.\ the origin $\xi=0$.
+
+\newpar{}
+\ptitle{Definitions of Stability}
+
+The equilibrium $x=0$ of $\dot{x}=f(x)$ is
+\begin{enumerate}
+    \item \textbf{stable} if for each $\epsilon > 0$ there exists a $\delta > 0$ such that
+          \begin{equation*}
+              \|x(t_0)\| < \delta \Rightarrow \|x(t)\| < \epsilon , \quad \forall t > t_0
+          \end{equation*}
+    \item \textbf{unstable} if it is not stable.
+    \item \textbf{asymptotically stable} if it is stable and in addition $\delta$ can be chosen such that
+          \begin{equation*}
+              \|x(t_0)\| < \delta \Rightarrow \lim_{t \to \infty}\|x(t)\| = 0.
+          \end{equation*}
+\end{enumerate}
+The following sections provide conditions under which these types of stability are (not) given.
+
+
+\subsection{Stability of Autonomous Systems}
+\subsubsection{Lyapunov's Direct Method}
+
+\newpar{}
+\ptitle{Lyapunov Function}
+
+Let $V: \mathcal{D} \subset \mathbb{R}^n \to \mathbb{R}$ be a continuously differentiable function. Along trajectories, we have
+\begin{align*}
+    \dot{V} (x) & =\sum_{i=1}^n\frac{\partial V}{\partial x_i}\frac{d}{dt}x_i                                                   \\
+                & =\begin{bmatrix}
+                       \frac{\partial V}{\partial x_1} & \frac{\partial V}{\partial x_2} & \cdots & \frac{\partial V}{\partial x_n}
+                   \end{bmatrix}\dot{x} \\
+                & = \frac{\partial V}{\partial x} f(x)
+\end{align*}
+
+\paragraph{Direct Method}
+
+\newpar{}
+\ptitle{Stability}
+
+Let the origin $x = 0 \in \mathcal{D} \subset \mathbb{R}^n$ be an equilibrium point for $\dot{x} = f (x)$. Let $V : \mathcal{D} \to \mathbb{R}$ be a continuously differentiable function such that:
+\begin{equation*}
+    V (0) = 0 \text{ and } V (x) > 0, \quad \forall x \in \mathcal{D} \setminus \{0\},
+\end{equation*}
+\begin{equation*}
+    \dot{V} (x) \leq 0, \quad \forall x \in \mathcal{D}.
+\end{equation*}
+Then, $x = 0$ is stable.
+
+\newpar{}
+\ptitle{Asymptotic Stability}
+
+Moreover, if:
+\begin{equation*}
+    \dot{V} (x) < 0, \quad \forall x \in \mathcal{D} \setminus \{0\},
+\end{equation*}
+then $x = 0$ is asymptotically stable.
+
+Note that in the asymptotically stable case,
+\begin{itemize}
+    \item $\dot{V} = 0 \iff x=0$
+    \item we need $\dot{V}(0)=0$ as $V(0)=0$ (and stay $0$)
+\end{itemize}
+
+\newpar{}
+\ptitle{Global Asymptotic Stability}
+
+Let $x = 0$ be an equilibrium point of the system $\dot{x} = f(x)$. Let $V: \mathbb{R}^n \to \mathbb{R}$ be a continuously differentiable function such that:
+\begin{gather*}
+    V (0) = 0 \text{ and } V (x) > 0, \quad \forall x \neq 0,\\
+    \|x\| \to \infty \Rightarrow V (x) \to \infty,\\
+    \dot{V} (x) < 0, \quad \forall x \neq 0.
+\end{gather*}
+Then the origin is \textbf{globally} asymptotically stable.
+
+If the function $V$ satisfies the condition:
+\begin{equation*}
+    \|x\| \to \infty \Rightarrow V (x) \to \infty,
+\end{equation*}
+then it is said to be \textbf{radially unbounded}.
+
+\newpar{}
+\ptitle{Definiteness}
+
+\begin{itemize}
+    \item If $V (x) > 0, \forall x \in \mathcal{D}\setminus \{0\}$, then $V$ is called locally positive definite.
+    \item If $V (x) \geq 0, \forall x \in \mathcal{D}\setminus \{0\}$, then $V$ is locally positive semi-definite.
+\end{itemize}
+
+If the \textbf{stability} conditions are met, then $V$ is called a Lyapunov function for $\dot{x} = f (x)$.
+
+
+\subsection{The Invariance Principle}
+\subsubsection{Invariant and Positively Invariant Domains}
+A domain $\mathcal{D} \subseteq \mathbb{R}^n$ is called \textbf{invariant} for $\dot{x} = f(x)$ if:
+\noindent\begin{equation*}
+    \forall x (t_0) \in \mathcal{D} \Rightarrow x (t) \in \mathcal{D}, \quad \forall t \in \mathbb{R}.
+\end{equation*}
+That is, if a solution belongs to $\mathcal{D}$ at some time instant, then it belongs to $\mathcal{D}$ for all future and past time.
+
+A domain $\mathcal{D} \subseteq \mathbb{R}^n$ is called \textbf{positively invariant} for the system $\dot{x} = f(x)$ if:
+\noindent\begin{equation*}
+    \forall x (t_0) \in \mathcal{D} \Rightarrow x (t) \in \mathcal{D}, \quad \forall t \geq t_0.
+\end{equation*}
+
+Note that invariance is defined wrt.\ a trajectory and \textbf{not} wrt.\ e.g.\ a Lyapunov function candidate.
+
+\subsubsection{LaSalle's Invariance Principle}
+Let
+\begin{itemize}
+    \item $\Omega \subset \mathcal{D}$ be a compact set that is positively invariant with respect to $\dot{x} = f(x)$.
+    \item $V: \mathcal{D} \to \mathbb{R}$ be a continuously differentiable function s.t.:
+          \noindent\begin{equation*}
+              \dot{V} (x) \leq 0, \quad \forall x \in \Omega.
+          \end{equation*}
+    \item $E$ be the set of all points in $\Omega$ where $\dot{V} (x) = 0$.
+    \item $M$ be the largest invariant set in $E$.
+\end{itemize}
+
+Then every solution starting in $\Omega$ approaches $M$ as $t \to \infty$.
+
+\newpar{}
+\ptitle{Remark}
+
+The theorem can also be used to find limit cycles.
+
+\paragraph{Corollary: Asymptotic Stability of Origin}
+Let
+\begin{itemize}
+    \item $x = 0 \in \mathcal{D}$ be an equilibrium point of the system $\dot{x} = f(x)$.
+    \item $V: \mathcal{D} \to \mathbb{R}$ be a continuously differentiable positive definite function on the domain $\mathcal{D}$, s.t.:
+          \noindent\begin{equation*}
+              \dot{V} (x) \leq 0, \quad \forall x \in \mathcal{D}.
+          \end{equation*}
+    \item $S \triangleq \{x \in \mathcal{D} \mid \dot{V} (x) = 0\}$ and suppose that no solution can stay identically in $S$, other than $x(t) \equiv 0$.
+\end{itemize}
+
+Then, the origin is asymptotically stable.
+
+\subsection{Instability Theorem}
+\ptitle{Instability Criterion}
+
+Let
+\begin{itemize}
+    \item $x = 0$ be an equilibrium point of the system $\dot{x} = f(x)$.
+    \item $V: D \to \mathbb{R}$ be a continuously differentiable function s.t.:
+          \noindent\begin{equation*}
+              V (0) = 0, \quad \text{and} \quad V (x_0) > 0
+          \end{equation*}
+          for some $x_0$ with arbitrarily small $\|x_0\|$.
+\end{itemize}
+
+Define the set:
+\noindent\begin{equation*}
+    U = \{x \in \mathcal{B}_r \mid V (x) > 0\}.
+\end{equation*}
+Suppose that:
+\noindent\begin{equation*}
+    \dot{V} (x) > 0, \quad \forall x \in U.
+\end{equation*}
+Then $x = 0$ is \textbf{unstable}.
+
+\newpar{}
+\ptitle{Remark}
+
+The requirements on $V (x)$ in the instability criterion are weaker than those for a Lyapunov function that proves stability.
+
+\subsection{Stability of Nonautonomous Systems}
+\subsubsection{Comparison Functions}
+\begin{center}
+    \includegraphics[width = 0.75\linewidth]{K_and_K_inf_functions.png}
+\end{center}
+
+\paragraph{Fundamental Classes of Functions}
+
+\ptitle{Class $\mathcal{K}$ and Class $\mathcal{K}_\infty$ Functions}
+
+A continuous function $\alpha_1 : [0, a) \to [0,\infty)$ belongs to class $\mathcal{K}$ if it is strictly increasing and:
+\noindent\begin{equation*}
+    \alpha_1(0) = 0.
+\end{equation*}
+Moreover, $\alpha_2$ belongs to class $\mathcal{K}_\infty$ if $a = \infty$ and:
+\noindent\begin{equation*}
+    \alpha_2(r) \to \infty \quad \text{as } r \to \infty.
+\end{equation*}
+For example, $\alpha(r) = \tan^{-1}(r)$ belongs to class $\mathcal{K}$ but not to class $\mathcal{K}_\infty$, while the functions $\alpha(r) = r^2$ and $\alpha(r) = \min\{r, r^4\}$ belong to class $\mathcal{K}_\infty$.
+
+\newpar{}
+\ptitle{Class $\mathcal{K}\mathcal{L}$ Functions}
+
+A continuous function $\beta : [0, a) \times [0,\infty) \to [0,\infty)$ belongs to class $\mathcal{K}\mathcal{L}$ if:
+\begin{itemize}
+    \item For each fixed $s$, the mapping $\beta(r, s)$ belongs to class $\mathcal{K}$ with respect to $r$.
+    \item For each fixed $r$, $\beta(r, s)$ is decreasing with respect to $s$ and:
+          \noindent\begin{equation*}
+              \beta(r, s) \to 0 \quad \text{as } s \to \infty.
+          \end{equation*}
+\end{itemize}
+Examples of class $\mathcal{K}\mathcal{L}$ functions include:
+\noindent\begin{equation*}
+    \beta(r, s) = r^2 e^{-s}, \quad \beta(r, s) = \frac{r}{s r + 1}.
+\end{equation*}
+
+\paragraph{Operations on Comparison Functions}
+\ptitle{Basic Operations}
+
+Let $\alpha_1, \alpha_2$ be class $\mathcal{K}$ functions on $[0, a)$, $\alpha_3, \alpha_4$ be class $\mathcal{K}_\infty$ functions, and $\beta$ be a class $\mathcal{K}\mathcal{L}$ function. Then:
+\begin{itemize}
+    \item $\alpha_1^{-1}$ is defined on $[0, \alpha_1(a))$ and belongs to class $\mathcal{K}$.
+    \item $\alpha_3^{-1}$ is defined on $[0, \infty)$ and belongs to class $\mathcal{K}_\infty$.
+    \item $\alpha_1 \circ \alpha_2$ belongs to class $\mathcal{K}$.
+    \item $\alpha_3 \circ \alpha_4$ belongs to class $\mathcal{K}_\infty$.
+    \item $\gamma(r, s) = \alpha_1(\beta(\alpha_2(r), s))$ belongs to class $\mathcal{K}\mathcal{L}$.
+\end{itemize}
+
+Here, $\alpha_i^{-1}$ denotes the inverse of $\alpha_i$ and $\alpha_i \circ \alpha_j = \alpha_i(\alpha_j(r))$.
+
+\newpar{}
+\ptitle{Comparison Functions and Lyapunov Function Candidates}
+
+Let $V : D \to \mathbb{R}$ be a continuous positive definite function defined on the domain $D \subset \mathbb{R}^n$ that contains the origin. Let $B_r \subset D$ be a ball of radius $r > 0$. Then, there exist class $\mathcal{K}$ functions $\alpha_1$ and $\alpha_2$ defined on $[0, r)$ such that:
+\noindent\begin{equation*}
+    \alpha_1(\|x\|) \leq V(x) \leq \alpha_2(\|x\|).
+\end{equation*}
+Moreover, if $D = \mathbb{R}^n$ and $V(x)$ is radially unbounded, then this inequality holds for $\alpha_1$ and $\alpha_2$ in class $\mathcal{K}_\infty$.
+For example, if $V(x) = x^T P x$ with $P$ being symmetric positive definite, then:
+\noindent\begin{equation*}
+    \alpha_1(\|x\|) \equiv \lambda_{\min}(P) \|x\|^2 \leq V(x) \leq \lambda_{\max}(P) \|x\|^2 \equiv \alpha_2(\|x\|).
+\end{equation*}
+
+\subsubsection{Stability of Nonautonomous Systems}
+Consider the system:
+\noindent\begin{equation*}
+    \dot{x} = f(t, x)
+\end{equation*}
+where $f : [0, \infty) \times \mathcal{D} \to \mathbb{R}^n$ is  % ChkTex 9
+\begin{itemize}
+    \item piecewise continuous in $t$
+    \item locally Lipschitz in $x$ on the domain $[0, \infty) \times \mathcal{D}$  % ChkTex 9
+    \item $\mathcal{D}\subset \mathbb{R}^n$ contains the origin.
+\end{itemize}
+The origin is an \textbf{equilibrium point} if $f(t, 0) = 0$ for all $t \geq 0$.
+
+\paragraph{Stability Criteria}
+The equilibrium point $x=0$ is
+\begin{enumerate}
+    \item \textbf{Stable}: For each $\epsilon > 0$, there exists $\delta = \delta(\epsilon, t_0) > 0$ such that:
+          \noindent\begin{equation*}
+              \|x(t_0)\| < \delta \Rightarrow \|x(t)\| < \epsilon, \quad \forall t \geq t_0.
+          \end{equation*}
+    \item \textbf{Uniformly Stable}: If $\delta$ can be chosen independent of $t_0$.
+    \item \textbf{Unstable}: If the equilibrium is not stable.
+    \item \textbf{Asymptotically Stable}: If it is stable and there exists a constant $c = c(t_0)$ such that $x(t) \to 0$ as $t \to \infty$ for all $\|x(t_0)\| < c$.
+    \item \textbf{Uniformly Asymptotically Stable}: If it is uniformly stable and $c$ is independent of $t_0$, i.e., for each $\eta > 0$, there exists $T = T(\eta) > 0$ such that:
+          \noindent\begin{equation*}
+              \|x(t)\| < \eta, \quad \forall t \geq t_0 + T(\eta), \forall \|x(t_0)\| < c.
+          \end{equation*}
+    \item \textbf{Globally Uniformly Asymptotically Stable (GUAS)}: If it is uniformly asymptotically stable and:
+          \noindent\begin{equation*}
+              \lim_{\epsilon \to \infty} \delta(\epsilon) = \infty.
+          \end{equation*}
+    \item \textbf{Exponentially Stable}: If there exist constants $c, k, \lambda > 0$ such that:
+          \noindent\begin{equation*}
+              \|x(t)\| \leq k \|x(t_0)\| e^{-\lambda (t - t_0)}, \quad \forall t \geq t_0 \geq 0, \forall \|x(t_0)\| < c.
+          \end{equation*}
+    \item \textbf{Globally Exponentially Stable}: If the condition above holds for any initial state $x(t_0)$.
+\end{enumerate}
+
+\newpar{}
+\ptitle{Theorem 3.23: Lyapunov Stability for Nonautonomous Systems}
+
+Consider the system $\dot{x} = f(t, x)$ and let $x = 0 \in D \subset \mathbb{R}^n$ be an equilibrium point. Let $V : [0, \infty) \times D \to \mathbb{R}$ be a continuously differentiable function such that:
+\noindent\begin{equation*}
+    W_1(x) \leq V(t, x) \leq W_2(x),
+\end{equation*}
+\noindent\begin{equation*}
+    \dot{V}(t, x) = \frac{\partial V}{\partial t} + \frac{\partial V}{\partial x} f(t, x) \leq 0,
+\end{equation*}
+where $W_1$ and $W_2$ are continuous positive definite functions on $D$. Then, the origin is uniformly stable. If instead:
+\noindent\begin{equation*}
+    \dot{V}(t, x) \leq -W_3(x),
+\end{equation*}
+where $W_3$ is continuous positive definite on $D$, then the origin is UAS. Furthermore, if $D = \mathbb{R}^n$ and $W_1(x)$ is radially unbounded, then the origin is GUAS.
+
+\subsection{Input-to-State Stability}
+
+% TODO
+
