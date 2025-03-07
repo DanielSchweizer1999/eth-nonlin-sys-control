@@ -105,6 +105,8 @@ then it is said to be \textbf{radially unbounded}.
 
 If the \textbf{stability} conditions are met, then $V$ is called a Lyapunov function for $\dot{x} = f (x)$.
 
+\subsubsection{Lyapunov's Indirect Method}
+Linearize the system around an equilibrium point $\bar{x}$ with $f(\bar{x})=0$ and conduct linear stability analysis for the neighborhood of $\bar{x}$, given that $\bar{x}$ is a hyperbolic fixed point.
 
 \subsection{The Invariance Principle}
 \subsubsection{Invariant and Positively Invariant Domains}
@@ -112,7 +114,7 @@ A domain $\mathcal{D} \subseteq \mathbb{R}^n$ is called \textbf{invariant} for $
 \noindent\begin{equation*}
     \forall x (t_0) \in \mathcal{D} \Rightarrow x (t) \in \mathcal{D}, \quad \forall t \in \mathbb{R}.
 \end{equation*}
-That is, if a solution belongs to $\mathcal{D}$ at some time instant, then it belongs to $\mathcal{D}$ for all future and past time.
+That is, if a solution belongs to $\mathcal{D}$ at some time instant, then it belongs to $\mathcal{D}$ for all future \textit{and past time}.
 
 A domain $\mathcal{D} \subseteq \mathbb{R}^n$ is called \textbf{positively invariant} for the system $\dot{x} = f(x)$ if:
 \noindent\begin{equation*}
@@ -191,7 +193,7 @@ The requirements on $V (x)$ in the instability criterion are weaker than those f
 
 \ptitle{Class $\mathcal{K}$ and Class $\mathcal{K}_\infty$ Functions}
 
-A continuous function $\alpha_1 : [0, a) \to [0,\infty)$ belongs to class $\mathcal{K}$ if it is strictly increasing and:
+A continuous function $\alpha_1 : [0, a) \to [0,\infty)$ belongs to class $\mathcal{K}$ if it is strictly increasing and: % ChkTex9
 \noindent\begin{equation*}
     \alpha_1(0) = 0.
 \end{equation*}
@@ -204,7 +206,7 @@ For example, $\alpha(r) = \tan^{-1}(r)$ belongs to class $\mathcal{K}$ but not t
 \newpar{}
 \ptitle{Class $\mathcal{K}\mathcal{L}$ Functions}
 
-A continuous function $\beta : [0, a) \times [0,\infty) \to [0,\infty)$ belongs to class $\mathcal{K}\mathcal{L}$ if:
+A continuous function $\beta : [0, a) \times [0,\infty) \to [0,\infty)$ belongs to class $\mathcal{K}\mathcal{L}$ if: % ChkTex9
 \begin{itemize}
     \item For each fixed $s$, the mapping $\beta(r, s)$ belongs to class $\mathcal{K}$ with respect to $r$.
     \item For each fixed $r$, $\beta(r, s)$ is decreasing with respect to $s$ and:
@@ -220,10 +222,17 @@ Examples of class $\mathcal{K}\mathcal{L}$ functions include:
 \paragraph{Operations on Comparison Functions}
 \ptitle{Basic Operations}
 
-Let $\alpha_1, \alpha_2$ be class $\mathcal{K}$ functions on $[0, a)$, $\alpha_3, \alpha_4$ be class $\mathcal{K}_\infty$ functions, and $\beta$ be a class $\mathcal{K}\mathcal{L}$ function. Then:
+Let
 \begin{itemize}
-    \item $\alpha_1^{-1}$ is defined on $[0, \alpha_1(a))$ and belongs to class $\mathcal{K}$.
-    \item $\alpha_3^{-1}$ is defined on $[0, \infty)$ and belongs to class $\mathcal{K}_\infty$.
+    \item $\alpha_1, \alpha_2$ be class $\mathcal{K}$ functions on $[0, a)$  % ChkTex9
+    \item $\alpha_3, \alpha_4$ be class $\mathcal{K}_\infty$ functions
+    \item and $\beta$ be a class $\mathcal{K}\mathcal{L}$ function.
+\end{itemize}
+
+Then:
+\begin{itemize}
+    \item $\alpha_1^{-1}$ is defined on $[0, \alpha_1(a))$ and belongs to class $\mathcal{K}$.  % ChkTex9
+    \item $\alpha_3^{-1}$ is defined on $[0, \infty)$ and belongs to class $\mathcal{K}_\infty$.  % ChkTex9
     \item $\alpha_1 \circ \alpha_2$ belongs to class $\mathcal{K}$.
     \item $\alpha_3 \circ \alpha_4$ belongs to class $\mathcal{K}_\infty$.
     \item $\gamma(r, s) = \alpha_1(\beta(\alpha_2(r), s))$ belongs to class $\mathcal{K}\mathcal{L}$.
@@ -234,11 +243,19 @@ Here, $\alpha_i^{-1}$ denotes the inverse of $\alpha_i$ and $\alpha_i \circ \alp
 \newpar{}
 \ptitle{Comparison Functions and Lyapunov Function Candidates}
 
-Let $V : D \to \mathbb{R}$ be a continuous positive definite function defined on the domain $D \subset \mathbb{R}^n$ that contains the origin. Let $B_r \subset D$ be a ball of radius $r > 0$. Then, there exist class $\mathcal{K}$ functions $\alpha_1$ and $\alpha_2$ defined on $[0, r)$ such that:
+Let
+\begin{itemize}
+    \item $V : D \to \mathbb{R}$ be a continuous positive definite function defined on the domain $D \subset \mathbb{R}^n$ that contains the origin.
+    \item $B_r \subset D$ be a ball of radius $r > 0$.
+\end{itemize}
+
+Then, there exist class $\mathcal{K}$ functions $\alpha_1$ and $\alpha_2$ defined on $[0, r)$ such that:  % ChkTex 9
+
 \noindent\begin{equation*}
     \alpha_1(\|x\|) \leq V(x) \leq \alpha_2(\|x\|).
 \end{equation*}
 Moreover, if $D = \mathbb{R}^n$ and $V(x)$ is radially unbounded, then this inequality holds for $\alpha_1$ and $\alpha_2$ in class $\mathcal{K}_\infty$.
+
 For example, if $V(x) = x^T P x$ with $P$ being symmetric positive definite, then:
 \noindent\begin{equation*}
     \alpha_1(\|x\|) \equiv \lambda_{\min}(P) \|x\|^2 \leq V(x) \leq \lambda_{\max}(P) \|x\|^2 \equiv \alpha_2(\|x\|).
@@ -260,7 +277,7 @@ The origin is an \textbf{equilibrium point} if $f(t, 0) = 0$ for all $t \geq 0$.
 \paragraph{Stability Criteria}
 The equilibrium point $x=0$ is
 \begin{enumerate}
-    \item \textbf{Stable}: For each $\epsilon > 0$, there exists $\delta = \delta(\epsilon, t_0) > 0$ such that:
+    \item \textbf{Stable}: For each $\epsilon > 0$, there exists $\delta = \delta(\epsilon, t_0) > 0$ s.t.:
           \noindent\begin{equation*}
               \|x(t_0)\| < \delta \Rightarrow \|x(t)\| < \epsilon, \quad \forall t \geq t_0.
           \end{equation*}
@@ -271,32 +288,8 @@ The equilibrium point $x=0$ is
           \noindent\begin{equation*}
               \|x(t)\| < \eta, \quad \forall t \geq t_0 + T(\eta), \forall \|x(t_0)\| < c.
           \end{equation*}
-    \item \textbf{Globally Uniformly Asymptotically Stable (GUAS)}: If it is uniformly asymptotically stable and:
-          \noindent\begin{equation*}
-              \lim_{\epsilon \to \infty} \delta(\epsilon) = \infty.
-          \end{equation*}
-    \item \textbf{Exponentially Stable}: If there exist constants $c, k, \lambda > 0$ such that:
-          \noindent\begin{equation*}
-              \|x(t)\| \leq k \|x(t_0)\| e^{-\lambda (t - t_0)}, \quad \forall t \geq t_0 \geq 0, \forall \|x(t_0)\| < c.
-          \end{equation*}
-    \item \textbf{Globally Exponentially Stable}: If the condition above holds for any initial state $x(t_0)$.
 \end{enumerate}
-
-\newpar{}
-\ptitle{Theorem 3.23: Lyapunov Stability for Nonautonomous Systems}
-
-Consider the system $\dot{x} = f(t, x)$ and let $x = 0 \in D \subset \mathbb{R}^n$ be an equilibrium point. Let $V : [0, \infty) \times D \to \mathbb{R}$ be a continuously differentiable function such that:
-\noindent\begin{equation*}
-    W_1(x) \leq V(t, x) \leq W_2(x),
-\end{equation*}
-\noindent\begin{equation*}
-    \dot{V}(t, x) = \frac{\partial V}{\partial t} + \frac{\partial V}{\partial x} f(t, x) \leq 0,
-\end{equation*}
-where $W_1$ and $W_2$ are continuous positive definite functions on $D$. Then, the origin is uniformly stable. If instead:
-\noindent\begin{equation*}
-    \dot{V}(t, x) \leq -W_3(x),
-\end{equation*}
-where $W_3$ is continuous positive definite on $D$, then the origin is UAS. Furthermore, if $D = \mathbb{R}^n$ and $W_1(x)$ is radially unbounded, then the origin is GUAS.
+% TODO: Rest
 
 \subsection{Input-to-State Stability}
 
