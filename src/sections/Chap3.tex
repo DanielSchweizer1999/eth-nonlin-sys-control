@@ -1,5 +1,6 @@
 \section{Lyapunov Stability Theory}
-In this section we consider
+\subsection{Stability of Autonomous Systems}
+In this subsection we consider
 \begin{itemize}
     \item autonomous systems of the form $\dot{x} = f(x)$
     \item $f:\mathcal{D}\subseteq \mathbb{R}^n\to \mathbb{R}^n$ is locally Lipschitz
@@ -31,10 +32,8 @@ The equilibrium $x=0$ of $\dot{x}=f(x)$ is
               \|x(t_0)\| < \delta \Rightarrow \lim_{t \to \infty}\|x(t)\| = 0.
           \end{equation*}
 \end{enumerate}
-The following sections provide conditions under which these types of stability are (not) given.
+The following subsubsections provide conditions under which these types of stability are (not) given.
 
-
-\subsection{Stability of Autonomous Systems}
 \subsubsection{Lyapunov's Direct Method}
 
 \newpar{}
@@ -84,16 +83,10 @@ Note that in the asymptotically stable case,
 Let $x = 0$ be an equilibrium point of the system $\dot{x} = f(x)$. Let $V: \mathbb{R}^n \to \mathbb{R}$ be a continuously differentiable function such that:
 \begin{gather*}
     V (0) = 0 \text{ and } V (x) > 0, \quad \forall x \neq 0,\\
-    \|x\| \to \infty \Rightarrow V (x) \to \infty,\\
+    \|x\| \to \infty \Rightarrow V (x) \to \infty \text{ (radially unbounded)},\\
     \dot{V} (x) < 0, \quad \forall x \neq 0.
 \end{gather*}
 Then the origin is \textbf{globally} asymptotically stable.
-
-If the function $V$ satisfies the condition:
-\begin{equation*}
-    \|x\| \to \infty \Rightarrow V (x) \to \infty,
-\end{equation*}
-then it is said to be \textbf{radially unbounded}.
 
 \newpar{}
 \ptitle{Definiteness}
@@ -161,7 +154,7 @@ Then, the origin is asymptotically stable.
 Let
 \begin{itemize}
     \item $x = 0$ be an equilibrium point of the system $\dot{x} = f(x)$.
-    \item $V: D \to \mathbb{R}$ be a continuously differentiable function s.t.:
+    \item $V: \mathcal{D} \to \mathbb{R}$ be a continuously differentiable function s.t.:
           \noindent\begin{equation*}
               V (0) = 0, \quad \text{and} \quad V (x_0) > 0
           \end{equation*}
