@@ -182,6 +182,32 @@ The requirements on $V (x)$ in the instability criterion are weaker than those f
     \includegraphics[width = 0.75\linewidth]{K_and_K_inf_functions.png}
 \end{center}
 
+\paragraph{Comparison Lemma for Scalar Systems}
+Consider the scalar system:
+\noindent\begin{equation*}
+    \dot{u} = f(t, u), \quad u(t_0) = u_0,
+\end{equation*}
+where
+\begin{itemize}
+    \item $f(t, u)$ is continuous in $t$, locally Lipschitz in $u,\; \forall t \geq 0$
+    \item and $u \in D \subset \mathbb{R}$.
+\end{itemize}
+Let
+\begin{itemize}
+    \item $[t_0, T)$ be the maximal interval of existence of the sol.\ $u(t)$,
+    \item and suppose that $u(t) \in D$ for all $t \in [t_0, T)$.
+\end{itemize}
+Let $v(t)$ be a continuously differentiable function whose derivative satisfies:
+\noindent\begin{equation*}
+    \dot{v}(t) \leq f(t, v(t)), \quad v(t_0) \leq u_0,
+\end{equation*}
+with $v(t) \in D,\; \forall t \in [t_0, T)$.
+\newpar{}
+Then, the solution $v(t)$ satisfies:
+\noindent\begin{equation*}
+    v(t) \leq u(t), \quad \forall t \in [t_0, T).
+\end{equation*}
+
 \paragraph{Fundamental Classes of Functions}
 
 \ptitle{Class $\mathcal{K}$ and Class $\mathcal{K}_\infty$ Functions}
@@ -383,7 +409,89 @@ The result on exponential stability can be generalized if the bounds on $V(t, x)
 \end{equation*}
 for positive constants $\rho_1$, $\rho_2$, $\rho_3$, and $\alpha$.
 
-\subsection{Input-to-State Stability}
+\subsection{Input-to-State Stability (ISS)}
+In this subsection we consider systems of the form
+\noindent\begin{equation*}
+    \dot{x} = f(t, x, d)
+\end{equation*}
+with
+\begin{itemize}
+    \item the same assumptions on $t,x$ as before (TODO: loc. Lip in x, pw cont in ?)
+    \item $d(t)$ being a piecewise continuous function on $\mathbb{R}^m$ which is \textbf{bounded} $\forall t\geq 0$
+\end{itemize}
+and try to characterize stability in presence of $d(t)$, given that the unforced system satisfies some stability properties.
 
-% TODO
+\subsubsection{Definition: ISS}
+The system $\dot{x} = f(t, x, d)$ is said to be ISS if there exists
+\begin{itemize}
+    \item a class $\mathcal{K}\mathcal{L}$ function $\beta$
+    \item and a class $\mathcal{K}$ function $\gamma$
+\end{itemize}
+such that for
+\begin{itemize}
+    \item any $x(t_0)$
+    \item and any bounded input $d(t)$,
+\end{itemize}
+the solution $x(t)$ exists for all $t \geq t_0$ and:
+\noindent\begin{equation*}
+    \|x(t)\| \leq \beta(\|x(t_0)\|, t - t_0) + \gamma\left(\sup_{\tau \in [t_0, t]} \|d(\tau)\| \right).
+\end{equation*}
+
+\newpar{}
+\ptitle{Initial Condition Response and Forced Response}
+
+Note that
+\begin{itemize}
+    \item The function $\beta$ determines the system's response to the initial condition $x_0$ and its corresponding overshoot.
+    \item The function $\gamma$ characterizes the system's asymptotic behavior concerning a bounded disturbance input $d$.
+\end{itemize}
+
+\paragraph{ISS for Linear Systems}
+This generalizes the behavior of linear systems. For instance, consider the linear system where $A$ is a Hurwitz matrix:
+\noindent\begin{equation*}
+    \dot{x} = A x + B d, \quad x(0) = x_0.
+\end{equation*}
+The solution is given by:
+\noindent\begin{equation*}
+    x(t) = e^{A t} x_0 + \int_0^t e^{A (t - \eta)} B d(\eta) d\eta,
+\end{equation*}
+from which we deduce the following inequality on the state size over time:
+\noindent\begin{gather*}
+    \|x(t)\| \leq \| e^{A t} \| \|x_0\| + \left\| \int_0^t e^{A (t - \eta)} B d\eta \right\| \sup_{\tau \in [0, t]} \|d(\tau)\| \\
+    \equiv \beta(\|x_0\|, t) + \gamma \left( \sup_{\tau \in [0, t]} \|d(\tau)\| \right).
+\end{gather*}
+Since $A$ is Hurwitz, the response due to the initial condition decays asymptotically to zero, and the state converges to a ball proportional to the input $d$.
+
+\subsubsection{Lyapunov Characterization of ISS}
+Let $V : [0, \infty) \times \mathbb{R}^n \to \mathbb{R}$ be a continuously differentiable function such that:
+\noindent\begin{equation*}
+    \alpha_1(\|x\|) \leq V(t, x) \leq \alpha_2(\|x\|),
+\end{equation*}
+\noindent\begin{equation*}
+    \frac{\partial V}{\partial t} + \frac{\partial V}{\partial x} f(t, x, d) \leq -W(x), \quad \forall \|x\| \geq \rho(\|d\|) > 0,
+\end{equation*}
+for all $(t, x, d) \in [0, \infty) \times \mathbb{R}^n \times \mathbb{R}^m$, where
+\begin{itemize}
+    \item $\alpha_1, \alpha_2$ are class $\mathcal{K}_\infty$ functions,
+    \item $\rho$ is a class $\mathcal{K}$ function,
+    \item and $W$ is a continuous positive definite function on $\mathbb{R}^n$.
+\end{itemize}
+Then, the system is ISS with:
+\noindent\begin{equation*}
+    \gamma = \alpha_1^{-1} \circ \alpha_2 \circ \rho.
+\end{equation*}
+If the system is \textbf{autonomous}, these conditions become both necessary and sufficient.
+
+\subsubsection{ISS of Cascade Systems}
+Consider the cascade system:
+\noindent\begin{align*}
+    \dot{x}_1 & = f_1(x_1, x_2), \\
+    \dot{x}_2 & = f_2(x_2, u),
+\end{align*}
+where
+\begin{itemize}
+    \item $\dot{x}_1 = f_1(x_1, x_2)$ is ISS with respect to $x_2$,
+    \item and $\dot{x}_2 = f_2(x_2, u)$ is ISS with respect to $u$.
+\end{itemize}
+Then, the origin of the cascade system is ISS.
 
