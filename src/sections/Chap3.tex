@@ -182,31 +182,63 @@ The requirements on $V (x)$ in the instability criterion are weaker than those f
     \includegraphics[width = 0.75\linewidth]{K_and_K_inf_functions.png}
 \end{center}
 
+\paragraph{Comparison Lemma for Scalar Systems}
+Consider the scalar system:
+\noindent\begin{equation*}
+    \dot{u} = f(t, u), \quad u(t_0) = u_0,
+\end{equation*}
+where
+\begin{itemize}
+    \item $f(t, u)$ is continuous in $t$, locally Lipschitz in $u,\; \forall t \geq 0$
+    \item and $u \in D \subset \mathbb{R}$.
+\end{itemize}
+Let
+\begin{itemize}
+    \item $[t_0, T)$ be the maximal interval of existence of the sol.\ $u(t)$,   % ChkTex 9
+    \item and suppose that $u(t) \in D$ for all $t \in [t_0, T)$.   % ChkTex 9
+\end{itemize}
+Let $v(t)$ be a continuously differentiable function whose derivative satisfies:
+\noindent\begin{equation*}
+    \dot{v}(t) \leq f(t, v(t)), \quad v(t_0) \leq u_0,
+\end{equation*}
+with $v(t) \in D,\; \forall t \in [t_0, T)$.   % ChkTex 9
+\newpar{}
+Then, the solution $v(t)$ satisfies:
+\noindent\begin{equation*}
+    v(t) \leq u(t), \quad \forall t \in [t_0, T).   % ChkTex 9
+\end{equation*}
+
 \paragraph{Fundamental Classes of Functions}
 
 \ptitle{Class $\mathcal{K}$ and Class $\mathcal{K}_\infty$ Functions}
 
-A continuous function $\alpha_1 : [0, a) \to [0,\infty)$ belongs to class $\mathcal{K}$ if it is strictly increasing and: % ChkTex9
-\noindent\begin{equation*}
+A continuous function $\alpha_1 : [0, a) \to [0,\infty)$ belongs to class $\mathcal{K}$ if it is strictly increasing and % ChkTex 9
+\begin{equation*}
     \alpha_1(0) = 0.
 \end{equation*}
+\newpar{}
 Moreover, $\alpha_2$ belongs to class $\mathcal{K}_\infty$ if $a = \infty$ and:
 \noindent\begin{equation*}
     \alpha_2(r) \to \infty \quad \text{as } r \to \infty.
 \end{equation*}
-For example, $\alpha(r) = \tan^{-1}(r)$ belongs to class $\mathcal{K}$ but not to class $\mathcal{K}_\infty$, while the functions $\alpha(r) = r^2$ and $\alpha(r) = \min\{r, r^4\}$ belong to class $\mathcal{K}_\infty$.
+For example,
+\begin{itemize}
+    \item $\alpha(r) = \tan^{-1}(r)$ belongs to class $\mathcal{K}$ but not to class $\mathcal{K}_\infty$
+    \item The functions $\alpha(r) = r^2$ and $\alpha(r) = \min\{r, r^4\}$ belong to class $\mathcal{K}_\infty$.
+\end{itemize}
 
 \newpar{}
 \ptitle{Class $\mathcal{K}\mathcal{L}$ Functions}
 
-A continuous function $\beta : [0, a) \times [0,\infty) \to [0,\infty)$ belongs to class $\mathcal{K}\mathcal{L}$ if: % ChkTex9
+A continuous function $\beta : [0, a) \times [0,\infty) \to [0,\infty)$ belongs to class $\mathcal{K}\mathcal{L}$ if: % ChkTex 9
 \begin{itemize}
-    \item For each fixed $s$, the mapping $\beta(r, s)$ belongs to class $\mathcal{K}$ with respect to $r$.
-    \item For each fixed $r$, $\beta(r, s)$ is decreasing with respect to $s$ and:
+    \item for each fixed $s$, the mapping $\beta(r, s)$ belongs to class $\mathcal{K}$ with respect to $r$.
+    \item for each fixed $r$, $\beta(r, s)$ is decreasing with respect to $s$ and:
           \noindent\begin{equation*}
               \beta(r, s) \to 0 \quad \text{as } s \to \infty.
           \end{equation*}
 \end{itemize}
+The functions $\alpha(r) = r^2$ and $\alpha(r) = \min\{r, r^4\}$ belong to class $\mathcal{K}_\infty$.
 Examples of class $\mathcal{K}\mathcal{L}$ functions include:
 \noindent\begin{equation*}
     \beta(r, s) = r^2 e^{-s}, \quad \beta(r, s) = \frac{r}{s r + 1}.
@@ -217,38 +249,41 @@ Examples of class $\mathcal{K}\mathcal{L}$ functions include:
 
 Let
 \begin{itemize}
-    \item $\alpha_1, \alpha_2$ be class $\mathcal{K}$ functions on $[0, a)$  % ChkTex9
+    \item $\alpha_1, \alpha_2$ be class $\mathcal{K}$ functions on $[0, a)$  % ChkTex 9
     \item $\alpha_3, \alpha_4$ be class $\mathcal{K}_\infty$ functions
     \item and $\beta$ be a class $\mathcal{K}\mathcal{L}$ function.
 \end{itemize}
 
 Then:
 \begin{itemize}
-    \item $\alpha_1^{-1}$ is defined on $[0, \alpha_1(a))$ and belongs to class $\mathcal{K}$.  % ChkTex9
-    \item $\alpha_3^{-1}$ is defined on $[0, \infty)$ and belongs to class $\mathcal{K}_\infty$.  % ChkTex9
+    \item $\alpha_1^{-1}$ is defined on $[0, \alpha_1(a))$ and belongs to class $\mathcal{K}$.  % ChkTex 9
+    \item $\alpha_3^{-1}$ is defined on $[0, \infty)$ and belongs to class $\mathcal{K}_\infty$.  % ChkTex 9
     \item $\alpha_1 \circ \alpha_2$ belongs to class $\mathcal{K}$.
     \item $\alpha_3 \circ \alpha_4$ belongs to class $\mathcal{K}_\infty$.
     \item $\gamma(r, s) = \alpha_1(\beta(\alpha_2(r), s))$ belongs to class $\mathcal{K}\mathcal{L}$.
 \end{itemize}
-
 Here, $\alpha_i^{-1}$ denotes the inverse of $\alpha_i$ and $\alpha_i \circ \alpha_j = \alpha_i(\alpha_j(r))$.
 
-\newpar{}
-\ptitle{Comparison Functions and Lyapunov Function Candidates}
-
-Let
+\paragraph{Comparison Functions and Positive Definite Functions}
+Positive definite functions can be bounded by class $\mathcal{K}$ functions. Mathematically: Let
 \begin{itemize}
     \item $V : D \to \mathbb{R}$ be a continuous positive definite function defined on the domain $D \subset \mathbb{R}^n$ that contains the origin.
     \item $B_r \subset D$ be a ball of radius $r > 0$.
 \end{itemize}
-
 Then, there exist class $\mathcal{K}$ functions $\alpha_1$ and $\alpha_2$ defined on $[0, r)$ such that:  % ChkTex 9
-
 \noindent\begin{equation*}
     \alpha_1(\|x\|) \leq V(x) \leq \alpha_2(\|x\|).
 \end{equation*}
-Moreover, if $D = \mathbb{R}^n$ and $V(x)$ is radially unbounded, then this inequality holds for $\alpha_1$ and $\alpha_2$ in class $\mathcal{K}_\infty$.
+\newpar{}
+\ptitle{Radially Unbounded $V$}
 
+Moreover, if
+\begin{itemize}
+    \item $D = \mathbb{R}^n$
+    \item and $V(x)$ is radially unbounded,
+\end{itemize}
+then this inequality holds for $\alpha_1$ and $\alpha_2$ in class $\mathcal{K}_\infty$.
+\newpar{}
 For example, if $V(x) = x^T P x$ with $P$ being symmetric positive definite, then:
 \noindent\begin{equation*}
     \alpha_1(\|x\|) \equiv \lambda_{\min}(P) \|x\|^2 \leq V(x) \leq \lambda_{\max}(P) \|x\|^2 \equiv \alpha_2(\|x\|).
@@ -261,11 +296,12 @@ Consider the system:
 \end{equation*}
 where $f : [0, \infty) \times \mathcal{D} \to \mathbb{R}^n$ is  % ChkTex 9
 \begin{itemize}
-    \item piecewise continuous in $t$
-    \item locally Lipschitz in $x$ on the domain $[0, \infty) \times \mathcal{D}$  % ChkTex 9
+    \item piecewise continuous in $t$ and locally Lipschitz in $x$ on the domain $[0, \infty) \times \mathcal{D}$  % ChkTex 9
     \item $\mathcal{D}\subset \mathbb{R}^n$ contains the origin.
 \end{itemize}
-The origin is an \textbf{equilibrium point} if $f(t, 0) = 0$ for all $t \geq 0$.
+The origin is an \textbf{equilibrium point} if $f(t, 0) = 0, \; \forall t \geq 0$.
+\newpar{}
+In contrast to autonomous systems, the solution $x$ is now also a function of $t_0$ (not only of $t-t_0$), i.e.\ $x(t,t_0)$.
 
 \paragraph{Stability Criteria}
 The equilibrium point $x=0$ is
@@ -274,17 +310,188 @@ The equilibrium point $x=0$ is
           \noindent\begin{equation*}
               \|x(t_0)\| < \delta \Rightarrow \|x(t)\| < \epsilon, \quad \forall t \geq t_0.
           \end{equation*}
-    \item \textbf{Uniformly Stable}: If $\delta$ can be chosen independent of $t_0$.
+    \item \textbf{Uniformly Stable (US)}: If for each $\epsilon > 0$, there is a $\delta = \delta(\epsilon)>0$ independent of $t_0$, such that stability is given.
     \item \textbf{Unstable}: If the equilibrium is not stable.
-    \item \textbf{Asymptotically Stable}: If it is stable and there exists a constant $c = c(t_0)$ such that $x(t) \to 0$ as $t \to \infty$ for all $\|x(t_0)\| < c$.
-    \item \textbf{Uniformly Asymptotically Stable}: If it is uniformly stable and $c$ is independent of $t_0$, i.e., for each $\eta > 0$, there exists $T = T(\eta) > 0$ such that:
-          \noindent\begin{equation*}
-              \|x(t)\| < \eta, \quad \forall t \geq t_0 + T(\eta), \forall \|x(t_0)\| < c.
+    \item \textbf{Asymptotically Stable}: If it is stable and there exists a positive constant $c = c(t_0)$ such that
+          \begin{equation*}
+              x(t) \to 0 \text{ as } t \to \infty, \quad \forall \|x(t_0)\| < c.
           \end{equation*}
+    \item \textbf{Uniformly Asymptotically Stable (UAS)}: If it is uniformly stable and $c$ is independent of $t_0$, i.e., for each $\eta > 0$, there exists $T = T(\eta) > 0$ such that:
+          \noindent\begin{equation*}
+              \|x(t)\| < \eta, \quad \forall t \geq t_0 + T(\eta), \quad \forall \|x(t_0)\| < c.
+          \end{equation*}
+    \item \textbf{Globally UAS (GUAS)}: If it is uniformly asymptotically stable, and
+          \begin{itemize}
+              \item $\delta(\epsilon)$ can be chosen to satisfy $\lim_{\epsilon \rightarrow \infty}\delta(\epsilon)=\infty$
+              \item for each pair of positive numbers $\eta$ and $c$, there is $T=T(\eta, c)>0$ such that
+                    \noindent\begin{equation*}
+                        \|x(t)\| < \eta, \quad \forall t \geq t_0 + T(\eta, c), \quad \forall \|x(t_0)\| < c.
+                    \end{equation*}
+          \end{itemize}
 \end{enumerate}
-% TODO: Rest
 
-\subsection{Input-to-State Stability}
+\paragraph{Stability Criteria From Comparison Functions}
+In terms of class $\mathcal{K}$, $\mathcal{K}_\infty$, and $\mathcal{K}\mathcal{L}$ definitions above can be characterized as follows: The origin of $\dot{x} = f(t, x)$ is:
 
-% TODO
+\begin{enumerate}
+    \item \textbf{Uniformly Stable} $\Leftrightarrow$ there exist a function $\alpha \in \mathcal{K}$ and a constant $c > 0$ independent of $t_0$ such that:
+          \noindent\begin{equation*}
+              \|x(t)\| \leq \alpha(\|x(t_0)\|), \quad \forall t \geq t_0 \geq 0, \forall \|x(t_0)\| < c.
+          \end{equation*}
+    \item \textbf{Uniformly Asymptotically Stable} $\Leftrightarrow$ there exist a function $\beta \in \mathcal{K}\mathcal{L}$ and a constant $c > 0$ independent of $t_0$ such that:
+          \noindent\begin{equation*}
+              \|x(t)\| \leq \beta(\|x(t_0)\|, t - t_0), \quad \forall t \geq t_0 \geq 0, \forall \|x(t_0)\| < c.
+          \end{equation*}
+    \item \textbf{Globally Uniformly Asymptotically Stable} $\Leftrightarrow$ there exist a function $\beta \in \mathcal{K}\mathcal{L}$ such that:
+          \noindent\begin{equation*}
+              \|x(t)\| \leq \beta(\|x(t_0)\|, t - t_0), \quad \forall t \geq t_0 \geq 0, \forall x(t_0).
+          \end{equation*}
+    \item \textbf{Exponentially Stable} if there exist constants $c, k, \lambda > 0$ such that:
+          \noindent\begin{equation*}
+              \|x(t)\| \leq k \|x(t_0)\| e^{-\lambda (t - t_0)}, \quad \forall t \geq t_0 \geq 0, \forall \|x(t_0)\| < c.
+          \end{equation*}
+    \item \textbf{Globally Exponentially Stable} if the condition for exponential stability holds for any initial state $x(t_0)$.
+\end{enumerate}
+
+\paragraph{Lyapunov Stability for Nonautonomous Systems}
+Consider the system $\dot{x} = f(t, x)$ where $x = 0 \in D \subset \mathbb{R}^n$ is an equilibrium point.
+
+\newpar{}
+\ptitle{Uniform Stability}
+
+Let $V : [0, \infty) \times \mathcal{D} \to \mathbb{R}$ be a continuously differentiable function such that:    % ChkTex 9
+\noindent\begin{gather*}
+    W_1(x) \leq V(t, x) \leq W_2(x),\\
+    \dot{V}(t, x) = \frac{\partial V}{\partial t} + \frac{\partial V}{\partial x} f(t, x) \leq 0, \\
+    \forall t \geq 0, \forall x \in \mathcal{D},
+\end{gather*}
+where $W_1$ and $W_2$ are continuous positive definite functions on $\mathcal{D}$. Then, the origin is uniformly stable.
+\begin{center}
+    \includegraphics[width = \linewidth]{3_nonautonomous_stability.png}
+\end{center}
+
+\newpar{}
+\ptitle{UAS}
+
+If instead we have the stronger conditions:
+\noindent\begin{gather*}
+    W_1(x) \leq V(t, x) \leq W_2(x),\\
+    \dot{V}(t, x) = \frac{\partial V}{\partial t} + \frac{\partial V}{\partial x} f(t, x) \leq -W_3(x),
+\end{gather*}
+where $W_3$ is continuous positive definite on $\mathcal{D}$, then the origin is UAS.\
+
+\newpar{}
+\ptitle{GUAS}
+
+Moreover, if we choose constants $r$ and $c$ such that:
+\noindent\begin{equation*}
+    B_r = \{ \|x\| \leq r \} \subset \mathcal{D}, \quad c < \min_{\|x\| = r} W_1(x),
+\end{equation*}
+then every trajectory starting in:
+\noindent\begin{equation*}
+    \{ x \in B_r \mid W_2(x) \leq c \}
+\end{equation*}
+satisfies the inequality:
+\noindent\begin{equation*}
+    \|x(t)\| \leq \beta(\|x_0\|, t - t_0), \quad \forall t \geq t_0 \geq 0,
+\end{equation*}
+for some $\beta \in \mathcal{K}\mathcal{L}$. Finally, if $\mathcal{D} = \mathbb{R}^n$ and $W_1(x)$ is radially unbounded, the origin is GUAS.\
+
+\newpar{}
+\ptitle{Exponential Stability}
+
+The origin is exponentially stable if the bounds on $V(t, x)$ and $\dot{V}(t, x)$ satisfy the following conditions:
+\noindent\begin{equation*}
+    \rho_1 \|x\|^\alpha \leq V(t, x) \leq \rho_2 \|x\|^\alpha,
+\end{equation*}
+\noindent\begin{equation*}
+    \dot{V}(t, x) \leq -\rho_3 \|x\|^\alpha,
+\end{equation*}
+for positive constants $\rho_1$, $\rho_2$, $\rho_3$, and $\alpha$.
+
+\subsection{Input-to-State Stability (ISS)}
+In this subsection we consider systems of the form
+\noindent\begin{equation*}
+    \dot{x} = f(t, x, d)
+\end{equation*}
+with
+\begin{itemize}
+    \item the same assumptions on $t,x$ as before (TODO: loc. Lip in x, pw cont in ?)
+    \item $d(t)$ being a piecewise continuous function on $\mathbb{R}^m$ which is \textbf{bounded} $\forall t\geq 0$
+\end{itemize}
+and try to characterize stability in presence of $d(t)$, given that the unforced system satisfies some stability properties.
+
+\subsubsection{Definition: ISS}
+The system $\dot{x} = f(t, x, d)$ is said to be ISS if there exists
+\begin{itemize}
+    \item a class $\mathcal{K}\mathcal{L}$ function $\beta$
+    \item and a class $\mathcal{K}$ function $\gamma$
+\end{itemize}
+such that for
+\begin{itemize}
+    \item any $x(t_0)$
+    \item and any bounded input $d(t)$,
+\end{itemize}
+the solution $x(t)$ exists for all $t \geq t_0$ and:
+\noindent\begin{equation*}
+    \|x(t)\| \leq \beta(\|x(t_0)\|, t - t_0) + \gamma\left(\sup_{\tau \in [t_0, t]} \|d(\tau)\| \right).
+\end{equation*}
+
+\newpar{}
+\ptitle{Initial Condition Response and Forced Response}
+
+Note that
+\begin{itemize}
+    \item The function $\beta$ determines the system's response to the initial condition $x_0$ and its corresponding overshoot.
+    \item The function $\gamma$ characterizes the system's asymptotic behavior concerning a bounded disturbance input $d$.
+\end{itemize}
+
+\paragraph{ISS for Linear Systems}
+This generalizes the behavior of linear systems. For instance, consider the linear system where $A$ is a Hurwitz matrix:
+\noindent\begin{equation*}
+    \dot{x} = A x + B d, \quad x(0) = x_0.
+\end{equation*}
+The solution is given by:
+\noindent\begin{equation*}
+    x(t) = e^{A t} x_0 + \int_0^t e^{A (t - \eta)} B d(\eta) d\eta,
+\end{equation*}
+from which we deduce the following inequality on the state size over time:
+\noindent\begin{gather*}
+    \|x(t)\| \leq \| e^{A t} \| \|x_0\| + \left\| \int_0^t e^{A (t - \eta)} B d\eta \right\| \sup_{\tau \in [0, t]} \|d(\tau)\| \\
+    \equiv \beta(\|x_0\|, t) + \gamma \left( \sup_{\tau \in [0, t]} \|d(\tau)\| \right).
+\end{gather*}
+Since $A$ is Hurwitz, the response due to the initial condition decays asymptotically to zero, and the state converges to a ball proportional to the input $d$.
+
+\subsubsection{Lyapunov Characterization of ISS}
+Let $V : [0, \infty) \times \mathbb{R}^n \to \mathbb{R}$ be a continuously differentiable function such that:   % ChkTex 9
+\noindent\begin{equation*}
+    \alpha_1(\|x\|) \leq V(t, x) \leq \alpha_2(\|x\|),
+\end{equation*}
+\noindent\begin{equation*}
+    \frac{\partial V}{\partial t} + \frac{\partial V}{\partial x} f(t, x, d) \leq -W(x), \quad \forall \|x\| \geq \rho(\|d\|) > 0,
+\end{equation*}
+for all $(t, x, d) \in [0, \infty) \times \mathbb{R}^n \times \mathbb{R}^m$, where   % ChkTex 9
+\begin{itemize}
+    \item $\alpha_1, \alpha_2$ are class $\mathcal{K}_\infty$ functions,
+    \item $\rho$ is a class $\mathcal{K}$ function,
+    \item and $W$ is a continuous positive definite function on $\mathbb{R}^n$.
+\end{itemize}
+Then, the system is ISS with:
+\noindent\begin{equation*}
+    \gamma = \alpha_1^{-1} \circ \alpha_2 \circ \rho.
+\end{equation*}
+If the system is \textbf{autonomous}, these conditions become both necessary and sufficient.
+
+\subsubsection{ISS of Cascade Systems}
+Consider the cascade system:
+\noindent\begin{align*}
+    \dot{x}_1 & = f_1(x_1, x_2), \\
+    \dot{x}_2 & = f_2(x_2, u),
+\end{align*}
+where
+\begin{itemize}
+    \item $\dot{x}_1 = f_1(x_1, x_2)$ is ISS with respect to $x_2$,
+    \item and $\dot{x}_2 = f_2(x_2, u)$ is ISS with respect to $u$.
+\end{itemize}
+Then, the origin of the cascade system is ISS.\
 
