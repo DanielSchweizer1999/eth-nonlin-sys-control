@@ -194,25 +194,25 @@ where
 \end{itemize}
 Let
 \begin{itemize}
-    \item $[t_0, T)$ be the maximal interval of existence of the sol.\ $u(t)$,
-    \item and suppose that $u(t) \in D$ for all $t \in [t_0, T)$.
+    \item $[t_0, T)$ be the maximal interval of existence of the sol.\ $u(t)$,   % ChkTex 9
+    \item and suppose that $u(t) \in D$ for all $t \in [t_0, T)$.   % ChkTex 9
 \end{itemize}
 Let $v(t)$ be a continuously differentiable function whose derivative satisfies:
 \noindent\begin{equation*}
     \dot{v}(t) \leq f(t, v(t)), \quad v(t_0) \leq u_0,
 \end{equation*}
-with $v(t) \in D,\; \forall t \in [t_0, T)$.
+with $v(t) \in D,\; \forall t \in [t_0, T)$.   % ChkTex 9
 \newpar{}
 Then, the solution $v(t)$ satisfies:
 \noindent\begin{equation*}
-    v(t) \leq u(t), \quad \forall t \in [t_0, T).
+    v(t) \leq u(t), \quad \forall t \in [t_0, T).   % ChkTex 9
 \end{equation*}
 
 \paragraph{Fundamental Classes of Functions}
 
 \ptitle{Class $\mathcal{K}$ and Class $\mathcal{K}_\infty$ Functions}
 
-A continuous function $\alpha_1 : [0, a) \to [0,\infty)$ belongs to class $\mathcal{K}$ if it is strictly increasing and % ChkTex9
+A continuous function $\alpha_1 : [0, a) \to [0,\infty)$ belongs to class $\mathcal{K}$ if it is strictly increasing and % ChkTex 9
 \begin{equation*}
     \alpha_1(0) = 0.
 \end{equation*}
@@ -230,7 +230,7 @@ For example,
 \newpar{}
 \ptitle{Class $\mathcal{K}\mathcal{L}$ Functions}
 
-A continuous function $\beta : [0, a) \times [0,\infty) \to [0,\infty)$ belongs to class $\mathcal{K}\mathcal{L}$ if: % ChkTex9
+A continuous function $\beta : [0, a) \times [0,\infty) \to [0,\infty)$ belongs to class $\mathcal{K}\mathcal{L}$ if: % ChkTex 9
 \begin{itemize}
     \item for each fixed $s$, the mapping $\beta(r, s)$ belongs to class $\mathcal{K}$ with respect to $r$.
     \item for each fixed $r$, $\beta(r, s)$ is decreasing with respect to $s$ and:
@@ -249,15 +249,15 @@ Examples of class $\mathcal{K}\mathcal{L}$ functions include:
 
 Let
 \begin{itemize}
-    \item $\alpha_1, \alpha_2$ be class $\mathcal{K}$ functions on $[0, a)$  % ChkTex9
+    \item $\alpha_1, \alpha_2$ be class $\mathcal{K}$ functions on $[0, a)$  % ChkTex 9
     \item $\alpha_3, \alpha_4$ be class $\mathcal{K}_\infty$ functions
     \item and $\beta$ be a class $\mathcal{K}\mathcal{L}$ function.
 \end{itemize}
 
 Then:
 \begin{itemize}
-    \item $\alpha_1^{-1}$ is defined on $[0, \alpha_1(a))$ and belongs to class $\mathcal{K}$.  % ChkTex9
-    \item $\alpha_3^{-1}$ is defined on $[0, \infty)$ and belongs to class $\mathcal{K}_\infty$.  % ChkTex9
+    \item $\alpha_1^{-1}$ is defined on $[0, \alpha_1(a))$ and belongs to class $\mathcal{K}$.  % ChkTex 9
+    \item $\alpha_3^{-1}$ is defined on $[0, \infty)$ and belongs to class $\mathcal{K}_\infty$.  % ChkTex 9
     \item $\alpha_1 \circ \alpha_2$ belongs to class $\mathcal{K}$.
     \item $\alpha_3 \circ \alpha_4$ belongs to class $\mathcal{K}_\infty$.
     \item $\gamma(r, s) = \alpha_1(\beta(\alpha_2(r), s))$ belongs to class $\mathcal{K}\mathcal{L}$.
@@ -378,7 +378,7 @@ If instead we have the stronger conditions:
     W_1(x) \leq V(t, x) \leq W_2(x),\\
     \dot{V}(t, x) = \frac{\partial V}{\partial t} + \frac{\partial V}{\partial x} f(t, x) \leq -W_3(x),
 \end{gather*}
-where $W_3$ is continuous positive definite on $\mathcal{D}$, then the origin is UAS.
+where $W_3$ is continuous positive definite on $\mathcal{D}$, then the origin is UAS.\
 
 \newpar{}
 \ptitle{GUAS}
@@ -395,12 +395,12 @@ satisfies the inequality:
 \noindent\begin{equation*}
     \|x(t)\| \leq \beta(\|x_0\|, t - t_0), \quad \forall t \geq t_0 \geq 0,
 \end{equation*}
-for some $\beta \in \mathcal{K}\mathcal{L}$. Finally, if $\mathcal{D} = \mathbb{R}^n$ and $W_1(x)$ is radially unbounded, the origin is GUAS.
+for some $\beta \in \mathcal{K}\mathcal{L}$. Finally, if $\mathcal{D} = \mathbb{R}^n$ and $W_1(x)$ is radially unbounded, the origin is GUAS.\
 
 \newpar{}
-\ptitle{Generalized Exponential Stability Condition}
+\ptitle{Exponential Stability}
 
-The result on exponential stability can be generalized if the bounds on $V(t, x)$ and $\dot{V}(t, x)$ satisfy the following conditions:
+The origin is exponentially stable if the bounds on $V(t, x)$ and $\dot{V}(t, x)$ satisfy the following conditions:
 \noindent\begin{equation*}
     \rho_1 \|x\|^\alpha \leq V(t, x) \leq \rho_2 \|x\|^\alpha,
 \end{equation*}
@@ -463,14 +463,14 @@ from which we deduce the following inequality on the state size over time:
 Since $A$ is Hurwitz, the response due to the initial condition decays asymptotically to zero, and the state converges to a ball proportional to the input $d$.
 
 \subsubsection{Lyapunov Characterization of ISS}
-Let $V : [0, \infty) \times \mathbb{R}^n \to \mathbb{R}$ be a continuously differentiable function such that:
+Let $V : [0, \infty) \times \mathbb{R}^n \to \mathbb{R}$ be a continuously differentiable function such that:   % ChkTex 9
 \noindent\begin{equation*}
     \alpha_1(\|x\|) \leq V(t, x) \leq \alpha_2(\|x\|),
 \end{equation*}
 \noindent\begin{equation*}
     \frac{\partial V}{\partial t} + \frac{\partial V}{\partial x} f(t, x, d) \leq -W(x), \quad \forall \|x\| \geq \rho(\|d\|) > 0,
 \end{equation*}
-for all $(t, x, d) \in [0, \infty) \times \mathbb{R}^n \times \mathbb{R}^m$, where
+for all $(t, x, d) \in [0, \infty) \times \mathbb{R}^n \times \mathbb{R}^m$, where   % ChkTex 9
 \begin{itemize}
     \item $\alpha_1, \alpha_2$ are class $\mathcal{K}_\infty$ functions,
     \item $\rho$ is a class $\mathcal{K}$ function,
@@ -493,5 +493,5 @@ where
     \item $\dot{x}_1 = f_1(x_1, x_2)$ is ISS with respect to $x_2$,
     \item and $\dot{x}_2 = f_2(x_2, u)$ is ISS with respect to $u$.
 \end{itemize}
-Then, the origin of the cascade system is ISS.
+Then, the origin of the cascade system is ISS.\
 
