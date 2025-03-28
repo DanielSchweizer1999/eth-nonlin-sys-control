@@ -1,2 +1,243 @@
 \section{Feedback Control Design}
+\subsection{Lyapunov Indirect Method}
+Linearize the system around an equilibrium point $\bar{x}$ with $f(\bar{x})=0$ and conduct linear stability analysis for the neighborhood of $\bar{x}$, given that $\bar{x}$ is a hyperbolic fixed point.
+\newpar{}
+In the case of non-hyperbolic fixed points (i.e.\ $Re(\lambda_i)=0$) the \textbf{Center Manifold Theorem} can be used for stability assessment.
 
+\subsubsection{Lyapunov Function of Nonlinear System}
+
+The linearized system exhibits a residual wrt.\ the nonlinear one.
+\begin{equation*}
+    \dot{x} = f(x) = Ax + (f(x) - Ax) \triangleq Ax + \underbrace{g(x)}_{\text{residual}}
+\end{equation*}
+Using $V=x^T P x$ we get, after simplification
+\begin{equation*}
+    \dot{V}(x) = -x^T Q x + 2x^T P g(x)
+\end{equation*}
+
+\newpar{}
+\ptitle{Residual Analysis}
+
+The residual $g(x)$ satisfies:
+\begin{equation*}
+    \frac{\|g(x)\|^2}{\|x\|^2} \to 0 \quad \text{as} \quad \|x\|^2 \to 0
+\end{equation*}
+Therefore, for any $\gamma > 0$, there exists $r > 0$ such that:
+\begin{equation*}
+    \|g(x)\|^2 < \gamma \|x\|^2, \quad \forall \|x\|^2 < r
+\end{equation*}
+Thus,
+\begin{equation*}
+    \dot{V}(x) < -x^T Q x + 2 \gamma \|P\|^2 \|x\|^2_2, \quad \forall \|x\|^2 < r
+\end{equation*}
+Since $x^T Q x \geq \lambda_{\min}(Q) \|x\|^2_2$, we obtain:
+\begin{equation*}
+    \dot{V}(x) < -\left( \lambda_{\min}(Q) - 2 \gamma \|P\|^2 \right) \|x\|^2_2, \quad \forall \|x\|^2 < r
+\end{equation*}
+
+In conclusion, in the local neighborhood $\forall \|x\|^2 < r$ we can choose $\gamma < \frac{\lambda_{\min}(Q)}{2 \|P\|^2}$ ensuring that $\dot{V}(x)$ is negative definite locally.
+
+\subsection{Linearization-Based Control}
+Consider the nonlinear system:
+\begin{equation*}
+    \dot{x} = f(x, u)
+\end{equation*}
+where $f(x, u)$ is c.\ d.\ in a domain $X \times U \subseteq \mathbb{R}^n \times \mathbb{R}^m$ that contains the origin.
+
+\newpar{}
+\ptitle{Steady-State Point}
+
+Let $(x_{ss}, u_{ss}) \in X \times U$ be a steady-state point
+\begin{equation*}
+    0 = f(x_{ss}, u_{ss})
+\end{equation*}
+\newpar{}
+\ptitle{Linearization}
+
+The linearization is given by
+\begin{equation*}
+    A = \left. \frac{\partial f}{\partial x} \right|_{x=x_{ss}, u=u_{ss}}, \quad B = \left. \frac{\partial f}{\partial u} \right|_{x=x_{ss}, u=u_{ss}}
+\end{equation*}
+yielding
+\begin{equation*}
+    \frac{d}{dt} (x - x_{ss}) = A (x - x_{ss}) + B (u - u_{ss})
+\end{equation*}
+
+\newpar{}
+\ptitle{Controller and Nonlinear Closed-Loop System}
+
+Then, if $(A, B)$ is stabilizable there exists a \textbf{controller} $K \in \mathbb{R}^{m \times n}$ such that
+\begin{equation*}
+    u = u_{ss} - K (x - x_{ss})
+\end{equation*}
+renders the nonlinear closed-loop system:
+\begin{equation*}
+    \dot{x} = f(x, u_{ss} - K (x - x_{ss}))
+\end{equation*}
+asymptotically stable in a small neighborhood around $(x_{ss}, u_{ss})$.
+
+\subsubsection{Linearization-Based Control With Observer}
+
+Assume that we do not have access to the full state, but rather a nonlinear function $h(x)$ of the state, i.e.,
+\begin{equation*}
+    \dot{x} = f(x, u), \quad y = h(x)
+\end{equation*}
+with $x \in \mathbb{R}^{n}$, $u \in \mathbb{R}^{p}$, $y \in \mathbb{R}^{p}$.
+
+\newpar{}
+\ptitle{Steady-State Point}
+
+We linearize around the steady-state point $(x_{ss}, u_{ss})$:
+\begin{equation*}
+    f(x_{ss}, u_{ss}) = 0, \quad h(x_{ss}) = 0
+\end{equation*}
+
+\newpar{}
+\ptitle{Linearization}
+
+As we don't have full state access we need additionally
+\begin{equation*}
+    C = \left. \frac{\partial h}{\partial x} \right|_{x=x_{ss}}
+\end{equation*}
+yielding
+\begin{align*}
+    \frac{d}{dt} (x - x_{ss}) & = A (x - x_{ss}) + B (u - u_{ss}) \\
+    y                         & = C (x - x_{ss})
+\end{align*}
+
+\newpar{}
+\ptitle{Controller}
+
+If $(A, B)$ is stabilizable and $(A, C)$ is detectable, we can design an observer-based linear dynamic output feedback controller:
+\begin{equation*}
+    u - u_{ss} = -K(\hat{x} - x_{ss})
+\end{equation*}
+
+\newpar{}
+\ptitle{Linear Closed-Loop System}
+
+The linear closed-loop system
+\begin{equation*}
+    \frac{d}{dt} \begin{bmatrix} x - x_{ss} \\ x - \hat{x} \end{bmatrix} = \underbrace{\begin{bmatrix} A - BK & BK \\ 0 & A - LC \end{bmatrix}}_{A_{cl}} \begin{bmatrix} x - x_{ss} \\ x - \hat{x} \end{bmatrix}
+\end{equation*}
+is asymptotically stable (i.e., $A_{cl}$ is Hurwitz).
+
+\newpar{}
+\ptitle{Nonlinear Closed-Loop System}
+
+The corresponding closed-loop nonlinear system is:
+\begin{align*}
+    \dot{x}       & = f(x, u_{ss} - K(\hat{x} - x_{ss}))       \\
+    \dot{\hat{x}} & = (A - BK - LC)(\hat{x} - x_{ss}) + L h(x)
+\end{align*}
+
+\subsubsection{Linearization-Based Integral Control}
+
+\section{Integral Control}
+
+Integral control ensures asymptotic regulation under all parameter perturbations that do not destroy the stability of the closed-loop system.
+\newpar{}
+We would like to design a control ensuring $y(t) \to r$ as $t \to \infty$, for a constant reference $r$.
+\newpar{}
+Consider the nonlinear system:
+\begin{align*}
+    \dot{x} & = f(x, u, w) \\
+    y       & = h(x, w)
+\end{align*}
+where
+\begin{itemize}
+    \item $w \in \mathbb{R}^{l}$ is a vector of unknown constant parameters and disturbances.
+    \item and we assume $f$ and $h$ are c.\ d.\ in $x$ and $u$, and continuous in $w$ within some domain $X \times U \times W \subset \mathbb{R}^{n} \times \mathbb{R}^{p} \times \mathbb{R}^{l}$.
+\end{itemize}
+
+\newpar{}
+\ptitle{Steady-State Point}
+
+\newpar{}
+\ptitle{}
+We assume the existence of a unique pair $(x_{ss}, u_{ss})$ that depends on both $r$ and $w$, such that:
+\begin{align*}
+    0 & = f(x_{ss}(w, r), u_{ss}(w, r), w) \\
+    r & = h(x_{ss}(w, r), w)
+\end{align*}
+
+\newpar{}
+\ptitle{Augmented System}
+
+Introducing
+\begin{equation*}
+    \xi = \begin{bmatrix} x - x_{ss} \\ \sigma - \sigma_{ss} \end{bmatrix}
+\end{equation*}
+the augmented system is given by:
+\begin{align*}
+    \dot{x}      & = f(x, u, w)        \\
+    \dot{\sigma} & = y-r = h(x, w) - r
+\end{align*}
+
+\newpar{}
+\ptitle{Linearization}
+
+The linearization is identical to before but now with $A(w, r), B(w, r), C(w, r)$, yielding
+\begin{align*}
+    \dot{x}      & = A(x - x_{ss}) + B(u - u_{ss}) \\
+    \dot{\sigma} & = C(x - x_{ss})
+\end{align*}
+
+\newpar{}
+\ptitle{Controller}
+
+The PI-like controller is
+\begin{equation*}
+    u = -K_1 x - K_2 \sigma
+\end{equation*}
+Requiring that the matrix gain $K_2$ be non-singular guarantees the existence of a unique equilibrium $(x_{ss}, u_{ss}, \sigma_{ss})$ satisfying:
+\begin{align*}
+    0      & = f(x_{ss}, u_{ss}, w),          \\
+    0      & = h(x_{ss}, w) - r,              \\
+    u_{ss} & = -K_1 x_{ss} - K_2 \sigma_{ss}.
+\end{align*}
+where the equilibrium point depends on both $r$ and the unknown but constant parameters w.
+
+\newpar{}
+\ptitle{Linear Closed-Loop System}
+
+Substituting $u_{ss}$ into the linearized system, we obtain the augmented closed-loop system:
+\begin{equation*}
+    \dot{\xi} = (A - BK)\xi = \begin{bmatrix} A - BK_1 & -BK_2 \\ C & 0 \end{bmatrix} \xi,
+\end{equation*}
+where:
+\begin{equation*}
+    A = \begin{bmatrix} A & 0 \\ C & 0 \end{bmatrix},\quad B = \begin{bmatrix} B \\ 0 \end{bmatrix}
+\end{equation*}
+
+\newpar{}
+\ptitle{Stability Guarantee}
+
+Assume that the pair $(A,B)$ is controllable and that:
+\begin{equation*}
+    \operatorname{rank} \begin{bmatrix} A & B \\ C & 0 \end{bmatrix} = n + p.
+\end{equation*}
+Then, the pair $(A, B)$ is controllable.
+\newpar{}
+Assuming that the conditions of Lemma 5.5 are satisfied, we can design $K = \begin{bmatrix} K_1 & K_2 \end{bmatrix}$ so that $(A - BK)$ is Hurwitz $\forall w$ in some known set $W$, ensuring robust stability.
+
+\subsection{Gain Scheduling}
+
+\subsubsection{Gain Scheduling With Observer}
+
+\subsubsection{Gain Scheduling With Output Derivative Knowledge}
+
+
+\section{wallalh}
+\newpar{}
+\ptitle{Steady-State Point}
+
+\newpar{}
+\ptitle{Linearization}
+
+\newpar{}
+\ptitle{Controller and Nonlinear Closed-Loop System}
+
+
+
+\section{LELETREL}
