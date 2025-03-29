@@ -19,7 +19,12 @@ At most jumps at discrete points, continuous in between.
 
 A set is bounded if all of its points lie within a certain distance of each other.
 
-\subsection{Lyapunov Functions}
+\newpar{}
+\ptitle{Radial Unboundedness}
+
+A function is radially unbounded, if $\forall c\in \mathbb{R} > 0, \exists r>0 | \; \forall x\in \mathbb{R}^n :[\lVert x \rVert > r \implies f(x) > c ]$
+
+\subsection{Finding Lyapunov Functions}
 % TODO
 
 \subsection{Linear Algebra}
@@ -53,10 +58,109 @@ All poles are strictly in the left half plane (negative real part) iff the follo
         \hline
     \end{array}
 \end{align*}
-\subsection{Radially Unbounded Functions}
-\textbf{Def}: A function is \textbf{radially unbounded}, if $\forall c\in \mathbb{R} > 0, \exists r>0 | \; \forall x\in \mathbb{R}^n :[\lVert x \rVert > r \implies f(x) > c ]$
 
 \subsection{Convex Functions}
 \textbf{Def}: A function is called \textbf{convex} iff
 
 $f((1-t)x + tx^\ast) \leq f(x)(1-t) + t f(x^\ast), \; \forall t \in [0,1]$
+
+\subsection{Characterizations of Passivity for Linear Systems}\label{passivity_linear_sys}
+
+Passive systems are especially significant in the context of linear systems because their passivity can be characterized \textbf{both} in the frequency and time domains.
+
+\subsubsection{Positive Real Transfer Functions}
+
+A $p \times p$ proper transfer function matrix $G(s)$ is called positive real if all the following conditions hold:
+
+\begin{enumerate}
+    \item The poles of all elements of $G(s)$ have non-positive real parts.
+    \item For all real frequencies $\omega$ where $j\omega$ is not a pole of any element of $G(s)$, the matrix:
+
+          \begin{equation*}
+              G(j\omega) + G(-j\omega)^T
+          \end{equation*}
+
+          is positive semi-definite.
+
+    \item Any pure imaginary pole $j\omega$ of any element of $G(s)$ is a simple pole, and the residue matrix:
+
+          \begin{equation*}
+              \lim_{s \to j\omega} (s - j\omega) G(s)
+          \end{equation*}
+
+          is positive semi-definite Hermitian.
+\end{enumerate}
+\newpar{}
+$G(s)$ is called \textbf{strictly positive real} if $G(s - \epsilon)$ is positive real for some $\epsilon > 0$.
+
+\newpar{}
+\ptitle{1D Case}
+
+For $p = 1$, the second condition reduces to:
+
+\begin{equation*}
+    \operatorname{Re}(G(j\omega)) \geq 0, \quad \forall \omega \in \mathbb{R},
+\end{equation*}
+
+which holds only if the relative degree of $G(s)$ is at most one.
+
+\paragraph{Strictly Positive Real Transfer Functions}
+
+Let $G(s)$ be a proper rational $p \times p$ transfer function matrix. Suppose that $\det(G(s) + G(-s)^T)$ is not identically zero for all $s$. Then, $G(s)$ is strictly positive real \textbf{if and only if} the following three conditions hold:
+
+\begin{enumerate}
+    \item $G(s)$ is Hurwitz,
+    \item $G(j\omega) + G(-j\omega)^T$ is positive definite $\forall \omega \in \mathbb{R}$,
+    \item Either $G(\infty) + G(\infty)^T$ is positive definite, or it is positive semi-definite and:
+
+          \begin{equation*}
+              \lim_{\omega \to \infty} \omega^2 M^T (G(j\omega) + G(-j\omega)^T) M
+          \end{equation*}
+
+          is positive definite for any full-rank $p \times (p - q)$ matrix $M$ such that:
+
+          \begin{equation*}
+              M^T (G(\infty) + G(\infty)^T) M = 0,
+          \end{equation*}
+
+          where $q = \operatorname{rank}(G(\infty) + G(\infty)^T)$.
+\end{enumerate}
+\newpar{}
+If $\epsilon = 0$ then the transfer function $G(s)$ is \textbf{simply positive real}.
+
+\newpar{}
+\ptitle{Kalman-Yakubovich-Popov (KYP) Lemma}
+
+Consider the $m \times m$ transfer function matrix:
+
+\begin{equation*}
+    G(s) = C(sI - A)^{-1}B + D,
+\end{equation*}
+
+where the pair $(A, B)$ is controllable and the pair $(A, C)$ is observable.
+\newpar{}
+$G(s)$ is strictly positive real \textbf{if and only if} there exist matrices $P = P^T > 0$, $L$, $W$, and $\epsilon > 0$ such that:
+
+\begin{align*}
+    PA + A^T P & = -L^T L - \epsilon P, \\
+    PB         & = C^T - L^T W,         \\
+    W^T W      & = D + D^T.
+\end{align*}
+
+\paragraph{LTI Passivity}
+
+The LTI system:
+
+\begin{equation*}
+    \dot{x} = Ax + Bu, \quad y = Cx + Du,
+\end{equation*}
+
+with transfer matrix $G(s) = C(sI - A)^{-1}B + D$ is:
+
+\begin{itemize}
+    \item passive if $G(s)$ is positive real,
+    \item strictly passive if $G(s)$ is strictly positive real.
+\end{itemize}
+
+
+

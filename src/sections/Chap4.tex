@@ -1,0 +1,218 @@
+\section{Dissipative Systems}
+\subsection{Dissipative Systems}
+
+Consider the nonlinear state-space system, given by
+\begin{align*}
+    \dot{x} & = f(x, u), \\
+    y       & = h(x, u),
+\end{align*}
+where $x \in X \subseteq \mathbb{R}^n$, $u \in U \subseteq \mathbb{R}^m$, and $y \in Y \subseteq \mathbb{R}^p$.
+
+Associated with this system, we have the following \textbf{supply rate function}:
+\begin{equation*}
+    w(u, y) : \mathcal{U} \times \mathcal{Y} \to \mathbb{R}.
+\end{equation*}
+
+\subsubsection{Storage Functions}
+\ptitle{Definition: Dissipative System}
+
+The state-space system is said to be dissipative wrt.\ the supply rate $w(u, y)$ if there exists a \textit{non-negative} function
+\begin{equation*}
+    S : X \to \mathbb{R}_{\geq 0}
+\end{equation*}
+called the \textbf{storage function}, such that $\forall x_0 \in X$, $\forall t_1 > t_0$, and all input functions $u$, the following dissipation inequality holds:
+\begin{equation*}
+    S(x(t_1)) \leq S(x(t_0)) + \int_{t_0}^{t_1} w(u(t), y(t)) \; dt,
+\end{equation*}
+where $x(t_0) = x_0$, and $x(t_1)$ is the state of the system at time $t_1$ resulting from the initial condition $x_0$ and the input function $u(t)$.
+
+Thus, dissipative systems cannot internally create energy but can either store or dissipate it.
+
+\paragraph{Available Storage Function}
+
+Consider the system with a supply rate $w$. It is dissipative wrt.\ $w$ if and only if the available storage function:
+\begin{equation*}
+    S_a(x) = \sup_{u(\cdot), T \geq 0} \left( - \int_0^T w(u, y) \; dt \right), \quad x(0) = x,
+\end{equation*}
+is well defined, i.e., $S_a(x) < \infty, \forall x \in \mathcal{X}$.
+
+Then, $S_a$ itself is a storage function, and one has for any other storage function $S$:
+\begin{equation*}
+    S_a(x) \leq S(x).
+\end{equation*}
+
+\newpar{}
+\ptitle{Remarks}
+
+\begin{itemize}
+    \item By linking dissipativity to the existence of the function $S_a$, we shift the focus from verifying the dissipation inequality to solving an optimization problem.
+    \item $S_a$ can be interpreted as the maximum energy extractable from the system starting at an initial condition $x_0$.
+\end{itemize}
+
+\paragraph{Differential Dissipation Inequality}
+
+Satisfying the dissipation inequality is (for $t_1 \to t_0$) equivalent to fulfilling the PDE (assuming $S$ differentiable):
+\begin{equation*}
+    \dot{S}(x) = \frac{\partial S(x)}{\partial x} f(x, u) \leq w(u, h(x, u)), \quad \forall x \in \mathbb{R}^n, \; u \in \mathbb{R}^m.
+\end{equation*}
+This relation is used to establish a connection to Lyapunov stability theory.
+
+\paragraph{Dissipation Rate}
+
+The non-negative function $d : \mathcal{X} \times \mathcal{U} \to \mathbb{R}_{\geq 0}$ is the dissipation rate of the dissipative system if, \textit{for all} $t_0, t_1 \in \mathbb{R}_+$, $x_0 \in \mathcal{X}$, and $u \in \mathcal{U}$:
+\begin{equation*}
+    S(x(t_0)) + \int_{t_0}^{t_1} (w(t) - d(t)) \; dt = S(x(t_1))
+\end{equation*}
+
+\subsubsection{Dissipative Stability Theory}
+
+\ptitle{Local Stability from Dissipation}
+
+Let
+\begin{itemize}
+    \item $S$ be continuously differentiable, and assume that for the \textit{unforced} system $w$ satisfies
+          \begin{equation*}
+              w(0, y) \leq 0, \quad \forall y \in Y
+          \end{equation*}
+    \item the origin $x = 0$ be a strict local minimum of $S(x)$.
+\end{itemize}
+\newpar{}
+Then,
+\begin{itemize}
+    \item $x = 0$ is a \textbf{locally stable} equilibrium for the unforced system $\dot{x} = f(x, 0)$,
+    \item and $V(x) = S(x) - S(0) \geq 0$ is a local Lyapunov function.
+\end{itemize}
+
+\paragraph{Stability of Feedback Interconnection}
+
+Consider the two systems:
+\begin{align*}
+    (\Sigma_i) : \begin{cases}
+                     \dot{x}_i = f_i(x_i, u_i), \\
+                     y_i = h_i(x_i, u_i),
+                 \end{cases}
+\end{align*}
+connected in feedback.
+
+Assume
+\begin{itemize}
+    \item that both systems are dissipative wrt.\ $w_i$
+    \item and positive definite storage functions $S_i$.
+\end{itemize}
+Then the feedback system is stable if (sufficient condition)
+\begin{equation*}
+    w_1(u, y) + w_2(y, -u) = 0, \quad \forall u, y
+\end{equation*}
+
+\subsection{Passive Systems}
+
+Passive systems are a \textit{subclass} of dissipative systems with a \textit{specific} supply rate:
+\begin{equation*}
+    w(u, y) = u^T y,
+\end{equation*}
+where $u, y \in \mathbb{R}^p$ (\textbf{same number} of inputs and outputs!).
+\newpar{}
+The theory can be reinforced for \textbf{linear systems}:~\ref{passivity_linear_sys}.
+
+\newpar{}
+\ptitle{Definition: Types of Passive Systems}
+
+A state-space system is called:
+\begin{enumerate}
+    \item \textbf{Passive} if it is dissipative wrt.\ $w(u, y) = u^T y$.
+    \item \textbf{Lossless} if $\dot{S}(x) = u^T y$ (zero dissipation).
+    \item \textbf{Strictly passive} if it is dissipative wrt.\
+          \begin{equation*}
+              w(u, y) = u^T y - \psi(x)
+          \end{equation*}
+          for \textit{some} positive definite $\psi$.
+\end{enumerate}
+\newpar{}
+Wrt.\ I/O behaviour a system is further called:
+\begin{enumerate}
+    \item[4.] \textbf{Input-feedforward passive} if it is dissipative wrt.\
+          \begin{equation*}
+              w(u, y) = u^T y - u^T \varphi(u)
+          \end{equation*}
+          for \textit{some} function $\varphi$.
+    \item[5.] \textbf{Input strictly passive} if it is dissipative wrt.\
+          \begin{align*}
+              w(u, y)                    & = u^T y - u^T \varphi(u) \\
+              \text{and } u^T \varphi(u) & > 0, \forall u \neq 0
+          \end{align*}
+    \item[6.] \textbf{Output feedback passive} if it is dissipative wrt.\
+          \begin{equation*}
+              w(u, y) = u^T y - y^T \rho(y)
+          \end{equation*}
+          for \textit{some} function $\rho$.
+    \item[7.] \textbf{Output strictly passive} if it is dissipative wrt.\
+          \begin{align*}
+              w(u, y)                               & = u^T y - y^T \rho(y) \\
+              \text{for \textit{some} } y^T \rho(y) & > 0, \forall y \neq 0
+          \end{align*}
+\end{enumerate}
+
+\subsubsection{Stability of Passive Systems}
+
+Consider again $\dot{x} = f(x, u), \quad y = h(x, u)$ where
+\begin{itemize}
+    \item $f : \mathbb{R}^n \times \mathbb{R}^p \to \mathbb{R}^n$ is locally Lipschitz with $f(0, 0) = 0$,
+    \item $h : \mathbb{R}^n \times \mathbb{R}^p \to \mathbb{R}^p$ is continuous and $h(0, 0) = 0$.
+\end{itemize}
+
+\newpar{}
+\ptitle{Stability}
+
+Assume that the system is passive with a positive definite storage function $S(x)$.
+\newpar{}
+Then the origin of $\dot{x} = f(x, 0)$ is stable because $V(x) = S(x)$ is a valid Lyapunov function.
+
+\newpar{}
+\ptitle{Asymptotic Stability}
+
+Assume that the system is strictly passive with some (\textbf{not} necessarily positive definite!) storage function $S(x)$.
+\newpar{}
+Then the origin of $\dot{x} = f(x, 0)$ is asymptotically stable.
+\newpar{}
+Furthermore, if $S(x)$ is radially unbounded, then the origin is \textbf{globally asymptotically stable}.
+
+\newpar{}
+\ptitle{Feedback Passivity}
+
+The feedback connection of two passive systems is passive.
+
+\subsubsection{Passivity-Based Control}
+Consider
+\begin{equation*}
+    \dot{x} = f(x, u), \quad y = h(x),
+\end{equation*}
+where $f$ satisfies the usual Lipschitz condition, $h$ is continuous and $f(0, 0) = 0$, $h(0) = 0$.
+
+\newpar{}
+\ptitle{Zero-State Observability}
+
+The system is called zero-state observable if no solution of the unforced system $\dot{x} = f(x, 0)$ can remain identically in the set $\{h(x) = 0\}$ other than the trivial solution $x(t) \equiv 0$.
+\newpar{}
+This means that, whenever we measure $y=0$, we can be sure that the state is at the origin.
+
+\newpar{}
+\ptitle{Global Stabilizability}
+
+Assume that the system:
+\begin{itemize}
+    \item is passive with radially unbounded, positive definite $S(x)$
+    \item is zero-state observable
+\end{itemize}
+\newpar{}
+Then the origin can be globally stabilized with a control law
+\begin{equation*}
+    u = -\phi(y),
+\end{equation*}
+where $\phi$ is any locally Lipschitz function such that
+\begin{itemize}
+    \item $\phi(0) = 0$
+    \item and
+          \begin{equation*}
+              y^T \phi(y) > 0, \quad \forall y \neq 0.
+          \end{equation*}
+\end{itemize}
