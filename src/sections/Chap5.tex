@@ -1,0 +1,398 @@
+\section{Feedback Control Design}
+\subsection{Lyapunov Indirect Method}
+Linearize the system around an equilibrium point $\bar{x}$ with $f(\bar{x})=0$ and conduct linear stability analysis for the neighborhood of $\bar{x}$, given that $\bar{x}$ is a hyperbolic fixed point.
+\newpar{}
+In the case of non-hyperbolic fixed points (i.e.\ $Re(\lambda_i)=0$) the \textbf{Center Manifold Theorem} can be used for stability assessment.
+
+\subsubsection{Lyapunov Function of Nonlinear System}
+
+The linearized system exhibits a residual wrt.\ the nonlinear one.
+\begin{equation*}
+    \dot{x} = f(x) = Ax + (f(x) - Ax) \triangleq Ax + \underbrace{g(x)}_{\text{residual}}
+\end{equation*}
+Using $V=x^T P x$ we get, after simplification
+\begin{equation*}
+    \dot{V}(x) = -x^T Q x + 2x^T P g(x)
+\end{equation*}
+
+\newpar{}
+\ptitle{Residual Analysis}
+
+The residual $g(x)$ satisfies:
+\begin{equation*}
+    \frac{\|g(x)\|^2}{\|x\|^2} \to 0 \quad \text{as} \quad \|x\|^2 \to 0
+\end{equation*}
+Therefore, for any $\gamma > 0$, there exists $r > 0$ such that:
+\begin{equation*}
+    \|g(x)\|^2 < \gamma \|x\|^2, \quad \forall \|x\|^2 < r
+\end{equation*}
+Thus,
+\begin{equation*}
+    \dot{V}(x) < -x^T Q x + 2 \gamma \|P\|^2 \|x\|^2_2, \quad \forall \|x\|^2 < r
+\end{equation*}
+Since $x^T Q x \geq \lambda_{\min}(Q) \|x\|^2_2$, we obtain:
+\begin{equation*}
+    \dot{V}(x) < -\left( \lambda_{\min}(Q) - 2 \gamma \|P\|^2 \right) \|x\|^2_2, \quad \forall \|x\|^2 < r
+\end{equation*}
+
+In conclusion, in the local neighborhood $\forall \|x\|^2 < r$ we can choose $\gamma < \frac{\lambda_{\min}(Q)}{2 \|P\|^2}$ ensuring that $\dot{V}(x)$ is negative definite locally.
+
+\subsection{Linearization-Based Control}
+Consider the nonlinear system:
+\begin{equation*}
+    \dot{x} = f(x, u)
+\end{equation*}
+where $f(x, u)$ is c.\ d.\ in a domain $\mathcal{X} \times \mathcal{U} \subseteq \mathbb{R}^n \times \mathbb{R}^m$ that contains the origin.
+
+\newpar{}
+\ptitle{Steady-State Point}
+
+Let $(x_{ss}, u_{ss}) \in \mathcal{X} \times \mathcal{U}$ be a steady-state point
+\begin{equation*}
+    0 = f(x_{ss}, u_{ss})
+\end{equation*}
+\newpar{}
+\ptitle{Linearization}
+
+The linearization is given by
+\begin{equation*}
+    A = \left. \frac{\partial f}{\partial x} \right|_{x=x_{ss}, u=u_{ss}}, \quad B = \left. \frac{\partial f}{\partial u} \right|_{x=x_{ss}, u=u_{ss}}
+\end{equation*}
+yielding
+\begin{equation*}
+    \frac{d}{dt} (x - x_{ss}) = A (x - x_{ss}) + B (u - u_{ss})
+\end{equation*}
+
+\newpar{}
+\ptitle{Controller and Nonlinear Closed-Loop System}
+
+Then, if $(A, B)$ is stabilizable there exists a \textbf{controller} $K \in \mathbb{R}^{m \times n}$ such that
+\begin{equation*}
+    u = u_{ss} - K (x - x_{ss})
+\end{equation*}
+renders the nonlinear closed-loop system:
+\begin{equation*}
+    \dot{x} = f(x, u_{ss} - K (x - x_{ss}))
+\end{equation*}
+asymptotically stable in a small neighborhood around $(x_{ss}, u_{ss})$.
+
+\subsubsection{Linearization-Based Control With Observer}
+
+Assume that we do not have access to the full state, but rather a nonlinear function $h(x)$ of the state, i.e.,
+\begin{equation*}
+    \dot{x} = f(x, u), \quad y = h(x)
+\end{equation*}
+with $x \in \mathbb{R}^{n}$, $u \in \mathbb{R}^{p}$, $y \in \mathbb{R}^{p}$.
+
+\newpar{}
+\ptitle{Steady-State Point}
+
+We linearize around the steady-state point $(x_{ss}, u_{ss})$:
+\begin{equation*}
+    f(x_{ss}, u_{ss}) = 0, \quad h(x_{ss}) = 0
+\end{equation*}
+
+\newpar{}
+\ptitle{Linearization}
+
+As we don't have full state access we need additionally
+\begin{equation*}
+    C = \left. \frac{\partial h}{\partial x} \right|_{x=x_{ss}}
+\end{equation*}
+yielding
+\begin{align*}
+    \frac{d}{dt} (x - x_{ss}) & = A (x - x_{ss}) + B (u - u_{ss}) \\
+    y                         & = C (x - x_{ss})
+\end{align*}
+
+\newpar{}
+\ptitle{Controller}
+
+If $(A, B)$ is stabilizable and $(A, C)$ is detectable, we can design an observer-based linear dynamic output feedback controller:
+\begin{equation*}
+    u - u_{ss} = -K(\hat{x} - x_{ss})
+\end{equation*}
+
+\newpar{}
+\ptitle{Linear Closed-Loop System}
+
+The linear closed-loop system
+\begin{equation*}
+    \frac{d}{dt} \begin{bmatrix} x - x_{ss} \\ x - \hat{x} \end{bmatrix} = \underbrace{\begin{bmatrix} A - BK & BK \\ 0 & A - LC \end{bmatrix}}_{A_{cl}} \begin{bmatrix} x - x_{ss} \\ x - \hat{x} \end{bmatrix}
+\end{equation*}
+is asymptotically stable (i.e., $A_{cl}$ is Hurwitz).
+
+\newpar{}
+\ptitle{Nonlinear Closed-Loop System}
+
+The corresponding closed-loop nonlinear system is:
+\begin{align*}
+    \dot{x}       & = f(x, u_{ss} - K(\hat{x} - x_{ss}))       \\
+    \dot{\hat{x}} & = (A - BK - LC)(\hat{x} - x_{ss}) + L h(x)
+\end{align*}
+
+\subsubsection{Integral Control}
+Integral control ensures asymptotic regulation $y(t) \to r$ (constant) as $t \to \infty$ under all parameter perturbations that do not destroy the stability of the closed-loop system.
+\newpar{}
+Consider the nonlinear system:
+\begin{align*}
+    \dot{x} & = f(x, u, w) \\
+    y       & = h(x, w)
+\end{align*}
+where
+\begin{itemize}
+    \item $w \in \mathbb{R}^{l}$ is a vector of unknown constant parameters and disturbances.
+    \item we assume $f$ and $h$ are c.\ d.\ in $x$ and $u$, and continuous in $w$ within some domain $\mathcal{X} \times \mathcal{U} \times \mathcal{W} \subset \mathbb{R}^{n} \times \mathbb{R}^{p} \times \mathbb{R}^{l}$.
+\end{itemize}
+
+\newpar{}
+\ptitle{Steady-State Point}
+
+\newpar{}
+\ptitle{}
+We assume the existence of a unique pair $(x_{ss}, u_{ss})$ that depends on both $r$ and $w$, such that:
+\begin{align*}
+    0 & = f(x_{ss}(w, r), u_{ss}(w, r), w) \\
+    r & = h(x_{ss}(w, r), w)
+\end{align*}
+
+\newpar{}
+\ptitle{Augmented System}
+
+Introducing
+\begin{equation*}
+    \xi = \begin{bmatrix} x - x_{ss} \\ \sigma - \sigma_{ss} \end{bmatrix}
+\end{equation*}
+the augmented system is given by:
+\begin{align*}
+    \dot{x}      & = f(x, u, w)        \\
+    \dot{\sigma} & = y-r = h(x, w) - r
+\end{align*}
+
+\newpar{}
+\ptitle{Linearization}
+
+The linearization is identical to before but now with $A(w, r), B(w, r), C(w, r)$, yielding
+\begin{align*}
+    \dot{x}      & = A(x - x_{ss}) + B(u - u_{ss}) \\
+    \dot{\sigma} & = C(x - x_{ss})
+\end{align*}
+
+\newpar{}
+\ptitle{Controller}
+
+The PI-like controller $\mathcal{K} = \begin{bmatrix} K_1 & K_2 \end{bmatrix}$ yields
+\begin{equation*}
+    u = -K_1 x - K_2 \sigma
+\end{equation*}
+Requiring $K_2$ to be non-singular guarantees the existence of a \textbf{unique} equilibrium $(x_{ss}, u_{ss}, \sigma_{ss})$ satisfying:
+\begin{align*}
+    0      & = f(x_{ss}, u_{ss}, w),          \\
+    0      & = h(x_{ss}, w) - r,              \\
+    u_{ss} & = -K_1 x_{ss} - K_2 \sigma_{ss}.
+\end{align*}
+and depending on both $r$ and the unknown but constant parameters w.
+
+\newpar{}
+\ptitle{Linear Closed-Loop System}
+
+Substituting $u_{ss}$ into the linearized system, we obtain the augmented closed-loop system:
+\begin{equation*}
+    \dot{\xi} = (\mathcal{A} - \mathcal{BK})\xi = \begin{bmatrix} A - BK_1 & -BK_2 \\ C & 0 \end{bmatrix} \xi,
+\end{equation*}
+where:
+\begin{equation*}
+    \mathcal{A} = \begin{bmatrix} A & 0 \\ C & 0 \end{bmatrix},\quad \mathcal{B} = \begin{bmatrix} B \\ 0 \end{bmatrix}
+\end{equation*}
+
+\newpar{}
+\ptitle{Stability Guarantee}
+
+Assume that the pair $(A,B)$ is controllable and that:
+\begin{equation*}
+    \operatorname{rank} \begin{bmatrix} A & B \\ C & 0 \end{bmatrix} = n + p.
+\end{equation*}
+Then, the pair $(\mathcal{A}, \mathcal{B})$ is controllable.
+\newpar{}
+Hence, one can find $\mathcal{K}$ so that $(\mathcal{A} - \mathcal{B}\mathcal{K})$ is Hurwitz $\forall w$ in some known set $W$, ensuring \textit{robust stability}.
+
+\subsection{Gain Scheduling}
+Consider the nonlinear system
+\begin{equation*}
+    \dot{x} = f(x, u, v, w)
+\end{equation*}
+\begin{equation*}
+    y = h(x, w)
+\end{equation*}
+where $v \in \mathbb{R}^q$ is a known exogenous input.
+
+\newpar{}
+\ptitle{Genearal Procedure}
+
+\begin{enumerate}
+    \item Linearize $f$ about several equilibrium points, parametrized by scheduling variables
+    \item Design parametrized family of linear controllers to locally stabilize the system
+    \item Construct a gain-scheduled controller
+    \item Check the performance of the gain-scheduled controller by simulating the \textit{nonlinear} closed-loop model
+\end{enumerate}
+\newpar{}
+The region of attraction of one equilibrium point should contain the neighboring equilibrium point.
+Moreover, we should guarantee that the overshoot that happens whenever switching from one steady-state point $(x_{ss,i})$ to another $x_{ss,i+1}$ does not drive the trajectory of the system beyond the region of attraction of the latter steady state point.
+
+\newpar{}
+\ptitle{Augmented System}
+
+We use the vector of known exogenous quantities
+\begin{equation*}
+    \rho = \begin{bmatrix} v \\ r \end{bmatrix}
+\end{equation*}
+as a scheduling variable.
+\newpar{}
+For each fixed value of
+\begin{equation*}
+    \rho = \alpha = \begin{bmatrix} \alpha_v \\ \alpha_r \end{bmatrix}
+\end{equation*}
+we use integral control to regulate $e = y - r$ to zero in the presence of the unknown vector $w$.
+\newpar{}
+We use gain scheduling to achieve small $e$ whenever $\rho$ is varying slowly over time.
+
+\newpar{}
+\ptitle{Steady-State Point}
+
+We assume that there exists a unique pair $(x_{ss}, u_{ss})$ that is c.\ d.\ in $\alpha$, continuous $w$, such that
+\begin{align*}
+    0        & = f(x_{ss}(\alpha, w), u_{ss}(\alpha, w), \alpha_v, w) \\
+    \alpha_r & = h(x_{ss}(\alpha, w), w)
+\end{align*}
+for all values of $(\alpha, w)$.
+
+\newpar{}
+\ptitle{Linearization}
+
+The linearization now depends on $\alpha_v$ too, yielding
+\begin{equation*}
+    A = A(\alpha, w) = \frac{\partial f(x, u, v, w)}{\partial x} \bigg|_{(x, u, v) = (x_{ss}, u_{ss}, \alpha_v)}
+\end{equation*}
+\begin{equation*}
+    B = B(\alpha, w) = \frac{\partial f(x, u, v, w)}{\partial u} \bigg|_{(x, u, v) = (x_{ss}, u_{ss}, \alpha_v)}
+\end{equation*}
+\begin{equation*}
+    C = C(\alpha, w) = \frac{\partial h(x, w)}{\partial x} \bigg|_{(x, u, v) = (x_{ss}, u_{ss}, \alpha_v)}
+\end{equation*}
+
+\newpar{}
+\ptitle{Controller and Linear Closed-Loop System}
+
+The integral controller is
+\begin{align*}
+    \dot{\sigma} & = y - r               \\
+    u            & = -K_1 x - K_2 \sigma
+\end{align*}
+where $K_1 = K_1(\alpha)$ and $K_2 = K_2(\alpha)$, such that
+\begin{equation*}
+    \mathcal{A} = \begin{bmatrix} A - BK_1 & -BK_2 \\ C & 0 \end{bmatrix}
+\end{equation*}
+is Hurwitz for every $(\alpha, w)$.
+
+\newpar{}
+\ptitle{Noninear Closed-Loop System}
+
+The closed-loop nonlinear system
+\begin{align*}
+    \dot{x}      & = f(x, u, v, w)                     \\
+    \dot{\sigma} & = h(x, w) - r                       \\
+    u            & = -K_1(\alpha)x - K_2(\alpha)\sigma
+\end{align*}
+has a locally asymptotically stable $x_{ss,i}$ for each fixed $\rho = \alpha$.
+
+
+
+\subsubsection{Gain Scheduling With Observer}
+\ptitle{Controller}
+
+In the case with observer, we can design a controller of the form
+\begin{align*}
+    \dot{\sigma} & = y - r = e                                                    \\
+    \dot{z}      & = F(\alpha)z + G_1(\alpha)\sigma + G_2(\alpha)y                \\
+    u            & = L(\alpha)z + M_1(\alpha)\sigma + M_2(\alpha)y + M_3(\alpha)e
+\end{align*}
+where the gains $F, G_1, G_2, L, M_1, M_2, M_3$ are continuous functions of $\alpha$.
+
+\newpar{}
+\ptitle{Linear Closed-Loop System}
+
+The gains are chosen such that
+\begin{equation*}
+    A_c = \begin{bmatrix} A + BM_2C & BM_1 & BL \\ C & 0 & 0 \\ G_2C & G_1 & F \end{bmatrix}
+\end{equation*}
+is Hurwitz for all values of $\alpha$ and the uncertain parameter $w$. $A, B, C$ are the standard linearization matrices.
+
+\newpar{}
+\ptitle{Nonlinear Closed-Loop System}
+
+The closed-loop nonlinear system given by
+\begin{align*}
+    \dot{x}      & = f(x, u, v, w)                   \\
+    u            & = Lz + M_1 \sigma + M_2 y + M_3 e \\
+    \dot{\sigma} & = h(x, w) - r                     \\
+    \dot{z}      & = Fz + G_1 \sigma + G_2 y,
+\end{align*}
+which yields $A_c$ as linearization matrix.
+
+\newpar{}
+\ptitle{Guarantees and Limitations}
+
+The fact that $A$ is stable for every fixed $\rho = \alpha$ does not guarantee stability of the closed-loop system when $\rho = \alpha(t)$. However, theoretical results relate the slow rate of change of $\rho(t)$ to the boundedness of the system response. Moreover, if $\rho(t)$ converges asymptotically to some constant value, then the error in output tracking would asymptotically converge to zero.
+
+\subsubsection{Gain Scheduling With Output Derivative}
+Better performance can be achieved if $\dot{y}$ can be reliably estimated.
+
+\newpar{}
+\ptitle{Controller}
+
+One can transform the original controller into (neglecting dependence on $\alpha$ for simplicity):
+\begin{align*}
+    \dot{\lambda} & = \psi                  \\
+    \dot{z}       & = Fz + G\lambda         \\
+    u             & = Lz + M\lambda + M_3 e
+\end{align*}
+where $\psi = [e; \dot{y}], G = [G_1, G_2], M = [M_1, M_2]$.
+\newpar{}
+The transfer function from $\psi$ to $u$ is given by
+\begin{equation*}
+    U(s) = \frac{1}{s} \big[ L{(sI - F)}^{-1}G + M \big] \Psi(s)
+\end{equation*}
+which can then be realized in the time domain as
+\begin{align*}
+    \dot{\phi} & = F\phi + G\psi       \\
+    \dot{\eta} & = L\phi + M\psi       \\
+    u          & = \eta + M_3(\alpha)e
+\end{align*}
+
+\newpar{}
+\ptitle{Convergence of Nonlinear Closed-Loop System}
+
+With the controller written aforementioned form (enabled by the availability of $\dot{y}$!) we can write the closed-loop system as:
+\begin{align*}
+    \dot{X} & = g(X, \rho, w), \quad X = \begin{bmatrix} x \\ \phi \\ \eta \end{bmatrix} \\
+    y       & = h(x,w)
+\end{align*}
+\newpar{}
+Now, let $\rho(t)$ be a c.\ d.\ function such that
+\begin{align*}
+    \| \dot{\rho}(t) \| & \leq \mu, \quad \forall t \leq 0
+\end{align*}
+Then, there exist positive $ k_1, k_2, k $ and $ T > 0 $ such that if
+\begin{align*}
+    \mu & \leq k_1, \quad \text{and} \quad \| X(0) - X_{ss}(\rho(0), w) \| < k_2
+\end{align*}
+then the following hold:
+\begin{itemize}
+    \item $ X(t)$ is uniformly bounded for all $ t $
+    \item $ \| e(t) \| \leq k \mu, \quad \forall t > T $
+    \item If $ \rho(t) \to \rho_{ss} $ and $ \dot{\rho}(t) \to 0 $ as $ t \to \infty $, then $ e(t) \to 0 $ as $ t \to \infty $
+\end{itemize}
+In other words, if we start close enough to the equilibrium point, the tracking error will be of the order of magnitude of the derivative of the reference signal.
+
+
+
