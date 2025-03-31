@@ -76,6 +76,12 @@ renders the nonlinear closed-loop system:
 \end{equation*}
 asymptotically stable in a small neighborhood around $(x_{ss}, u_{ss})$.
 
+The linearization of the nonlinear closed-loop system yields, by construction, the matrix
+\begin{equation*}
+    A_{cl} = A-BK
+\end{equation*}
+which is stable by our design.
+
 \subsubsection{Linearization-Based Control With Observer}
 
 Assume that we do not have access to the full state, but rather a nonlinear function $h(x)$ of the state, i.e.,
