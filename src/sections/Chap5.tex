@@ -76,6 +76,12 @@ renders the nonlinear closed-loop system:
 \end{equation*}
 asymptotically stable in a small neighborhood around $(x_{ss}, u_{ss})$.
 
+The linearization of the nonlinear closed-loop system yields, by construction, the matrix
+\begin{equation*}
+    A_{cl} = A-BK
+\end{equation*}
+which is stable by our design.
+
 \subsubsection{Linearization-Based Control With Observer}
 
 Assume that we do not have access to the full state, but rather a nonlinear function $h(x)$ of the state, i.e.,
@@ -131,7 +137,7 @@ The corresponding closed-loop nonlinear system is:
     \dot{\hat{x}} & = (A - BK - LC)(\hat{x} - x_{ss}) + L h(x)
 \end{align*}
 
-\subsubsection{Integral Control}
+\subsection{Integral Control}
 Integral control ensures asymptotic regulation $y(t) \to r$ (constant) as $t \to \infty$ under all parameter perturbations that do not destroy the stability of the closed-loop system.
 \newpar{}
 Consider the nonlinear system:
