@@ -8,9 +8,9 @@ $f:\mathbb{R}^n\to\mathbb{R}^n$, $g_i : \mathbb{R}^n \to \mathbb{R}^n$, $G : \ma
 \newpar{}
 A function $V : \mathbb{R}^n \to \mathbb{R}$ is a control Lyapunov function (CLF) for the system above if it is differentiable, positive definite, radially unbounded, and
 \begin{equation*}
-    \forall x \neq 0, \quad \inf_u \frac{\partial V}{\partial x}(f(x) + G(x)u) < 0
+    \forall x \neq 0, \quad \inf_u \underbrace{\frac{\partial V}{\partial x}(f(x) + G(x)u)}_{=:\dot{V}} < 0
 \end{equation*}
-For physical systems: possibility to choose $u$ such that the energy decreases.
+For physical systems: possibility to choose $u$ such that the energy decreases. Note that we impose the infimum, as \textit{one} stabilizing best-case control input is sufficient (don't need every possible control input to be stabilizing).
 
 \subsubsection{Conditions to Find Control Lyapunov Functions}
 
@@ -27,10 +27,45 @@ The condition can also be reformulated as:
     \forall x \neq 0: \quad \frac{\partial V}{\partial x} f(x) \geq 0 \Rightarrow \frac{\partial V}{\partial x} G(x) \neq 0,
 \end{equation*}
 i.e.\ for points where the system tends to diverge, we must have control in the direction of $\dot{V}$.
+\subsubsection{Deriving Control Laws from CLF}
+\paragraph{Artenstein Theorem}
+There exists $k : \mathbb{R}^n \to \mathbb{R}^m$ (state feedback) continuous on $\mathbb{R}^n \backslash {0}$ such that the equilibrium $x^* = 0$ is globally asymptotically stable under $u = k(x)$ \textbf{iff} there exists a control Lyapunov function.
+\newpar{}
+\textbf{Note} that this function can have a jump at the origin which is undesireable.
+\paragraph{Small Control Property}
+There exists a continuous $k:\mathbb{R}^n \to \mathbb{R}^m$, smooth on $\mathbb{R}^n / {0}$, such that $x^* = 0$ is globally asymptotically stable under $u = k(x)$ \textbf{iff}
+\begin{itemize}
+    \item there exists a (smooth) CLF for the input-affine system~\ref{CLF}.
+    \item $\forall\varepsilon>0,\exists\delta>0: \forall 0<\|x\|<\delta$, there exists
+          \begin{gather*}
+              u\in\mathbb{R}^m\text{ with }\|u\|<\varepsilon\\
+              \text{so that } \dot{V}=L_f V(x)+L_G V(x)u<0
+          \end{gather*}
+\end{itemize}
+This means that for any aribtrarily small input $u$ we can find an initial condition that is stabilized by that input.
+\paragraph{Sontag's Formula}
+Let $V: \mathbb{R}^n \to \mathbb{R}$ be a control Lyapunov function and $k$ from Sontag's formula. Then $x^*$ = 0 is \textbf{globally asymptotically stable} for $x^*=f(x)+G(x)k(x)$.
+\newpar{}
+To obtain the controller, fix
+\begin{itemize}
+    \item $c\geq 0$
+    \item $a(x):=\frac{\partial V}{\partial x}f(x)\in \mathbb{R}$
+    \item $b(x):=\left(\frac{\partial V}{\partial x}G(x)\right)^\top\in \mathbb{R}^{m\times 1}$
+\end{itemize}
+Then, Sontag's formula imposes
+\begin{equation*}
+    k(x):=\begin{cases}
+        -cb(x)-\frac{a(x)+\sqrt{{a(x)}^2+{({b(x)}^\top b(x))}^2}}{{b(x)}^\top b(x)}b(x), & b(x)\neq0 \\
+        0,                                                                               & b(x)=0
+    \end{cases}
+\end{equation*}
 
 \subsection{Backstepping}
 In this subsection, we show how a CLF can be constructed for the special case of systems in strict-feedback form, by using backstepping. It is a recursive approach that constructs a sequence of (simpler) virtual subsystems, each of which is stabilized individually.
-\subsubsection{Integrator backstepping}\label{int_backstepping}
+\begin{center}
+    \includegraphics[width = \linewidth]{6_integrator_bs.png}
+\end{center}
+\subsubsection{Integrator Backstepping}\label{int_backstepping}
 Consider the following system:
 \begin{align*}
     \dot{x}_1 & = f_1(x_1) + g_1(x_1)x_2 \\
@@ -38,15 +73,21 @@ Consider the following system:
 \end{align*}
 where $x_1 \in \mathbb{R}^{n_1}$, $x_2, u \in \mathbb{R}$ (single input).
 \newpar{}
-We want to stabilize the origin of $\dot{x_1}$. The system can be viewed as a cascade of two subsystems: one with $x_2$ as input, and the second with $u$ as input.
+We want to stabilize the origin of $\dot{x}_1$. The system can be viewed as a cascade of two subsystems: one with $x_2$ as input, and the second with $u$ as input.
+\newpar{}
+\textbf{Note} that the first state is the only one that is multidimensional $(n_1)$! If this form is not given, one can still try to rearrange it.
+
 \newpar{}
 \ptitle{Assumption}
 
 We know a (smooth) state-FB control $\alpha_1 : \mathbb{R}^{n_1} \to \mathbb{R}$ and a smooth, positive definite CLF $V_1 : \mathbb{R}^{n_1} \to \mathbb{R}$ such that:
-\begin{equation*}
-    \dot{V}_1 = \frac{\partial V_1}{\partial x_1} \left[f_1(x_1) + g_1(x_1)\alpha_1(x_1)\right] \leq -W_1(x_1),
-\end{equation*}
+\begin{align*}
+    \dot{V}_1 & = L_{f_1 + g_1 \alpha_1} V_1                                                                     \\
+              & =\frac{\partial V_1}{\partial x_1} \left[f_1(x_1) + g_1(x_1)\alpha_1(x_1)\right] \leq -W_1(x_1),
+\end{align*}
 where $W_1(x)$ is a positive definite function, i.e.\ the origin of $x_1$ is asymptotically stable.
+\newpar{}
+This is the ``only time one has to think in backstepping control'', as fixed formulas exist for the rest of the procedure.
 
 \paragraph{Control Approach}
 \ptitle{Error Coordinates}
@@ -67,7 +108,7 @@ we can introduce the \textbf{error coordinates}
 Now, find $u = \alpha_2(x_1, x_2)$ such that $(e_1, e_2) \to 0$ as $t \to \infty$. In that case, we have for $\dot{x}_1$ the dynamics according to above reformulation which is asymptotically stable by assumption.
 
 \newpar{}
-\ptitle{Lyapunov Function}
+\ptitle{Error Lyapunov Function}
 
 Define $V_2(e_2) := \frac{1}{2}e_2^2$ and $V(e_1, e_2) := V_1(e_1) + V_2(e_2)$. Then:
 {\small
@@ -98,7 +139,7 @@ This result does not necessarily imply that $(x_1, x_2) = (0, 0)$ is an asymptot
 \end{equation*}
 for which we see that to ensure $(x_1, x_2) = (0, 0)$ is asymptotically stable, we need
 \begin{equation*}
-    \alpha_1(0) = 0
+    \alpha_1(x_1=0) = 0
 \end{equation*}
 
 \subsubsection{First Generalization}
@@ -128,9 +169,13 @@ Therefore, by following the same steps, we define $v$ to render $(x_1, x_2) = (0
     u = \frac{1}{g_2(x_1, x_2)}\left(\underbrace{-\frac{\partial V_1}{\partial x_1}g_1(x_1) + \dot{\alpha}_1 - k_2(x_2 - \alpha_1(x_1))}_{=:v} - f_2(x_1, x_2)\right)
 \end{equation*}
 }
-Note that $v$ is computed as as shown in~\ref{backstepping_input}.
+Note that
+\begin{itemize}
+    \item $v$ is computed as as shown in~\ref{backstepping_input}.
+    \item $u=\alpha_2$ for~\ref{three_state_bs}.
+\end{itemize}
 
-\subsubsection{Generalization to Three States}
+\subsubsection{Generalization to Three States}\label{three_state_bs}
 
 In the following we see backstepping through two integrators:   % TODO: Integrators correct?
 \begin{align*}
@@ -142,8 +187,10 @@ Assume: $g_2, g_3 \ne 0, \, \forall x_1, x_2, x_3$, and both their value and the
 \paragraph{Control Approach}
 \ptitle{Error Coordinates}
 
-In the part above, we showed that there exists $\alpha_2$ such that for $x_3 = \alpha_2(x_1, x_2)$, $(e_1, e_2) \to 0$. Now, we want to define the input $u$ so that $x_3$ approaches $\alpha_2$, and simultaneously $x_3 \to 0$. Thus, we introduce the error coordinate $e_3 := x_3 - \alpha_2(x_1, x_2)$.
-
+In the part above, we showed that there exists $u=\alpha_2$ such that for $x_3 = \alpha_2(x_1, x_2)$, $(e_1, e_2) \to 0$. This means that $\alpha_2$ is the goal of our current iteration.
+\newpar{}
+In other words, we want to define the new input $u$ so that $x_3$ approaches $\alpha_2$, and simultaneously $x_3 \to 0$. Thus, we introduce the error coordinate $e_3 := x_3 - \alpha_2(x_1, x_2)$.
+\newpar{}
 Then, we can use the following input transformation:
 \begin{equation*}
     u = \frac{1}{g_3(x_1, x_2, x_3)}\left(v - f_3(x_1, x_2, x_3)\right),
@@ -181,14 +228,14 @@ Since we want to ensure that $\dot{V}$ is negative definite, then we can choose 
 Then, in original coordinates:
 {\tiny
 \begin{equation*}
-    u  = \frac{- (x_2 - \alpha_1(x_1))g_2(x_1, x_2) + \dot{\alpha}_2 - k_3(x_3 - \alpha_2(x_1, x_2)) - f_3(x_1, x_2, x_3)}{g_3(x_1, x_2, x_3)}
+    u  = \frac{- \overbrace{(x_2 - \alpha_1(x_1))}^{e_2}g_2(x_1, x_2) + \dot{\alpha}_2 - k_3(x_3 - \alpha_2(x_1, x_2)) - f_3(x_1, x_2, x_3)}{g_3(x_1, x_2, x_3)}
 \end{equation*}
 }
 \begin{equation*}
     =: \alpha_3(x_1, x_2, x_3)
 \end{equation*}
-
-\subsubsection{General backstepping recursion}
+Note that $\alpha_2$ is contained in the formula, which intuitively means that we also track the inner references using this $u$.
+\subsubsection{General Backstepping Recursion}
 
 Based on the two generalizations shown above, it is now possible to employ the backstepping technique to a general system in \textbf{strict-feedback form}:
 \begin{align*}
@@ -201,6 +248,8 @@ Based on the two generalizations shown above, it is now possible to employ the b
 $x_1 \in \mathbb{R}^{n_1}, \, x_2, \ldots, x_k, u \in \mathbb{R}, \, g_2, \ldots, g_k \text{ nowhere zero}.$
 
 The functions $f_i, g_i$ are (sufficiently) smooth, because their derivatives are needed in the definitions of $\alpha_i$.
+\newpar{}
+\textbf{Note}: The recursion makes it obvious that backstepping is very \textbf{sensitive} to errors in $f_i, g_i$!
 
 \newpar{}
 \ptitle{Backstepping Recursion}
@@ -208,8 +257,16 @@ The functions $f_i, g_i$ are (sufficiently) smooth, because their derivatives ar
 \begin{enumerate}
     \item Input data: A CLF $V_1$ for the first system $\dot{x}_1 = f_1(x_1) + g_1(x_1)u_1$, with a smooth feedback $\alpha_1$ that asymptotically stabilizes the origin for $u_1 = \alpha_1(x_1)$.
     \item For $i = 2, \ldots, k$:
-          Construct a CLF $V_i(e_i) = \frac{1}{2}e_i^2$, define $V = \sum_{j=1}^i V_j$, and a feedback $\alpha_i$ that asymptotically stabilizes
-          $(e_1, \ldots, e_i) = (x_1 - 0, x_2 - \alpha_1(x_1), \ldots, x_i - \alpha_{i-1}(x_1, \ldots, x_{i-1}))$
+          Construct a CLF $V_i(e_i) = \frac{1}{2}e_i^2$, define
+          \begin{equation*}
+              V = \sum_{j=1}^i V_j,
+          \end{equation*}
+          and a feedback $\alpha_i$ that asymptotically stabilizes
+              {\small
+                  \begin{equation*}
+                      (e_1, \ldots, e_i) = (x_1-0, x_2-\alpha_1(x_1), \ldots, x_i-\alpha_{i-1}(x_1,\ldots,x_{i-1}))
+                  \end{equation*}
+              }
           with
               {\footnotesize
                   \begin{gather*}
