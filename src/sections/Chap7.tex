@@ -65,7 +65,7 @@ The second derivative of $y$, denoted by $y^{(2)}$, is
     y^{(2)} = \frac{\partial (L_f h)}{\partial x}(f(x) + g(x)u) = L_f^2 h(x) + L_g L_f h(x) u
 \end{equation*}
 
-We repeat the process of taking derivatives of the output until we see that $h(x)$ satisfies
+We repeat the process of taking derivatives of the output until we see \textbf{that} $h(x)$ \textbf{satisfies} (i.e.\ is a property of $h$ and the system)
 \begin{gather*}
     L_g L_f^{i-1} h(x) = 0, \quad i = 1, 2, \ldots, \rho - 1\\
     L_g L_f^{\rho - 1} h(x) \ne 0
@@ -76,7 +76,7 @@ Therefore, $u$ first appears in $y^{(\rho)}$ with a nonzero coefficient
     y^{(\rho)} = L_f^\rho h(x) + L_g L_f^{\rho - 1} h(x) u
 \end{equation*}
 
-This system is input-output linearizable, since the state FB
+This system is \textbf{input-output linearizable}, since the state FB control law
 \begin{equation*}
     u = \frac{1}{L_g L_f^{\rho - 1} h(x)}\left(-L_f^\rho h(x) + v\right)
 \end{equation*}
@@ -180,7 +180,15 @@ We design a FB control law of the form
 \begin{equation*}
     u = \alpha(x) + \beta(x)v, \quad \beta(x) = \gamma^{-1}(x), \quad v = y^{(\rho)}= -K \xi
 \end{equation*}
-such that $(A_c - B_c K)$ is Hurwitz.
+such that $(A_c - B_c K)$ is Hurwitz and where
+\begin{itemize}
+    \item $u$ is the physical input applied to the plant, obtained from the virtual linear system in $v$
+    \item $v$ is given through
+          \begin{equation*}
+              v = - K\xi \text{ (see also below)}
+          \end{equation*}
+          where the sign depends on the convention used
+\end{itemize}
 \newpar{}
 The functions $\alpha, \beta$ are chosen according to
 \begin{align*}
@@ -236,10 +244,14 @@ which ensures that the $\eta$-dynamics
 \end{equation*}
 are independent of $u$.
 
-Note that $\dot{\eta}$ corresponds to the internal dynamics from~\ref{IO_linearization}
-\begin{equation*}
-    \dot{\eta} = f_0(\eta, \xi)
-\end{equation*}
+Note
+\begin{itemize}
+    \item that $\dot{\eta}$ corresponds to the internal dynamics from~\ref{IO_linearization}
+          \begin{equation*}
+              \dot{\eta} = f_0(\eta, \xi)
+          \end{equation*}
+    \item it can be tricky to find these functions. See the remark under~\ref{stab_cond}
+\end{itemize}
 
 \newpar{}
 \ptitle{Finding $T_2(x)$}
@@ -392,9 +404,17 @@ is feedback linearizable if and only if:
 Consider again the input-output linearized system in normal form, and assume that we have designed the feedback control law $u = \alpha(x) + \beta(x)v$ where $\beta(x) = \gamma^{-1}(x)$ and $v = -K \xi$, such that $(A_c - B_c K)$ is Hurwitz resulting in the dynamics according to~\ref{IO_linearization}.
 
 \newpar{}
-\ptitle{Stability Condition}
+\ptitle{Stability Condition}\label{stab_cond}
 
 The origin of the system above is asymptotically stable if the origin of the zero dynamics $\dot{\eta} = f_0(\eta, 0)$ is asymptotically stable (i.e., the system is minimum phase).
+\newpar{}
+The fundamental idea is the following: In the system
+\begin{align*}
+    \dot{\eta} & = f_0(\eta, \xi) \\
+    \dot{\xi}  & = A\xi + Bv      \\
+    y          & = C\xi
+\end{align*}
+we have a linear part in $\xi$ which also determines the desired output according to $y = C\xi$. We can control this part via $v$ ($u$ respectively). Hence, we can find stabilizing and tracking behavior in $\xi$. The issue is the decoupled nonlinear part in $\eta$. If this part is asymptotically stable in $\eta, \xi$, we know that the plant doesn't explode internally. However, our choice of $\eta$ must ensure that $\dot{\eta}$ is \textbf{not influenced by the control input} $u$ as we don't have a handle to control this nonlinear part (only the linear part). If it would be influenced by $u$, the plant could blow up and we would have not chance to control this as our control action is restricted to the linear subsystem.
 
 \newpar{}
 \ptitle{Global Stability}
