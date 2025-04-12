@@ -1,4 +1,4 @@
-\section{SISO Feedback Lineariztation}
+\section{SISO Feedback Linearization}
 \subsection{Introduction}\label{intro_FB_lin}
 
 Consider a class of SISO nonlinear systems of the form
@@ -161,7 +161,7 @@ If $\rho = n$, then for every $x_0 \in \mathcal{D}$, a neighborhood $N$ of $x_0$
         \dot{y} \\
         \vdots  \\
         y^{(\rho - 1)}
-    \end{bmatrix}
+    \end{bmatrix} =
     \begin{bmatrix}
         \psi
     \end{bmatrix}=
@@ -222,7 +222,7 @@ where $\xi \in \mathbb{R}^\rho$, $\eta \in \mathbb{R}^{n - \rho}$, and $(A_c, B_
 }
 and the coordinates $\eta, \xi$ are chosen according to the following transformations.
 \subsubsection{Underlying Coordinate Transformation}
-Input-output linearization applies in the case where $\rho < n$. The resulting nonlinear coordinate transform is of the form \ref{IO_lin_TF}.
+Input-output linearization applies in the case where $\rho < n$. The resulting nonlinear coordinate transform is of the form~\ref{IO_lin_TF}.
 \newpar{}
 \ptitle{Finding $T_1(x)$}
 
@@ -290,7 +290,7 @@ Finally, the output satisfies
 
 Assume that $\bar{x}$ is an open-loop equilibrium of the system, then
 \begin{equation*}
-    \bar{\eta} = \varphi(\bar{x}), \quad \bar{\xi} = \begin{bmatrix} h(\bar{x}) & 0 & \cdots & 0 \end{bmatrix}^T
+    \bar{\eta} = \phi(\bar{x}), \quad \bar{\xi} = \begin{bmatrix} h(\bar{x}) & 0 & \cdots & 0 \end{bmatrix}^T
 \end{equation*}
 
 \newpar{}
@@ -308,11 +308,11 @@ Finally, the linearized system can be stabilized by choosing
 \end{equation*}
 
 \paragraph{Alternative Formulation}
-We have kept $\alpha$ and $\gamma$ expressed in the original coordinates. These two functions are uniquely determined in terms of $f$, $g$, and $h$, and are independent of the choice of $\varphi$. They can be expressed in the new coordinates by setting
+We have kept $\alpha$ and $\gamma$ expressed in the original coordinates. These two functions are uniquely determined in terms of $f$, $g$, and $h$, and are independent of the choice of $\phi$. They can be expressed in the new coordinates by setting
 \begin{equation*}
     \alpha_0(\eta, \xi) = \alpha(T^{-1}(z)), \quad \gamma_0(\eta, \xi) = \gamma(T^{-1}(z))
 \end{equation*}
-but now they are dependent on the choice of the functions $\varphi$.
+but now they are dependent on the choice of the functions $\phi$.
 
 \subsection{Full State Feedback Linearization}
 
@@ -342,7 +342,7 @@ Consider the vector fields $f(x) = Ax$ and constant $g$. Then
 \begin{align*}
     \text{ad}_f^1 g & = [f, g](x) = -Ag                           \\
     \text{ad}_f^2 g & = [f, \text{ad}_f^1 g](x) = -A(-Ag) = A^2 g \\
-    \text{ad}_f^k g & = (-1)^k A^k g
+    \text{ad}_f^k g & = {(-1)}^k A^k g
 \end{align*}
 
 \newpar{}
