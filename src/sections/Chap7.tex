@@ -1,0 +1,402 @@
+\section{SISO Feedback Lineariztation}
+\subsection{Introduction}\label{intro_FB_lin}
+
+Consider a class of SISO nonlinear systems of the form
+\begin{equation*}
+    \dot{x} = f(x) + g(x)u
+\end{equation*}
+\begin{equation*}
+    y = h(x)
+\end{equation*}
+where $x \in \mathcal{D} \subset \mathbb{R}^n$, $u, y \in \mathbb{R}$, $f: \mathcal{D} \to \mathbb{R}^n$, $g: \mathcal{D} \to \mathbb{R}^n$, and the domain $\mathcal{D}$ contains the origin.
+
+\newpar{}
+Feedback linearization answers the following two questions:
+\newpar{}
+\begin{enumerate}
+    \item \textbf{Input-Output Linearizability}: Do there exist both, a nonlinear change of variables and a control input
+          \begin{gather*}
+              z = \begin{bmatrix} \eta \\ \xi \end{bmatrix} = T(x)\\
+              u = \alpha(x) + \beta(x)v
+          \end{gather*}
+          that would transform the system into the following partially linear form?
+          \begin{align*}
+              \dot{\eta} & = f_0(\eta, \xi) \\
+              \dot{\xi}  & = A\xi + Bv      \\
+              y          & = C\xi
+          \end{align*}
+    \item \textbf{Full-State Linearizability}:
+          Do there exist both, a nonlinear change of variables and a control input
+          \begin{gather*}
+              z = T(x)\\
+              u = \alpha(x) + \beta(x)v
+          \end{gather*}
+          that would transform the system into the following fully linear form?
+          \begin{equation*}
+              \dot{z} = \tilde{A}z + \tilde{B}v
+          \end{equation*}
+\end{enumerate}
+
+\subsection{Fundamentals}
+For both, input-output linearization and full state linearization, consider the system~\ref{intro_FB_lin}, where the vector fields $f: \mathcal{D} \to \mathbb{R}^n$, $g: \mathcal{D} \to \mathbb{R}^n$ and the function $h: \mathcal{D} \to \mathbb{R}$ are sufficiently smooth, where sufficiently means such that the following derivatives can be calculated.
+\newpar{}
+In general, the following procedure \textbf{depends on} the choice of the output map $h(x)$!
+
+\subsubsection{Lie Derivatives for FB Linearization}
+The goal is to derive conditions under which the input-output map can be
+rendered linear. The idea is to take a sufficient number of derivatives of the
+output, until the input appears.
+\newpar{}
+\ptitle{Smooth Vector Field}
+
+A function $f$ is called smooth if $f \in \mathcal{C}^\infty$, that is, $f$ is continuous and all its derivatives of all orders are continuous.
+
+\newpar{}
+\ptitle{Lie Derivatives}
+
+By taking the derivative of $y$, we get
+\begin{equation*}
+    \dot{y} = \frac{\partial h}{\partial x}(f(x) + g(x)u) = L_f h(x) + L_g h(x) u
+\end{equation*}
+where $L_f h(x) = \frac{\partial h}{\partial x} f(x)$ is called Lie Derivative of $h(x)$ in direction $f$, same for $g$.
+\newpar{}
+The second derivative of $y$, denoted by $y^{(2)}$, is
+\begin{equation*}
+    y^{(2)} = \frac{\partial (L_f h)}{\partial x}(f(x) + g(x)u) = L_f^2 h(x) + L_g L_f h(x) u
+\end{equation*}
+
+We repeat the process of taking derivatives of the output until we see that $h(x)$ satisfies
+\begin{gather*}
+    L_g L_f^{i-1} h(x) = 0, \quad i = 1, 2, \ldots, \rho - 1\\
+    L_g L_f^{\rho - 1} h(x) \ne 0
+\end{gather*}
+
+Therefore, $u$ first appears in $y^{(\rho)}$ with a nonzero coefficient
+\begin{equation*}
+    y^{(\rho)} = L_f^\rho h(x) + L_g L_f^{\rho - 1} h(x) u
+\end{equation*}
+
+This system is input-output linearizable, since the state FB
+\begin{equation*}
+    u = \frac{1}{L_g L_f^{\rho - 1} h(x)}\left(-L_f^\rho h(x) + v\right)
+\end{equation*}
+reduces the input-output map (in some domain $\mathcal{D}_0 \subset \mathcal{D}$) to
+\begin{equation*}
+    y^{(\rho)} = v
+\end{equation*}
+which is a chain of $\rho$ integrators, where $\rho$ is called relative degree.
+
+\newpar{}
+\ptitle{Relative Degree}
+
+The nonlinear system is said to have relative degree $\rho$, with $1 \leq \rho \leq n$, in the region $\mathcal{D}_0 \subset \mathcal{D}$ if
+\begin{equation*}
+    L_g L_f^i h(x) = 0, \quad i = 0, \ldots, \rho - 2, \quad L_g L_f^{\rho - 1} h(x) \ne 0
+\end{equation*}
+for all $x \in \mathcal{D}_0$.
+
+\subsubsection{Coordinate Transformations for FB Linearization}
+Consider the system~\ref{intro_FB_lin} and suppose it has relative degree $\rho \le n$ in $\mathcal{D}$. The following proves the existence of nonlinear coordinate transforms that we later use to linearize our system.
+
+\newpar{}
+\ptitle{Diffeomorphism}
+
+A continuously differentiable transformation $T$ with a continuously differentiable inverse is called a diffeomorphism.
+
+\paragraph{Input-Output Linearization Transformation}\label{IO_lin_TF}
+
+If $\rho < n$, then for every $x_0 \in \mathcal{D}$, there exists a neighborhood $N$ of $x_0$ and smooth maps $\phi_1(x), \ldots, \phi_{n - \rho}(x)$ such that the map
+    {\small
+        \begin{equation*}
+            z = T(x) =
+            \begin{bmatrix}
+                T_1(x) \\
+                T_2(x)
+            \end{bmatrix} =
+            \begin{bmatrix}
+                \phi_1(x)          \\
+                \vdots             \\
+                \phi_{n - \rho}(x) \\
+                h(x)               \\
+                L_f h(x)           \\
+                \vdots             \\
+                L_f^{\rho - 1} h(x)
+            \end{bmatrix}
+            =
+            \begin{bmatrix}
+                \phi_1(x)          \\
+                \vdots             \\
+                \phi_{n - \rho}(x) \\
+                y                  \\
+                \dot{y}            \\
+                \vdots             \\
+                y^{(\rho - 1)}
+            \end{bmatrix}
+            =
+            \begin{bmatrix}
+                \phi \\
+                \psi
+            \end{bmatrix}=
+            \begin{bmatrix}
+                \eta \\
+                \xi
+            \end{bmatrix}
+        \end{equation*}
+    }
+restricted to $N$ is a diffeomorphism on $N$.
+
+\paragraph{Full State Linearization Transformation}\label{full_state_lin_TF}
+
+If $\rho = n$, then for every $x_0 \in \mathcal{D}$, a neighborhood $N$ of $x_0$ exists such that the map
+\begin{equation*}
+    z = T(x) =
+    \begin{bmatrix}
+        h(x)     \\
+        L_f h(x) \\
+        \vdots   \\
+        L_f^{n - 1} h(x)
+    \end{bmatrix}=
+    \begin{bmatrix}
+        y       \\
+        \dot{y} \\
+        \vdots  \\
+        y^{(\rho - 1)}
+    \end{bmatrix}
+    \begin{bmatrix}
+        \psi
+    \end{bmatrix}=
+    \begin{bmatrix}
+        \xi
+    \end{bmatrix}
+\end{equation*}
+restricted to $N$ is a diffeomorphism on $N$. Note that there is no $\eta$ as $\rho = n$.
+
+\subsection{Input-Output Linearization}\label{IO_linearization}
+\begin{center}  % TODO: Is there a typo in the last xi state?
+    \includegraphics[width = \linewidth]{7_IO_Lin.png}
+\end{center}
+
+We design a FB control law of the form
+\begin{equation*}
+    u = \alpha(x) + \beta(x)v, \quad \beta(x) = \gamma^{-1}(x), \quad v = y^{(\rho)}= -K \xi
+\end{equation*}
+such that $(A_c - B_c K)$ is Hurwitz.
+\newpar{}
+The functions $\alpha, \beta$ are chosen according to
+\begin{align*}
+    \gamma(x) & = L_g L_f^{\rho - 1} h(x)                        \\
+    \alpha(x) & = \frac{-L_f^\rho h(x)}{L_g L_f^{\rho - 1} h(x)}
+\end{align*}
+\newpar{}
+The resulting system has the desired input-output linear form
+\begin{align*}
+    \dot{\eta} & = f_0(\eta, \xi)                                      \\
+    \dot{\xi}  & = A_c \xi + B_c v                                     \\
+               & \left(= A_c \xi + B_c \gamma(x)(u - \alpha(x))\right) \\
+    y          & = C_c \xi
+\end{align*}
+where $\xi \in \mathbb{R}^\rho$, $\eta \in \mathbb{R}^{n - \rho}$, and $(A_c, B_c, C_c)$ define a chain of $\rho$ integrators in canonical form:
+{\small
+\begin{equation*}
+    A_c =
+    \begin{bmatrix}
+        0      & 1      & 0      & \cdots & 0      \\
+        0      & 0      & 1      & \cdots & 0      \\
+        \vdots & \vdots & \ddots & \ddots & \vdots \\
+        0      & 0      & \cdots & 0      & 1      \\
+        0      & 0      & \cdots & 0      & 0
+    \end{bmatrix},
+    \;
+    B_c =
+    \begin{bmatrix}
+        0      \\
+        \vdots \\
+        0      \\
+        1
+    \end{bmatrix},
+    \;
+    C_c = \begin{bmatrix}
+        1 & 0 & \cdots & 0
+    \end{bmatrix}
+\end{equation*}
+}
+and the coordinates $\eta, \xi$ are chosen according to the following transformations.
+\subsubsection{Underlying Coordinate Transformation}
+Input-output linearization applies in the case where $\rho < n$. The resulting nonlinear coordinate transform is of the form \ref{IO_lin_TF}.
+\newpar{}
+\ptitle{Finding $T_1(x)$}
+
+The functions $\phi_1(x)$ to $\phi_{n - \rho}(x)$ are chosen such that
+\begin{equation*}
+    \frac{\partial \phi_i}{\partial x} g(x) = 0, \quad 1 \le i \le n - \rho
+\end{equation*}
+which ensures that the $\eta$-dynamics
+\begin{equation*}
+    \dot{\eta} = \dot{\phi}(x) = \frac{\partial \phi}{\partial x} \dot{x} =\frac{\partial \phi}{\partial x}(f(x) + g(x)u) = \frac{\partial \phi}{\partial x} f(x)
+\end{equation*}
+are independent of $u$.
+
+Note that $\dot{\eta}$ corresponds to the internal dynamics from~\ref{IO_linearization}
+\begin{equation*}
+    \dot{\eta} = f_0(\eta, \xi)
+\end{equation*}
+
+\newpar{}
+\ptitle{Finding $T_2(x)$}
+
+We have
+\begin{equation*}
+    \xi = \begin{bmatrix}
+        y       \\
+        \dot{y} \\
+        \vdots  \\
+        y^{(\rho - 1)}
+    \end{bmatrix}
+\end{equation*}
+Hence, the $\xi$-dynamics are derived as:
+\begin{align*}
+    \dot{\xi} & =
+    \begin{bmatrix}
+        \dot{y}  \\
+        \ddot{y} \\
+        \vdots   \\
+        y^{(\rho)}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \xi_2  \\
+        \xi_3  \\
+        \vdots \\
+        L_f^\rho h(x) + L_g L_f^{\rho - 1} h(x) u
+    \end{bmatrix}                 \\
+              & = A_c \xi + B_c y^{(\rho)} = A_c \xi + B_c v
+\end{align*}
+where
+\begin{equation*}
+    y^{(\rho)} = v = L_g L_f^{\rho - 1} h(x) \left(u - \frac{-L_f^\rho h(x)}{L_g L_f^{\rho - 1} h(x)} \right)
+\end{equation*}
+from which $\alpha$ and $\gamma$ are derived.
+
+\newpar{}
+\ptitle{Finding The Output Map}
+
+Finally, the output satisfies
+\begin{equation*}
+    y = h(x) = \xi_1 = C_c \xi
+\end{equation*}
+
+\newpar{}
+\ptitle{Transformed Equilibrium Point}
+
+Assume that $\bar{x}$ is an open-loop equilibrium of the system, then
+\begin{equation*}
+    \bar{\eta} = \varphi(\bar{x}), \quad \bar{\xi} = \begin{bmatrix} h(\bar{x}) & 0 & \cdots & 0 \end{bmatrix}^T
+\end{equation*}
+
+\newpar{}
+\ptitle{Zero Dynamics and Control Law}
+
+Setting $\xi = 0$ in the internal dynamics yields
+\begin{equation*}
+    \dot{\eta} = f_0(\eta, 0)
+\end{equation*}
+which is called the zero dynamics of the system. If the zero dynamics are \textbf{(globally) asymptotically stable}, the system is called \textbf{minimum phase}.
+
+Finally, the linearized system can be stabilized by choosing
+\begin{equation*}
+    v = -K \xi
+\end{equation*}
+
+\paragraph{Alternative Formulation}
+We have kept $\alpha$ and $\gamma$ expressed in the original coordinates. These two functions are uniquely determined in terms of $f$, $g$, and $h$, and are independent of the choice of $\varphi$. They can be expressed in the new coordinates by setting
+\begin{equation*}
+    \alpha_0(\eta, \xi) = \alpha(T^{-1}(z)), \quad \gamma_0(\eta, \xi) = \gamma(T^{-1}(z))
+\end{equation*}
+but now they are dependent on the choice of the functions $\varphi$.
+
+\subsection{Full State Feedback Linearization}
+
+We know from the previous section that the system is feedback linearizable if we can find a sufficiently smooth function $h(x)$ in a domain $\mathcal{D}$ such that the system has relative degree $n$ within some region $\mathcal{D}_0 \subset \mathcal{D}$. In that case, the normal form has no zero dynamics.
+
+This result also holds as an if and only if statement. We now formalize the conditions for this to happen.
+
+\newpar{}
+\ptitle{Lie Brackets}
+
+For any two vector fields $f$ and $g$ on $\mathcal{D} \subset \mathbb{R}^n$, the Lie bracket is defined as
+\begin{equation*}
+    [f, g](x) \triangleq \frac{\partial g}{\partial x} f(x) - \frac{\partial f}{\partial x} g(x) = L_f g(x) - L_g f(x)
+\end{equation*}
+
+Repeated Lie brackets are defined via
+\begin{align*}
+    \text{ad}_f^0 g(x) & = g(x)                                        \\
+    \text{ad}_f^1 g(x) & = [f, g](x)                                   \\
+    \text{ad}_f^k g(x) & = [f, \text{ad}_f^{k-1} g](x), \quad k \geq 1
+\end{align*}
+
+\newpar{}
+\ptitle{Example}
+
+Consider the vector fields $f(x) = Ax$ and constant $g$. Then
+\begin{align*}
+    \text{ad}_f^1 g & = [f, g](x) = -Ag                           \\
+    \text{ad}_f^2 g & = [f, \text{ad}_f^1 g](x) = -A(-Ag) = A^2 g \\
+    \text{ad}_f^k g & = (-1)^k A^k g
+\end{align*}
+
+\newpar{}
+\ptitle{Distribution}
+
+Let $f_1, \ldots, f_k$ be vector fields on a domain $\mathcal{D} \subset \mathbb{R}^n$. The distribution
+\begin{equation*}
+    \Delta = \{f_1, \ldots, f_k\}
+\end{equation*}
+is the collection of all vector spaces $\Delta(x)$, where
+\begin{equation*}
+    \Delta(x) = \text{span}\{f_1(x), \ldots, f_k(x)\}
+\end{equation*}
+is the subspace of $\mathbb{R}^n $spanned by $f_i$.
+
+\newpar{}
+\ptitle{Involutivity}
+
+A distribution $\Delta$ is called involutive if
+\begin{equation*}
+    g_1 \in \Delta, \quad g_2 \in \Delta \quad \Rightarrow \quad [g_1, g_2] \in \Delta
+\end{equation*}
+
+\newpar{}
+\ptitle{Feedback Linearization}
+
+The SISO system
+\begin{equation*}
+    \dot{x} = f(x) + g(x)u
+\end{equation*}
+is feedback linearizable if and only if:
+\begin{itemize}
+    \item The matrix
+          \begin{equation*}
+              M(x) = \left[g(x), \text{ad}_f g(x), \ldots, \text{ad}_f^{n-1} g(x)\right]
+          \end{equation*}
+          has full rank $n$ for all $x \in \mathcal{D}_0$
+    \item The distribution
+          \begin{equation*}
+              \Delta = \text{span}\left\{g, \text{ad}_f g, \ldots, \text{ad}_f^{n-2} g\right\}
+          \end{equation*}
+          is involutive on $\mathcal{D}_0$
+\end{itemize}
+
+\subsection{Stability}
+
+Consider again the input-output linearized system in normal form, and assume that we have designed the feedback control law $u = \alpha(x) + \beta(x)v$ where $\beta(x) = \gamma^{-1}(x)$ and $v = -K \xi$, such that $(A_c - B_c K)$ is Hurwitz resulting in the dynamics according to~\ref{IO_linearization}.
+
+\newpar{}
+\ptitle{Stability Condition}
+
+The origin of the system above is asymptotically stable if the origin of the zero dynamics $\dot{\eta} = f_0(\eta, 0)$ is asymptotically stable (i.e., the system is minimum phase).
+
+\newpar{}
+\ptitle{Global Stability}
+
+The result in the last theorem is local and does not extend to the global setup, even if the zero dynamics are globally asymptotically stable. To make the result global, more restrictive requirements on the zero dynamics are needed, such as the notion of input-to-state stability of the zero dynamics, which is beyond the current scope of the course.
