@@ -1,44 +1,57 @@
 \section{Sliding Mode Control}
-
-\section{DELETEE}
-
-\subsection{uction}
-
+\subsection{Simplified Sliding Mode Control}
 Consider the second-order nonlinear system
-\begin{equation*}
+\begin{align*}
     \dot{x}_1 = x_2 \\
     \dot{x}_2 = f(x) + g(x)u
-\end{equation*}
-where $f(x)$ and $g(x) \geq g_0 > 0$ are unknown nonlinear functions and $g_0$ is a lower bound on $g$. The goal is to design a feedback control law $u(x)$ that guarantees robust stability.
+\end{align*}
+where
+\begin{itemize}
+    \item $f(x)$ and $g(x) \geq g_0 > 0$ are unknown (!) nonlinear functions
+\end{itemize}
 
-Had the nonlinearities been known, the control would be
-\begin{equation*}
-    u = \frac{1}{g(x)}(-f(x) - k_1x_1 - k_2x_2)
-\end{equation*}
+\newpar{}
+\ptitle{Goal}
 
-where any $k_1, k_2 > 0$ ensures closed-loop stability. However, since $f(x)$ and $g(x)$ are unknown, the control must be designed for robust stabilization, potentially using switching.
+Find (potentially switched) stabilizing $u(x)$ in presence of uncertainty (robust stability).
+\newpar{}
+Note that if the nonlinearities were known, using $u = \frac{1}{g(x)}(-f(x) - k_1x_1 - k_2x_2)$, any $k_1, k_2 > 0$ would ensure closed-loop stability.
 
-Assume we could directly manipulate $x_2$, i.e., use $x_2$ as an input for $\dot{x}_1$, then setting $x_2 = -ax_1$, $a > 0$, would make the first equation exponentially stable. This motivates defining the sliding surface
-\begin{equation*}
-    \sigma = ax_1 + x_2 = 0
-\end{equation*}
+\subsubsection{Control Design}
+\ptitle{Sliding Surface/Manifold}
 
-If we can drive and keep the system on this manifold, then the trajectory would slide towards the origin. Differentiating $\sigma$ along system trajectories gives
-\begin{equation*}
-    \dot{\sigma} = a\dot{x}_1 + \dot{x}_2 = ax_2 + f(x) + g(x)u
-\end{equation*}
+Setting $x_2 = -ax_1$, $a > 0$, would make the first equation exponentially stable. This motivates defining the sliding surface
+\begin{align*}
+    \sigma       & = ax_1 + x_2 \stackrel{!}{=} 0                 \\
+    \dot{\sigma} & = a\dot{x}_1 + \dot{x}_2 = ax_2 + f(x) + g(x)u
+\end{align*}
+If we can drive and keep the system on this manifold, then the trajectory would asymptotically slide to the origin.
+
+\newpar{}
+\ptitle{Inequality Assumption}
 
 Assume the following bound holds
 \begin{equation*}
     \left|\frac{ax_2 + f(x)}{g(x)}\right| \leq \rho(x), \quad \forall x \in \mathbb{R}^2
 \end{equation*}
+where
+\begin{itemize}
+    \item $\rho$ can be found by investigation of the specific system
+    \item one wants $\rho$ small for little control effort
+\end{itemize}
 
-Using $V = \frac{1}{2}\sigma^2$ as Lyapunov function, we compute
+\newpar{}
+\ptitle{Lyapunov Function}
+
+Using $V = \frac{1}{2}\sigma^2$ we get from the inequality assumption
 \begin{equation*}
     \dot{V} = \sigma\dot{\sigma} = \sigma(ax_2 + f(x) + g(x)u) \leq g(x)\left[|\sigma|\rho(x) + \sigma u\right]
 \end{equation*}
 
-Choose
+\newpar{}
+\ptitle{Control Input}
+
+Choosing
 \begin{equation*}
     u = -(\beta_0 + \rho(x))\text{sgn}(\sigma), \quad \beta_0 > 0,\quad \text{sgn}(\sigma) =
     \begin{cases}
@@ -46,42 +59,53 @@ Choose
         -1 & \sigma < 0
     \end{cases}
 \end{equation*}
-
-This yields
+yields
 \begin{equation*}
     \dot{V} \leq -g_0\beta_0|\sigma|
 \end{equation*}
+
+\newpar{}
+\ptitle{Finite-Time Convergence}
 
 Define $W(\sigma) \triangleq \sqrt{2V}$, then
 \begin{equation*}
     W(\sigma(t)) \leq W(\sigma(0)) - \beta_0g_0t
 \end{equation*}
 
-This shows finite-time reachability of the surface $\sigma$, and once on it, it cannot be left due to the inequality above.
+This shows finite-time reachability of the surface $\sigma$, and once on it, it cannot be left due to the inequality above. If we reach $\sigma$ in finite time, we will asymptotically converge to the origin. It is \textbf{not} sufficient to reach $\sigma$ asymptotically.
 
-\newpar{}
-\ptitle{Two-Phase Behavior}
+\paragraph{Two-Phase Behavior}
 
 The behavior of the closed-loop system under sliding mode control can be categorized into:
+\begin{itemize}
+    \item Reaching Phase: The control input drives all trajectories that start off $\sigma$ towards $\sigma$ in finite time and keeps them there
+    \item Sliding Phase: The motion is restricted to $\sigma$ and described by reduced-order stable dynamics
+\end{itemize}
 
-Reaching Phase: The control input drives all trajectories that start off $\sigma$ towards $\sigma$ in finite time and keeps them there
-
-Sliding Phase: The motion is restricted to $\sigma$ and described by reduced-order stable dynamics
-
-Such $\sigma$ is called a \textbf{sliding surface}, and the control is referred to as \textbf{sliding mode control}.
-
-\subsection{Sliding Mode Control}
+\subsection{General Sliding Mode Control}
 
 Consider the general nonlinear system
 \begin{equation*}
     \dot{x} = f(x) + B(x)\left[G(x)E(x)u + \delta(x, u)\right]
 \end{equation*}
-where $x \in \mathbb{R}^n$, $u \in \mathbb{R}^m$, and the functions $f$, $B$, $G$, and $E$ are sufficiently smooth on some domain $\mathcal{D} \subset \mathbb{R}^n$ that contains the origin. The functions $f$, $B$, and $E$ are known, while $G$ and $\delta$ are uncertain. The function $\delta(x, u)$ is smooth for $(x, u) \in \mathcal{D} \times \mathbb{R}^m$. Furthermore, $E(x)$ is invertible and $G(x)$ is diagonal with $g_i(x) \geq g_0 > 0$ for all $x \in \mathcal{D}$.
+where
+$x \in \mathbb{R}^n$, $u \in \mathbb{R}^m$
+We require that
+\begin{itemize}
+    \item $f$, $B$, $G$, and $E$ are sufficiently smooth on some domain $\mathcal{D} \subset \mathbb{R}^n$ that contains the origin
+    \item $f$, $B$, $E$ are known
+    \item $G$, $\delta$ are uncertain
+    \item $\delta(x, u)$ is smooth in both, $(x, u) \in \mathcal{D} \times \mathbb{R}^m$
+    \item $E(x)$ invertible, $G(x)$ diagonal with $g_i(x) \geq g_0 > 0$ for all $x \in \mathcal{D}$
+    \item $f(0) = 0$, so that if $\delta = 0$ then the origin is an OL equilibrium
+\end{itemize}
 
 \newpar{}
 \ptitle{Matched Uncertainty}
 
 The system exhibits matched uncertainty, meaning the control input and the uncertainty both enter via $B(x)$.
+
+\subsubsection{Nonlinear Coordinate Transform}
 
 Let $T: \mathcal{D} \to \mathbb{R}^n$ be a diffeomorphism such that
 \begin{equation*}
@@ -105,72 +129,97 @@ Define the new coordinates
         T_2(x)
     \end{bmatrix}
 \end{equation*}
+\newpar{}
+\ptitle{Dynamics}
 
-The dynamics become
-\begin{equation*}
-    \dot{\eta} = \frac{\partial T_1}{\partial x} f(x) \bigg|_{x = T^{-1}(z)} = f_a(\eta, \xi)
-\end{equation*}
-\begin{equation*}
-    \dot{\xi} = \frac{\partial T_2}{\partial x} f(x) \bigg|_{x = T^{-1}(z)} + G(x)E(x)u + \delta(x, u) = f_b(\eta, \xi) + G(x)E(x)u + \delta(x, u)
-\end{equation*}
+Due to $\frac{\partial T}{\partial x} B(x) =
+    \begin{bmatrix}
+        0 & I_{m \times m}
+    \end{bmatrix}^T$ we obtain
+\begin{align*}
+    \dot{\eta} & = \frac{\partial T_1}{\partial x} f(x) \bigg|_{x = T^{-1}(z)} = f_a(\eta, \xi)           \\
+    \dot{\xi}  & = \frac{\partial T_2}{\partial x} f(x) \bigg|_{x = T^{-1}(z)} + G(x)E(x)u + \delta(x, u) \\
+               & = f_b(\eta, \xi) + G(x)E(x)u + \delta(x, u)
+\end{align*}
+Similar to FB linearization, separated into a control-dependent and an ``internal'' part.
+
+\subsubsection{Control Design}
+\ptitle{Sliding Manifold}
 
 Consider the sliding manifold
 \begin{equation*}
-    \sigma = \xi - \varphi(\eta) = 0
+    \sigma = \xi - \phi(\eta) = 0
 \end{equation*}
 such that the reduced order dynamics
 \begin{equation*}
-    \dot{\eta} = f_a(\eta, \varphi(\eta))
+    \dot{\eta} = f_a(\eta, \phi(\eta))
 \end{equation*}
-is asymptotically stable. The function $\varphi(\eta)$ is a stabilizing feedback designed for this reduced-order model.
+is asymptotically stable. Similar to the simplified case, we pick $\xi = \phi(\eta)$ so that it stabilizes $\dot{\eta}$. This can be achieved by \textit{some} appropriate control method from this course.
+\newpar{}
+Assume now we found a $\phi(\eta)$ that is continuously differentiable with $\phi(0) = 0$.
+\newpar{}
+The $\sigma$ dynamics are
+\begin{align*}
+    \dot{\sigma} & = \dot{\xi} - \frac{\partial \phi}{\partial \eta} \dot{\eta}                                     \\
+                 & = f_b(\eta, \xi) + G(x)E(x)u + \delta(x, u) - \frac{\partial \phi}{\partial \eta} f_a(\eta, \xi)
+\end{align*}
+\newpar{}
+\ptitle{Control Input}
 
-Assume $\varphi(\eta)$ is continuously differentiable with $\varphi(0) = 0$. The derivative of $\sigma$ is
+Let $\hat{G}(x)$ be the nominal model of $G(x)$ and $v$ a free input that we would like to design. Define the control input
 \begin{equation*}
-    \dot{\sigma} = \dot{\xi} - \frac{\partial \varphi}{\partial \eta} \dot{\eta} = f_b(\eta, \xi) + G(x)E(x)u + \delta(x, u) - \frac{\partial \varphi}{\partial \eta} f_a(\eta, \xi)
+    u = E^{-1}(x)\left[ -\hat{G}^{-1}(x)\left( f_b(\eta, \xi) - \frac{\partial \phi}{\partial \eta} f_a(\eta, \xi) \right) + v \right]
 \end{equation*}
-
-Let $\hat{G}(x)$ be the nominal model of $G(x)$ and define the control input
-\begin{equation*}
-    u = E^{-1}(x)\left[ -\hat{G}^{-1}(x)\left( f_b(\eta, \xi) - \frac{\partial \varphi}{\partial \eta} f_a(\eta, \xi) \right) + v \right]
-\end{equation*}
-
 Then
-\begin{equation*}
-    \dot{\sigma} = G(x)v + \Delta(x, v)
-\end{equation*}
-Substituting into (8.14), we obtain
-\begin{equation*}
-    \dot{\sigma} = G(x)v + \Delta(x, v) =
-    \begin{bmatrix}
-        g_1(x)v_1 \\
-        \vdots    \\
-        g_m(x)v_m
-    \end{bmatrix}
-    +
+\begin{align*}
+    \dot{\sigma} & = G(x)v + \Delta(x, v) = \mathrm{diag}(g_i(x))v + \Delta(x, v) \\
+                 & =\begin{bmatrix}
+                        g_1(x)v_1 \\
+                        \vdots    \\
+                        g_m(x)v_m
+                    \end{bmatrix}+
     \begin{bmatrix}
         \Delta_1(x, v) \\
         \vdots         \\
         \Delta_m(x, v)
     \end{bmatrix}
-\end{equation*}
-
+\end{align*}
 where
 \begin{align*}
-    \Delta(x, v) = & \left(I - G(x)\hat{G}^{-1}(x)\right)\left(f_b(\eta, \xi) - \frac{\partial \varphi}{\partial \eta} f_a(\eta, \xi)\right)                                \\
-                   & + \delta\left(x, E^{-1}(x)\left[-\hat{G}^{-1}(x)\left(f_b(\eta, \xi) - \frac{\partial \varphi}{\partial \eta} f_a(\eta, \xi)\right) + v\right] \right)
+    \Delta(x, v) = & \left(I - G(x)\hat{G}^{-1}(x)\right)\alpha                                \\
+                   & + \delta\left(x, E^{-1}(x)\left[-\hat{G}^{-1}(x)\alpha + v\right] \right)
 \end{align*}
-
-Assume
+with
 \begin{equation*}
-    \left| \frac{\Delta_i(x, v)}{g_i(x)} \right| \leq \rho(x) + \kappa_0 \|v\|_\infty, \quad \forall (x, v) \in \mathcal{D} \times \mathbb{R}^m,\quad \forall i \in \{1, \dots, m\}
+    \alpha = \left(f_b(\eta, \xi) - \frac{\partial \phi}{\partial \eta} f_a(\eta, \xi)\right)
 \end{equation*}
 
-Consider the Lyapunov function candidate $V_i = \frac{1}{2}\sigma_i^2$, then
+\newpar{}
+\ptitle{Inequality Assumption}
+
+Assume that the ratio of the diagonal elements $\Delta_i/g_i$ satisfies
+\begin{gather*}
+    \left| \frac{\Delta_i(x, v)}{g_i(x)} \right| \leq \rho(x) + \kappa_0 \|v\|_\infty,\\
+    \forall (x, v) \in \mathcal{D} \times \mathbb{R}^m,\quad \forall i \in \{1, \dots, m\}
+\end{gather*}
+where
+\begin{itemize}
+    \item $\rho(x) \geq 0$ is a known continuous function
+    \item $\kappa_0 \in [0, 1)$ is a known constant. % ChkTex 9
+\end{itemize}
+
+\newpar{}
+\ptitle{Lyapunov Function}
+
+Consider the Lyapunov function candidate $V_i = \frac{1}{2}\sigma_i^2$, then, using the inequality assumption, we get
 \begin{align*}
     \dot{V}_i & = \sigma_i\dot{\sigma}_i = \sigma_i\left(g_i(x)v_i + \Delta_i(x, v)\right)                        \\
               & \leq g_i(x)\left( \sigma_i v_i + |\sigma_i| \left| \frac{\Delta_i(x, v)}{g_i(x)} \right| \right)  \\
               & \leq g_i(x)\left( \sigma_i v_i + |\sigma_i|\left( \rho(x) + \kappa_0 \|v\|_\infty \right) \right)
 \end{align*}
+
+\newpar{}
+\ptitle{Virtual Control Input}
 
 Choose
 \begin{equation*}
@@ -178,31 +227,29 @@ Choose
 \end{equation*}
 with
 \begin{equation*}
-    \beta(x) \geq \frac{\rho(x)}{1 - \kappa_0} + \beta_0, \quad \beta_0 > 0
+    \beta(x) \geq \frac{\rho(x)}{1 - \kappa_0} + \beta_0, \quad \forall x \in\mathcal{D}, \quad \beta_0 > 0
 \end{equation*}
-
-This yields
-\begin{equation*}
-    \dot{V}_i \leq g_i(x)( -\beta(x) + \rho(x) + \kappa_0\beta(x) )|\sigma_i| \leq -g_0\beta_0(1 - \kappa_0)|\sigma_i|
-\end{equation*}
+Using our inequalities, this yields
+\begin{align*}
+    \dot{V}_i & \leq g_i(x)( -\beta(x) + \rho(x) + \kappa_0\beta(x) )|\sigma_i| \\
+              & \leq -g_0\beta_0(1 - \kappa_0)|\sigma_i|
+\end{align*}
 which guarantees finite-time convergence to the manifold $\sigma$.
 
-\newpar{}
-\ptitle{Remarks}
+\paragraph{Practical Considerations}
+\ptitle{Existence and Uniqueness}
 
-We used the $\text{sgn}$ function for the design of $v$, which may raise questions of existence and uniqueness of solutions to the closed-loop system. This can be alleviated using a smooth approximation such as
+We used the $\text{sgn}$ function for the design of $v$, which may raise questions of existence and uniqueness of solutions to the closed-loop system. This can be alleviated using a continuous approximation such as
 \begin{equation*}
-    v_i = -\beta(x)\text{sat}(\sigma_i / \epsilon), \quad \epsilon > 0
+    v_i = -\beta(x)\text{sat}(\sigma_i / \epsilon), \quad \forall i \in \{1, \dots, m\}, \quad \epsilon > 0
 \end{equation*}
 
 \newpar{}
 \ptitle{Remark on Implementation}
 
-In practice, we use digital implementations of control laws. As a result, it may not be possible to instantaneously switch the control input $v$. This leads to the so-called \textbf{chattering phenomenon}, which can cause high heat losses and mechanical wear.
+In practice, we use digital implementations of control laws. As a result, it may not be possible to instantaneously switch the control input $v$. This leads to the so-called \textbf{chattering phenomenon}, which can cause high heat losses and mechanical wear.This issue can be alleviated by introducing time and/or space hysteresis bands to govern the switching commands whenever the trajectory is near the sliding surfaces.
 
-This issue can be alleviated by introducing time and/or space hysteresis bands to govern the switching commands whenever the trajectory is near the sliding surfaces.
-
-\subsection{Tracking}
+\subsection{Reference Tracking}
 
 Consider the system comprised of a chain of integrators
 \begin{equation*}
@@ -217,14 +264,30 @@ with output
 \begin{equation*}
     y = x_1
 \end{equation*}
-where $f(x)$ is known and $g(x), \delta(x)$ are uncertain, with $g(x) \geq g_0 > 0$.
+where
+\begin{itemize}
+    \item $f(x)$ is known
+    \item $g(x), \delta(x)$ are uncertain
+    \item with $g(x) \geq g_0 > 0$
+\end{itemize}
 
 \newpar{}
 \ptitle{Remark}
 
 The system may arise from an input-output feedback linearization approach, similar to the linearized $\xi$ dynamics discussed in the feedback linearization lecture.
 
-We aim for the output $y$ to track a desired reference $r(t)$, where $r(t), r^{(1)}(t), \dots, r^{(n)}(t)$ are bounded and known online, with $r^{(n)}(t)$ piecewise continuous.
+\subsubsection{Control Design}
+
+We aim for the output $y$ to track a desired reference $r(t)$, where
+\begin{itemize}
+    \item $r(t), r^{(1)}(t), \dots, r^{(n)}(t)$ are bounded
+    \item $r^{(n)}(t)$ piecewise continuous
+\end{itemize}
+and all of these signals are known online.
+\newpar{}
+We can use the standard sliding mode control approach in error coordinates.
+\newpar{}
+\ptitle{Error Coordinates}
 
 Define the error vector
 \begin{equation*}
@@ -248,7 +311,7 @@ The error dynamics become
     \end{aligned}
 \end{equation*}
 
-Assume we can directly design $e_n$ to stabilize the subsystem
+Assume we can directly design $e_n$ to stabilize the subsystem except for $\dot{e}_n$
 \begin{equation*}
     \begin{aligned}
         \dot{e}_1     & = e_2  \\
@@ -257,7 +320,7 @@ Assume we can directly design $e_n$ to stabilize the subsystem
         \dot{e}_{n-1} & = e_n
     \end{aligned}
 \end{equation*}
-
+\newpar{}
 Choose
 \begin{equation*}
     e_n = -\left(k_1e_1 + \cdots + k_{n-1}e_{n-1}\right)
@@ -266,8 +329,10 @@ with coefficients defining a Hurwitz polynomial
 \begin{equation*}
     s^{n-1} + k_{n-1}s^{n-2} + \cdots + k_1
 \end{equation*}
+\newpar{}
+\ptitle{Sliding Manifold}
 
-Define the sliding manifold
+The sliding manifold becomes $\sigma = e_n - (-(k_1e_1 + \dots))$, i.e.\
 \begin{equation*}
     \sigma = k_1e_1 + \cdots + k_{n-1}e_{n-1} + e_n = 0
 \end{equation*}
@@ -276,32 +341,41 @@ Its dynamics are
 \begin{equation*}
     \dot{\sigma} = k_1e_2 + \cdots + k_{n-1}e_n + f(x) + g(x)u + \delta(x) - r^{(n)}(t)
 \end{equation*}
+\newpar{}
+\ptitle{Control Input}
 
-Choose the control
+We define
 \begin{equation*}
-    u = -\frac{1}{\hat{g}(x)}\left(k_1e_2 + \cdots + k_{n-1}e_n + f(x) - r^{(n)}(t)\right) + v
+    \alpha = \left(k_1e_2 + \cdots + k_{n-1}e_n + f(x) - r^{(n)}(t)\right)
 \end{equation*}
-
-Then
+The control
+\begin{equation*}
+    u = -\frac{1}{\hat{g}(x)}\alpha + v
+\end{equation*}
+yields
 \begin{equation*}
     \dot{\sigma} = g(x)v + \Delta(t, x, v)
 \end{equation*}
 where
 \begin{align*}
-    \Delta(t, x, v) & = \left(1 - \frac{g(x)}{\hat{g}(x)}\right)\left(k_1e_2 + \cdots + k_{n-1}e_n + f(x) - r^{(n)}(t)\right)              \\
-                    & \quad + \delta\left(x, -\frac{1}{\hat{g}(x)}\left(k_1e_2 + \cdots + k_{n-1}e_n + f(x) - r^{(n)}(t)\right) + v\right)
+    \Delta(t, x, v) & = \left(1 - \frac{g(x)}{\hat{g}(x)}\right)\alpha              \\
+                    & \quad + \delta\left(x, -\frac{1}{\hat{g}(x)}\alpha + v\right)
 \end{align*}
+\textbf{Note} that the first summand of the uncertainty depends on the quality of our $g$ knowledge, whereas the second term is given through disturbances.
 
-Assume
+\newpar{}
+\ptitle{Inequality Assumption}
+
+Assume we find
 \begin{equation*}
     \left| \frac{\Delta(t, x, v)}{g(x)} \right| \leq \rho(x) + \kappa_0|v|, \quad \kappa_0 \in [0, 1)       % ChkTex 9
 \end{equation*}
-
-Choose
+Then, designing
 \begin{equation*}
     v = -\beta(x)\text{sgn}(\sigma), \quad \beta(x) \geq \frac{\rho(x)}{1 - \kappa_0} + \beta_0,\quad \beta_0 > 0
 \end{equation*}
-
-Then the Lyapunov candidate $V = \frac{1}{2}\sigma^2$ satisfies $\dot{V} \leq -g_0\beta_0(1 - \kappa_0)|\sigma|$, which proves asymptotic tracking.
+achieves asymptotic tracking.
+\newpar{}
+Legitimation is again given using the Lyapunov function candidate $V = \frac{1}{2}\sigma^2$.
 
 
