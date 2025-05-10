@@ -1,0 +1,247 @@
+
+\section{Optimal Control}
+
+
+\section{DETEMELE}
+
+\subsection{Unconstrained Finite-Dimensional Optimization (UFDO)}\label{UFDO}
+Consider a function
+\begin{equation*}
+    L : \mathbb{R} \rightarrow \mathbb{R}.
+\end{equation*}
+We want to find
+\begin{equation*}
+    \min_x L(x).
+\end{equation*}
+
+Assume that $L$ is sufficiently smooth. Consider the Taylor expansion at the point $x^*$:
+\begin{equation*}
+    L(x) = L(x^*) + \left.\frac{dL}{dx}\right|_{x=x^*} (x - x^*) + \frac{1}{2} \left.\frac{d^2L}{dx^2}\right|_{x=x^*} {(x - x^*)}^2 + \ldots
+\end{equation*}
+
+In order for the point $x^*$ to be a minimum, we require the following condition to hold (at least locally):
+\begin{equation*}
+    L(x^*) \leq L(x), \quad \forall x : |x - x^*| < \varepsilon
+\end{equation*}
+
+\subsubsection{A Necessary and a Sufficient Condition}
+\paragraph{Scalar Optimization Variable}
+Then, we have the following \textbf{first-order necessary condition}:
+\begin{equation*}
+    \left.\frac{dL}{dx}\right|_{x = x^*} = 0
+\end{equation*}
+
+and the \textbf{second-order sufficient condition}:
+\begin{equation*}
+    \left.\frac{d^2L}{dx^2}\right|_{x = x^*} > 0
+\end{equation*}
+
+Note that these are only conditions for a \textbf{local} minimum (global minimum needs additional conditions if the function is non-convex).
+\paragraph{Multidimensional Optimization Variable}
+
+Now consider $L : \mathbb{R}^n \rightarrow \mathbb{R}$. Then the \textbf{first-order necessary condition} is:
+\begin{equation*}
+    \left(
+    \frac{\partial L}{\partial x_1},
+    \frac{\partial L}{\partial x_2},
+    \dots,
+    \frac{\partial L}{\partial x_n}
+    \right)\Bigg|_{x = x^*} = 0
+\end{equation*}
+and the \textbf{second-order sufficient condition} is:
+\begin{equation*}
+    \left.\frac{\partial^2 L}{\partial x^2}\right|_{x = x^*} =
+    \begin{pmatrix}
+        \frac{\partial^2 L}{\partial x_1^2}            & \cdots & \frac{\partial^2 L}{\partial x_1 \partial x_n} \\
+        \vdots                                         & \ddots & \vdots                                         \\
+        \frac{\partial^2 L}{\partial x_n \partial x_1} & \cdots & \frac{\partial^2 L}{\partial x_n^2}
+    \end{pmatrix}
+    \Bigg|_{x = x^*} > 0
+\end{equation*}
+
+i.e., the Hessian matrix is positive definite.
+
+\subsection{Constrained Finite-Dimensional Optimization (CFDO)}\label{CFDO}
+
+Consider the problem
+\begin{gather*}
+    \min_x L(x) \\
+    \text{s.t. } f(x) = 0
+\end{gather*}
+with $L : \mathbb{R}^n \to \mathbb{R}$ and $f : \mathbb{R}^n \to \mathbb{R}^m$. This problem is equivalent (in the sense of having the same first-order necessary conditions) to minimizing the \textbf{Lagrangian}:
+\begin{equation*}
+    \min_{x, \lambda} H(x, \lambda) := L(x) + \lambda^T f(x)
+\end{equation*}
+with the coefficients $\lambda \in \mathbb{R}^m$ called Lagrange multipliers.
+
+\newpar{}
+\ptitle{Algorithm}
+
+\begin{enumerate}
+    \item Solve for $x^*$ candidate using the condition on $\left.\frac{\partial H}{\partial x}\right|_{x^*}$
+    \item Test solutions from 1.\ by plugging them into $f(x^*)=0$
+          \begin{enumerate}
+              \item Plug those candidates that survive 2.\ into the
+          \end{enumerate}
+\end{enumerate}
+
+\subsubsection{A Necessary and a Sufficient Condition}
+\ptitle{First-Order Necessary Condition}
+
+As the dual problem is unconstrained, the minimization requires the necessary condition of the UFDO problem~\ref{UFDO}.
+\begin{align*}
+    \left.\frac{\partial H}{\partial x}\right|_{x^*}       & = \left.\frac{\partial L}{\partial x}\right|_{x^*} + \lambda^T \left.\frac{\partial f}{\partial x}\right|_{x^*} = 0 \\
+    \left.\frac{\partial H}{\partial \lambda}\right|_{x^*} & = f(x^*) = 0
+\end{align*}
+
+\newpar{}
+\ptitle{Second-Order Sufficient Condition}
+
+The second-order sufficient condition for optimality of the problem
+\begin{equation*}
+    \min_x L(x) \quad \text{s.t. } f(x) = 0
+\end{equation*}
+is given by
+\begin{align*}
+    d^T H_{xx}|_{(x^*, \lambda^*)} d > 0, & \quad \forall d \in T_{x^*}D                                             \\
+    \text{i.\ e.\ }                       & \quad \forall d : \left.\frac{\partial f}{\partial x}\right|_{x^*} d = 0
+\end{align*}
+where
+\begin{equation*}
+    H_{xx}|_{(x^*, \lambda^*)} = \left.\frac{\partial^2 L}{\partial x^2}\right|_{x^*} + \sum_{i=1}^m \lambda_i \left.\frac{\partial^2 f_i}{\partial x^2}\right|_{x^*}
+\end{equation*}
+Important \textbf{note}: The Hessian doesn't have to be positive definite, but only positive definite in directions of the tangent space! Hence, check for $d^T H_{xx}|_{(x^*, \lambda^*)} d > 0$ and not for p.d.\ of the Hessian.
+
+\begin{examplesection}[Proof Sketch]
+    \ptitle{Conditions on the Original Problem}
+    \begin{enumerate}
+        \item The equality constraints $f_1(x) = \cdots = f_m(x) = 0$ define a \textbf{feasible surface} $D \subset \mathbb{R}^n$. If $x^*$ is an optimum, then $x^* \in D$.
+        \item Assume $x^*$ is a regular point of $D$, i.e., the set of partial derivatives $\left\{\left.\frac{\partial f_1}{\partial x}\right|_{x^*}, \dots, \left.\frac{\partial f_m}{\partial x}\right|_{x^*}\right\}$ is linearly independent.
+        \item Feasible perturbations of $x^*$ belong to the tangent space $T_{x^*} D$, and the first-order approximation of the cost is
+              \begin{equation*}
+                  L(x) \approx L(x^*) + \left.\frac{\partial L}{\partial x}\right|_{x^*}(x - x^*)
+              \end{equation*}
+              for $d := x - x^* \in T_{x^*} D$.
+        \item Necessary condition for optimality is then
+              \begin{equation*}
+                  \left.\frac{\partial L}{\partial x}\right|_{x^*} d = 0, \quad \forall d \in T_{x^*} D
+              \end{equation*}
+              or equivalently,
+              \begin{equation*}
+                  \left.\frac{\partial L}{\partial x}\right|_{x^*} \in \mathrm{span}\left\{ \left.\frac{\partial f}{\partial x}\right|_{x^*} \right\}
+              \end{equation*}
+              which implies that there exist $\lambda_1, \dots, \lambda_m \in \mathbb{R}$ such that
+              \begin{equation*}
+                  \left.\frac{\partial L}{\partial x}\right|_{x^*} + \sum_{i=1}^m \lambda_i \left.\frac{\partial f_i}{\partial x}\right|_{x^*} = 0
+              \end{equation*}
+    \end{enumerate}
+
+    \ptitle{Conditions on the Dual Problem}
+
+    As the dual problem is unconstrained, the minimization requires the necessary condition of the UFDO problem~\ref{UFDO}.
+    \begin{align*}
+        \left.\frac{\partial H}{\partial x}\right|_{x^*}       & = \left.\frac{\partial L}{\partial x}\right|_{x^*} + \lambda^T \left.\frac{\partial f}{\partial x}\right|_{x^*} = 0 \\
+        \left.\frac{\partial H}{\partial \lambda}\right|_{x^*} & = f(x^*) = 0
+    \end{align*}
+    These are exactly the necessary conditions of the original constrained problem.
+\end{examplesection}
+
+\subsection{Optimal Control (OC): Pontryagin's Minimum Principle}
+
+Consider the system
+\begin{equation*}
+    \dot{x} = f(x, u), \quad x(0) = x_0
+\end{equation*}
+with performance index
+\begin{equation*}
+    J[x_0, u(\cdot)] = \varphi(x(T)) + \int_0^T L(x(t), u(t)) dt
+\end{equation*}
+and final state constraint
+\begin{equation*}
+    \psi(x(T)) = 0
+\end{equation*}
+\newpar{}
+The goal of the \textbf{Optimal Control Problem} is to find a control \textit{function} from an appropriate function class
+\begin{equation*}
+    u^* : [0, T] \to \mathbb{R}^m
+\end{equation*}
+that minimizes the cost and satisfies the system dynamics and the terminal constraint.
+\newpar{}
+Let $x^*$ is the trajectory generated by applying $u^*$ to the dynamics.
+\newpar{}
+\ptitle{Notes}
+
+\begin{itemize}
+    \item $\psi(x^*(T)) = 0$ holds by construction.
+    \item A fundamental difference to~\ref{UFDO} and~\ref{CFDO} is that we now minimize over \textit{functions}.
+\end{itemize}
+
+\subsubsection{Necessary Conditions: Pontryagin's Minimum Principle}
+The optimal pair $(x^*, u^*)$ solves the following set of equations:
+\begin{align*}
+    \text{State equation:} \quad       & \dot{x} = H_\lambda = f(x, u)                                                                                                \\
+    \text{Co-state equation:} \quad    & -\dot{\lambda} = H_x = \frac{\partial L}{\partial x} + \lambda \frac{\partial f}{\partial x}                                 \\
+    \text{Optimality condition:} \quad & 0 = H_u = \frac{\partial L}{\partial u} + \lambda \frac{\partial f}{\partial u}                                              \\
+    \text{Initial condition:} \quad    & x(0) = x_0                                                                                                                   \\
+    \text{Final condition:} \quad      & \lambda(T) = \left. \left( \frac{\partial \varphi}{\partial x} + \frac{\partial \psi}{\partial x} \nu \right) \right|_{x(T)}
+\end{align*}
+where $\nu$ is the Lagrange multiplier for the terminal constraint.
+
+\paragraph{Properties}
+\textbf{Remark:} The system of equations above constitutes a two-point boundary value problem and typically requires specialized numerical methods to solve.
+
+\newpar{}
+\textbf{Remark:} These are necessary, not sufficient conditions. The computed $(x^*, u^*)$ must \textbf{still be verified for optimality}.
+
+\newpar{}
+\textbf{Lemma:} The Hamiltonian $H(x, u, \lambda)$ remains constant along the optimal trajectory:
+\begin{equation*}
+    \frac{dH}{dt} = 0
+\end{equation*}
+
+\newpar{}
+\textbf{Lemma:} The first-order condition $H_u = 0$ is a special case of the general minimum condition:
+\begin{equation*}
+    u^* = \arg\min_u H(x^*, u, \lambda^*)
+\end{equation*}
+
+\newpar{}
+\textbf{Remark:} If $H_u$ does not depend on $u$, the optimal solution lies at the \textbf{boundary} of the control constraints. This type of control is often called a \emph{Bang-Bang Solution} due to its discontinuous, extreme behavior.
+
+\subsubsection{Sufficient Conditions for Optimality}
+Let $(x^*, \lambda^*, u^*)$ satisfy Pontryagin's necessary conditions. Then the condition
+\begin{equation*}
+    \frac{\partial^2 H}{\partial u^2}(x^*, u^*, \lambda^*) > 0
+\end{equation*}
+is sufficient for $u^*$ to be a local minimum.
+
+\paragraph{Special Case: Convex Optimization}
+\ptitle{Convexity}
+
+A function $f : \mathbb{R}^n \to \mathbb{R}$ is convex if
+\begin{equation*}
+    f((1 - t)x + t x^*) \leq (1 - t) f(x) + t f(x^*), \quad \forall t \in [0, 1]
+\end{equation*}
+\newpar{}
+A smooth convex function satisfies
+\begin{equation*}
+    f(x) \geq f(x^*) + \left. \frac{\partial f}{\partial x} \right|_{x = x^*}(x - x^*), \quad \forall x, x^* \in \mathbb{R}^n
+\end{equation*}
+\newpar{}
+\textbf{Sufficient Conditions for Convex Problems}
+
+Let $u^*(t)$ (with corresponding $x^*(t)$ and $\lambda^*(t)$) satisfy the necessary conditions of Pontryagin's Principle for all $t \in [0, T]$. If $H(x, u^*, \lambda)$ and $\varphi(x)$ are convex in $x$, then $u^*$ is an optimal control.
+
+
+\newpar{}
+\ptitle{Reasoning}
+
+For the Hamiltonian $H = H(x, u, \lambda)$, we have
+\begin{equation*}
+    \frac{dH}{dx} = \frac{\partial H}{\partial x} + \frac{\partial H}{\partial u} \frac{\partial u}{\partial x}
+\end{equation*}
+If $u^*$ is an optimal control candidate, i.e.\ satisfies $\frac{\partial H}{\partial u} = 0$, then
+\begin{equation*}
+    \frac{dH}{dx}(x, u^*, \lambda) = \frac{\partial H}{\partial x}(x, u^*, \lambda)
+\end{equation*}
+
