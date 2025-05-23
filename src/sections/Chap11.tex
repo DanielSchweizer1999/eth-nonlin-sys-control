@@ -1,0 +1,109 @@
+
+\section{Nonlinear Model Predictive Control}
+Model predictive control is nowadays probably the most popular method for handling disturbances and forecast changes.
+\subsection{MPC Formulations}
+\subsubsection{CT MPC}
+
+\begin{itemize}
+    \item Plant model
+          \begin{equation*}
+              \dot{x} = f(t, x, u), \quad x(0) = x_0
+          \end{equation*}
+    \item Euality and inequality constraints
+          \begin{align*}
+              g(t, x, u)   & = 0    \\
+              g_i(t, x, u) & \leq 0
+          \end{align*}
+    \item Objective function
+              {\small
+                  \begin{equation*}
+                      J[x_0, u(\cdot)] = \int_{t}^{t+T} f_0(\tau, x(\tau), u(\tau)) d\tau + F(x(t+T), u(t+T))
+                  \end{equation*}
+              }
+\end{itemize}
+\newpar{}
+\ptitle{Mixed Logical Dynamical Systems}
+
+Useful functionality is added when mathematical models in the Mixed Logical Dynamical Systems ($\mathcal{MLDS}$) framework are used. In this case, logical constraints and states can be included in the mathematical model, which is extremely useful when dealing with plant-wide planning and scheduling problems.
+
+\subsubsection{DT MPC}
+
+Using the main components, the MPC can be formulated as
+\begin{itemize}
+    \item Plant model
+          \begin{equation*}
+              x(k + 1) = f(x(k), u(k)), \quad x(0) = x_0
+          \end{equation*}
+
+    \item Constraints
+          \begin{align*}
+              g_e(k, x, u) & = 0, \quad \forall k    \\
+              g_i(k, x, u) & \leq 0, \quad \forall k
+          \end{align*}
+
+    \item Objective function
+          \begin{equation*}
+              J[x_k, u(\cdot)] = \sum_{l=0}^{N} L(x(k + l), u_k(l))
+          \end{equation*}
+\end{itemize}
+
+The optimal control is a function
+\begin{equation*}
+    u_k^\star(\cdot) = \arg\min J[x_k, u_k(\cdot)]
+\end{equation*}
+
+\subsection{Stability of Model Predictive Controllers}
+\subsubsection{Lyapunov Stability of Nonlinear DT Systems}
+
+Consider the discrete-time nonlinear system
+\begin{equation*}
+    x(k + 1) = f(x(k))
+\end{equation*}
+where $f: \mathcal{D} \to \mathbb{R}^n$ is a nonlinear map. We assume that the system has an equilibrium at the origin, i.e.
+\begin{equation*}
+    f(0) = 0
+\end{equation*}
+
+\newpar{}
+\textbf{Note} that for the discrete-time system, the equilibrium point is characterized by the fixed point condition
+\begin{equation*}
+    x^* = f(x^*)
+\end{equation*}
+
+\newpar{}
+\ptitle{Lyapunov Stability}
+
+Let the origin $x = 0 \in \mathbb{R}^n$ be an equilibrium point for the system. Let $V: \mathbb{R}^n \to \mathbb{R}$ be a continuous function such that
+\begin{align*}
+    V(0)             & = 0, \quad V(x) > 0, \ \forall x \neq 0                             \\
+    \Delta V(x(k))   & \triangleq V(f(x(k))) - V(x(k)) < 0, \ \forall x(k) \in \mathcal{D} \\
+    \|x\| \to \infty & \Rightarrow V(x) \to \infty
+\end{align*}
+
+then the origin is globally asymptotically stable.
+
+\subsubsection{Sufficient Conditions for MPC Stability}
+
+When obtaining stability results for MPC-based controllers, one or several of the following assumptions are made:
+\begin{itemize}
+    \item Terminal equality constraints
+    \item Terminal cost function
+    \item Terminal constraint set
+    \item Dual mode control (infinite horizon): begin with NMPC with a terminal constraint set, then switch to a stabilizing linear controller when the region of attraction of the linear controller is reached
+\end{itemize}
+
+In all cases, the core idea is that the cost function is actually a Lyapunov function for the CL.
+\newpar{}
+\ptitle{Loss of Stability}
+
+Stability can be lost when the receding horizon is too short. Stability can also be lost when the full state is not available for control and an observer must be used.
+
+\paragraph{Terminal State Constraint}
+
+Consider a DT MPC where $x = 0$ is an equilibrium point for $u = 0$, i.e. $f(0, 0) = 0$. Assume that
+\begin{itemize}
+    \item The problem contains a terminal constraint $x(k + N) = 0$
+    \item The function $L$ in the cost function is positive definite in both arguments
+\end{itemize}
+
+Then, if the optimization problem is feasible at time $k$, the coordinate origin is a stable equilibrium point.
