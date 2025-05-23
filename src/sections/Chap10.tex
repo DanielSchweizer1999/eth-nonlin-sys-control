@@ -1,0 +1,301 @@
+\section{State-Dependent Riccati Equation}
+\subsection{The Linear Quadratic Regulator (LQR)}
+\subsubsection{Full-State Knowledge Case}
+The Linear Quadratic Regulator (LQR) considers the system
+\begin{equation*}
+    \dot{x} = A x + B u
+\end{equation*}
+and the performance criterion
+\begin{equation*}
+    J[x_0, u(\cdot)] = \int_0^{\infty} \left[ x^T Q x + u^T R u \right] dt, \quad Q \geq 0, R > 0
+\end{equation*}
+\newpar{}
+The cost is minimized by $u : [0,\infty) \rightarrow \mathbb{R}^p$     % ChkTex 9
+\begin{equation*}
+    u(t) = -R^{-1} B^T P x(t)
+\end{equation*}
+where $P \in \mathbb{R}^{n \times n}$ is the symmetric positive semidefinite solution of the Riccati equation
+\begin{equation*}
+    0 = P A + A^T P + Q - P B R^{-1} B^T P
+\end{equation*}
+
+\newpar{}
+\ptitle{Technical Conditions}
+
+\begin{itemize}
+    \item $(A, B)$ controllable
+    \item $(Q, A)$ detectable
+\end{itemize}
+Weaker versions of this result can also be formulated.
+
+\newpar{}
+\ptitle{Observations}
+
+\begin{itemize}
+    \item LQR assumes full knowledge of the state $x$
+    \item The pair $(Q, R)$ are design parameters
+\end{itemize}
+
+\subsubsection{Observer-Based Control: Linear Quadratic Gaussian Regulator (LQG)}
+Often
+\begin{itemize}
+    \item not all states are measurable
+    \item noise is present
+\end{itemize}
+\newpar{}
+A possible generalization is hence:
+\begin{align*}
+    \dot{x} & = A x + B u + w \\
+    y(t)    & = C x + v
+\end{align*}
+with zero-mean, uncorrelated Gaussian white measurement and process noise $v$, $w$.
+
+\newpar{}
+\ptitle{Observer Design (Kalman Filter)}
+
+$x_e(t)$ is computed by integrating the following ODE:
+\begin{equation*}
+    \dot{x_e} = A x_e + B u + L(y - C x_e)
+\end{equation*}
+
+\newpar{}
+The observer gain $L$ and covariance matrix $P$ are computed offline:
+\begin{align*}
+    L   & = P C^T R_e^{-1}                                         \\
+    0   & = A P + P A^T - P C^T R_e^{-1} C P + Q_e, \quad P \geq 0 \\
+    Q_e & = \mathbb{E}[w w^T]                                      \\
+    R_e & = \mathbb{E}[v v^T]
+\end{align*}
+where the Riccati equation above arises from minimizing the squared estimation error
+\begin{equation*}
+    J[x_e(\cdot)] = \int_{-\infty}^0 \left( x_e - x \right) \left( x_e - x \right)^T dt
+\end{equation*}
+
+\paragraph{Separation Principle}
+
+For linear systems, the following holds:
+\begin{enumerate}
+    \item First, estimate the full state $x(t)$ using available information, yielding $x_e(t)$
+    \item Second, apply LQR control using $x_e(t)$ instead of $x(t)$
+\end{enumerate}
+
+\subsection{State-Dependent Riccati Equation (SDRE) Control}
+\subsubsection{Extended Linearization of a Nonlinear System}
+\ptitle{System Form}
+
+Consider the deterministic, infinite-horizon nonlinear optimal regulation (stabilization) problem. The system is full-state observable, autonomous, nonlinear in the state, and affine in the input:
+\begin{align*}
+    \dot{x} & = f(x) + B(x) u(t) \\
+    x(0)    & = x_0
+\end{align*}
+with \textbf{smooth} functions $f$ and $B$ such that
+\begin{itemize}
+    \item $B(x) \neq 0$ for all $x$
+    \item $f(0) = 0$
+\end{itemize}
+
+\paragraph{``Linearization'' Procedure}
+
+Extended linearization is the process of factorizing a nonlinear system into a linear-like structure with state-dependent coefficient matrices.
+\newpar{}
+Under the mentioned \textbf{assumptions}
+\begin{equation*}
+    f(0) = 0, \quad f \in \mathcal{C}^1(\mathbb{R}^n)
+\end{equation*}
+there \textit{always} exists a continuous, nonlinear matrix-valued function
+\begin{equation*}
+    A : \mathbb{R}^n \to \mathbb{R}^{n \times n}
+\end{equation*}
+such that
+\begin{equation*}
+    f(x) = A(x) x
+\end{equation*}
+The matrix $A(x)$ is found via algebraic factorization and is generally non-unique when $n > 1$.
+
+\newpar{}
+\ptitle{``Linearized'' System}
+
+After extended linearization, the system becomes:
+\begin{align*}
+    \dot{x} & = A(x) x + B(x) u(t) \\
+    x(0)    & = x_0
+\end{align*}
+which has a linear structure with state-dependent matrices $A(x)$ and $B(x)$.
+
+\paragraph{Analysis of the Method}
+\ptitle{Non-Uniqueness of Extended Linearization}
+
+These parameterizations are not unique for $n > 1$. Some examples are
+\begin{itemize}
+    \item \textbf{Nullspace}: If $A(x)x = f(x)$, then
+          \begin{equation*}
+              (A(x) + E(x))x = f(x)
+          \end{equation*}
+          for any $E(x)$ such that $E(x)x = 0$
+    \item \textbf{Convex Combination}: If $A_1(x)x = f(x)$ and $A_2(x)x = f(x)$, then for any $\alpha \in \mathbb{R}$ the convex combination
+          \begin{equation*}
+              A(x, \alpha) x = [\alpha A_1(x) + (1 - \alpha) A_2(x)] x = f(x)
+          \end{equation*}
+          is also a valid parameterization
+\end{itemize}
+
+In general, also an optimal $\alpha$ must be found somehow, for which however, no algorithm exists. $\alpha$ can even be chosen as function of $x$.
+
+\newpar{}
+\ptitle{Pointwise Hurwitz Does Not Imply Stability}
+
+A naive assumption would be that a closed-loop matrix
+\begin{equation*}
+    A_{\text{cl}}(x) = A(x) - B(x) K(x)
+\end{equation*}
+being pointwise Hurwitz implies system stability. However, this is \textbf{not} sufficient in general.
+
+\paragraph{Canonical Transformations}
+
+Sometimes, $f(0) \neq 0$, violating a key assumption. However, one can often transform the system into the desired form:
+\begin{itemize}
+    \item A constant nonzero term can be multiplied and divided by a state that is known not to ever become zero
+    \item A slowly varying state independent term $b(t)$ will not be zero when $x=0$, but it can be transformed to the desired form by adding the equation $\dot{b} = -\lambda b(t)$ with positive $\lambda$. At every iteration, the controller would use the current value $b(t)$.
+    \item In some cases, it is reasonable to add a nonzero, slowly varying artificial state to the system and then apply one of the above transformations
+\end{itemize}
+
+\subsubsection{SDRE Method}
+\ptitle{Formulation}
+
+Consider the extended linearized system
+\begin{align*}
+    \dot{x} & = A(x) x + B(x) u(t) \\
+    x(0)    & = x_0
+\end{align*}
+
+We aim to minimize the infinite-horizon cost functional
+\begin{equation*}
+    J[x_0, u(\cdot)] = \int_0^{\infty} \left[ x^T Q(x) x + u^T R(x) u \right] dt
+\end{equation*}
+where $Q(x) \geq 0$, $R(x) > 0$ are state-dependent weighting matrices.
+
+\newpar{}
+\ptitle{Pointwise LQR}
+
+Under the specified conditions, we apply pointwise the LQR method to $(A(x), B(x))$, $(Q(x), R(x))$, yielding
+\begin{align*}
+    u(t) & = -K(x) x                         \\
+         & = -{R(x)}^{-1} {B(x)}^T P(x) x(t)
+\end{align*}
+where $K : \mathbb{R}^n \to \mathbb{R}^{p \times n}$ and $P : \mathbb{R}^n \to \mathbb{R}^{n \times n}$ satisfies the algebraic SDRE:
+{\small
+\begin{equation*}
+    P(x) A(x) + {A(x)}^T P(x) - P(x) B(x) {R(x)}^{-1} {B(x)}^T P(x) + Q(x) = 0
+\end{equation*}
+}
+
+\paragraph{Performance Optimization}
+Hyperparameters to be tuned are / can be:
+\begin{itemize}
+    \item Factorization of system dynamics
+    \item Cost matrices
+    \item $\alpha$ for convex combination case
+\end{itemize}
+
+\paragraph{Main Stability Result}
+By applying this method, one expects to inherit the desirable properties of the LQR control design:
+\begin{itemize}
+    \item The control law minimizes the cost $J[x_0, u(\cdot)]$
+    \item The system is regulated to the origin: $\lim_{t \to \infty} x(t) = 0$
+\end{itemize}
+
+\newpar{}
+\ptitle{Theorem: Local Asymptotic Stability}
+
+Let the following conditions hold:
+\begin{enumerate}
+    \item $A(x), B(x), Q(x), R(x) \in \mathcal{C}^1(\mathbb{R}^n)$
+    \item The pairs $(A(x), B(x))$ and $(A(x), Q(x)^{1/2})$ are pointwise stabilizable and detectable $\forall x \in \mathbb{R}^n$
+\end{enumerate}
+\newpar{}
+Then the nonlinear system is rendered \textbf{locally} asymptotically stable by the pointwise LQR control law.
+\begin{examplesection}[Result of Proof]
+    The reason is that under these assumptions, one can show
+    \begin{equation*}
+        A_{\text{cl}}(x) = A_{\text{cl}}(0) + \varphi(x), \quad \lim_{x \to 0} \varphi(x) = 0
+    \end{equation*}
+    meaning that the linear term dominates near the origin. Since $A_{\text{cl}}(x)$ is Hurwitz, local asymptotic stability follows by linearization.
+\end{examplesection}
+
+\newpar{}
+\ptitle{Special Case: Symmetric $A(x)$}
+
+Let $A_{\text{cl}}(x)$ be Hurwitz and symmetric for all $x$. Then the closed-loop system is globally stable.
+
+\paragraph{Near Optimality Results}
+\ptitle{Optimality Condition}
+
+Under the two conditions from local asymptotic stability, the SDRE feedback law and its associated state satisfy
+\begin{equation*}
+    u(x) = \arg\min H(x, \lambda, u), \quad \lambda = P(x) x
+\end{equation*}
+where the Hamiltonian is given by
+\begin{equation*}
+    H(x, \lambda, u) = \frac{1}{2} x^T Q(x) x + \frac{1}{2} u^T R(x) u + \lambda^T [A(x)x + B(x)u]
+\end{equation*}
+with derivative
+\begin{equation*}
+    H_u = R(x) u + {B(x)}^T \lambda
+\end{equation*}
+
+\begin{examplesection}[Proof]
+    For any choice of $\lambda$, setting
+    \begin{equation*}
+        u(x) = -R(x)^{-1} B(x)^T \lambda
+    \end{equation*}
+    guarantees $H_u = 0$, satisfying the optimality condition.
+    \newpar{}
+    In particular, if we choose
+    \begin{equation*}
+        \lambda = P(x) x
+    \end{equation*}
+    then the resulting controller is exactly the SDRE law given by
+    \begin{equation*}
+        u(x) = -{R(x)}^{-1} {B(x)}^T P(x) x
+    \end{equation*}
+\end{examplesection}
+
+\newpar{}
+\ptitle{Co-State Equation}
+
+Assume
+\begin{itemize}
+    \item all state-dependent matrices remain bounded along trajectories
+    \item the two conditions from local asymptotic stability are fulfilled
+\end{itemize}
+\newpar{}
+Then,
+\begin{equation*}
+    \dot{\lambda} = -H_x(x, \lambda, u)
+\end{equation*}
+is approximately satisfied by
+\begin{equation*}
+    \lambda = P(x) x
+\end{equation*}
+at a quadratic rate along the trajectory. Here, $P(x)$ is the solution of the SDRE.
+
+\subsubsection{Observer-Based SDRE}
+The matrix functions $A(\cdot), B(\cdot), C(\cdot)$ are evaluated pointwise at the current state estimate $\hat{x}$ instead of the true state $x$.
+\newpar{}
+The Kalman gain $L$ is computed using the standard formula:
+\begin{equation*}
+    L = P(x_e) {C(x_e)}^T R_e^{-1}
+\end{equation*}
+where the estimate is taken from:
+\begin{equation*}
+    \dot{x_e} = A(x_e) x_e + B(x_e) u + L(y - C(x_e) x_e)
+\end{equation*}
+
+\newpar{}
+\ptitle{Effects on Performance}
+
+\begin{itemize}
+    \item Transients are longer compared to full-state feedback
+    \item Behavior depends on the quality of the initial estimate and the measurement noise
+\end{itemize}
+
