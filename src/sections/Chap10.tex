@@ -214,12 +214,13 @@ Let the following conditions hold:
 \end{enumerate}
 \newpar{}
 Then the nonlinear system is rendered \textbf{locally} asymptotically stable by the pointwise LQR control law.
-\newpar{}
-The reason is that under these assumptions, one can show
-\begin{equation*}
-    A_{\text{cl}}(x) = A_{\text{cl}}(0) + \varphi(x), \quad \lim_{x \to 0} \varphi(x) = 0
-\end{equation*}
-meaning that the linear term dominates near the origin. Since $A_{\text{cl}}(x)$ is Hurwitz, local asymptotic stability follows by linearization.
+\begin{examplesection}[Result of Proof]
+    The reason is that under these assumptions, one can show
+    \begin{equation*}
+        A_{\text{cl}}(x) = A_{\text{cl}}(0) + \varphi(x), \quad \lim_{x \to 0} \varphi(x) = 0
+    \end{equation*}
+    meaning that the linear term dominates near the origin. Since $A_{\text{cl}}(x)$ is Hurwitz, local asymptotic stability follows by linearization.
+\end{examplesection}
 
 \newpar{}
 \ptitle{Special Case: Symmetric $A(x)$}
