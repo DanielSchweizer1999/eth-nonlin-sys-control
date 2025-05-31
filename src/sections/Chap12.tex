@@ -1,0 +1,444 @@
+\section{State Estimation and Observers}
+\ptitle{State Estimation and Observer Feedback}
+
+Estimate the state $\hat{x}(t)$ and apply $u(t) = u(\hat{x}(t))$.
+
+\subsection{Introduction}
+\subsubsection{LTI Observers}
+\ptitle{System}
+
+Given an LTI system:
+\begin{align*}
+    \dot{x} & = Ax + Bu \\
+    y       & = Cx
+\end{align*}
+\newpar{}
+\ptitle{Observer}
+\begin{equation*}
+    \dot{\hat{x}} = A\hat{x} + Bu + L(y - C\hat{x}) = (A - LC)\hat{x} + Bu + Ly
+\end{equation*}
+\newpar{}
+\ptitle{Error Dynamics}
+
+Define the error $e = x - \hat{x}$
+\begin{equation*}
+    \dot{e} = (Ax + Bu) - (A - LC)\hat{x} - Bu - LCx = (A - LC)e
+\end{equation*}
+
+\newpar{}
+\ptitle{Closed-Loop Stability}
+
+Use control $u = -K\hat{x} = -K(x - e)$:
+\begin{equation*}
+    \begin{bmatrix}
+        \dot{x} \\
+        \dot{e}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        A - BK & BK     \\
+        0      & A - LC
+    \end{bmatrix}
+    \begin{bmatrix}
+        x \\
+        e
+    \end{bmatrix}
+\end{equation*}
+
+If $A - BK$ and $A - LC$ are stable, then the closed-loop is stable. Hence, by the \textbf{separation principle} we can design observer and controller \textbf{separately} to obtain a stable CL.
+
+\newpar{}
+\ptitle{Limitations}
+
+\begin{itemize}
+    \item The separation principle does not hold in general for nonlinear systems.
+    \item For the nonlinear case, the following methods are common
+          \begin{itemize}
+              \item Extended Kalman Filter (EKF)
+              \item Recursive Prediction Error (RPE)
+              \item Unscented Kalman Filter (UKF)
+              \item Moving Horizon Estimation (MHE)
+              \item High Gain Observers (HGO)
+          \end{itemize}
+\end{itemize}
+
+\subsubsection{Estimation of Constant Vectors}
+In this section we look at the estimation of a \textit{constant} vector from \textit{repeated observations}.
+\newpar{}
+\ptitle{System}
+\begin{equation*}
+    y = Cx + w, \quad x \in \mathbb{R}^n, \quad y, w \in \mathbb{R}^p
+\end{equation*}
+with $w$ being white noise.
+\newpar{}
+Our goal is to compute $\hat{x}$ from given measurements.
+
+\newpar{}
+\ptitle{Definitions}
+\begin{itemize}
+    \item measurement estimate: $\hat{y} = C \hat{x}$
+    \item residual: $\varepsilon_y = \hat{y} - y$
+    \item cost function:
+          \begin{equation*}
+              J[\hat{x}] = \frac{1}{2} \varepsilon_y^\top \varepsilon_y
+          \end{equation*}
+\end{itemize}
+
+\newpar{}
+\ptitle{Optimal Estimate}
+
+As the cost is a simple quadratic form, the optimal estimate is given by pseudo inversion
+\begin{equation*}
+    \hat{x} = {(C^\top C)}^{-1} C^\top y
+\end{equation*}
+\newpar{}
+\ptitle{Practical Considerations}
+
+This static approach introduces averaging. Hence, one must ensure that no undesired averaging happens, e.g.\ of transient and non-transient phases.
+
+\paragraph{Least Squares for Multiple Measurements}
+% TODO
+
+\paragraph{Weighted Least Squares}
+
+Assign weight matrix $N^{-1}$ to residuals:
+\begin{equation*}
+    \varepsilon_y = N^{-1}(\hat{y} - y)
+\end{equation*}
+
+Then minimize:
+\begin{equation*}
+    \hat{x} = {(C^\top S^{-1} C)}^{-1} C^\top S^{-1} y, \quad S = N^{-\top} N^{-1}
+\end{equation*}
+
+This allows tuning the significance of different measurements. Example: Give less weight to older measurements.
+
+\subsection{Kalman Filter}
+In this section we look at the estimation of dynamical vectors.
+\ptitle{Kalman Filter Problem Setup}
+\begin{align*}
+    x(k + 1) & = Ax(k) + Bu(k) + Lw(k), \quad x(0) = x_0 \\
+    y(k)     & = Cx(k) + v(k)
+\end{align*}
+With assumptions on the random variables
+\begin{align*}
+     & E[x_0] = \bar{x}_0, & E[(x_0 - \bar{x}_0){(x_0 - \bar{x}_0)}^\top] = P(0) \\
+     & E[w(k)] = 0,        & E[w(k){w(k)}^\top] = Q(k)                           \\
+     & E[v(k)] = 0,        & E[v(k){v(k)}^\top] = R(k)
+\end{align*}
+We also have the following assumptions on uncorrelatedness
+\begin{gather*}
+    E[v(k){v(j)}^\top] = 0,\;E[w(k){w(j)}^\top] = 0,\quad k\neq j \\
+    E[v(k){w(j)}^\top] = 0,\quad \forall k, j
+\end{gather*}
+
+\subsubsection{Algorithm}
+
+\begin{enumerate}
+    \item \textbf{Prior Update (Prediction)}
+          \begin{align*}
+              P(k + 1|k) & = A P(k|k) A^\top + L Q(k) L^\top \\
+              x(k + 1|k) & = A x(k|k) + Bu(k)
+          \end{align*}
+    \item \textbf{Posterior Update (Measurement Update)}
+          \begin{equation*}
+              K(k + 1) = P(k + 1|k) C^\top {\left(C P(k + 1|k) C^\top + R(k)\right)}^{-1}
+          \end{equation*}
+          yielding
+          \begin{equation*}
+              P(k + 1|k + 1) = (I - K(k + 1) C) P(k + 1|k)
+          \end{equation*}
+          {\small
+          \begin{equation*}
+              x(k + 1|k + 1) = x(k + 1|k) + K(k + 1) \left(y(k + 1) - C x(k + 1|k)\right)
+          \end{equation*}
+          }
+\end{enumerate}
+
+\textbf{Note} that $K$ is chosen such that the trace of $P(k+1)$ is minimized, yielding minimal uncertainty in the state estimation error.
+
+\subsection{Extended Kalman Filter (EKF) and EKF with Parameter Estimation}
+\subsubsection{EKF}
+\ptitle{System}
+The Extended Kalman Filter (EKF) adapts the standard Kalman Filter to nonlinear systems of the form:
+\begin{align*}
+    \dot{x}(t) & = f(x(t)) + w(t)     \\
+    y(t_k)     & = h(x(t_k)) + v(t_k)
+\end{align*}
+
+\newpar{}
+\ptitle{Key Ideas}
+
+\begin{enumerate}
+    \item Propagate the state and covariance between measurements using the nonlinear model
+    \item Linearize the system at the current estimate $\hat{x}(t)$ to compute updates at discrete times $t_k$
+\end{enumerate}
+
+\paragraph{Algorithm}
+
+\newpar{}
+\ptitle{Prior Update (Prediction)}
+
+For $t \in (t_k, t_{k+1})$: Given $\hat{x}(t_k^+)$, propagate between measurements
+\begin{align*}
+    \dot{\hat{x}}(t) & = f(\hat{x}(t))                    \\
+    \dot{P}(t)       & = F(t) P(t) + P(t) {F(t)}^\top + Q
+\end{align*}
+with Jacobian:
+\begin{equation*}
+    F(t) = \frac{\partial f}{\partial x} \bigg|_{x = \hat{x}(t)}
+\end{equation*}
+which yields $\hat{x}(t_{k+1}^-), P(t_{k+1}^-)$ for the next step.
+
+\newpar{}
+\ptitle{Posterior Update (Measurement Update)}
+
+At $t = t_{k+1}$: Define the innovation
+\begin{equation*}
+    e(t_{k+1}) = y(t_{k+1}) - h(\hat{x}(t_{k+1}^-)) \text{ (innovation)}
+\end{equation*}
+and obtain the linearization
+\begin{align*}
+    H(t_{k+1}^-) & = \frac{\partial h}{\partial x} \bigg|_{x = \hat{x}(t_{k+1}^-)} \\
+    A(t_{k+1})   & = R + H(t_{k+1}^-) P(t_{k+1}^-) {H(t_{k+1}^-)}^\top             \\
+    K(t_{k+1})   & = P(t_{k+1}^-) {H(t_{k+1}^-)}^\top {A(t_{k+1})}^{-1}
+\end{align*}
+This yields the measurement update
+\begin{align*}
+    \hat{x}(t_{k+1}^+) & = \hat{x}(t_{k+1}^-) + K(t_{k+1}) e(t_{k+1})             \\
+    P(t_{k+1}^+)       & = P(t_{k+1}^-) - K(t_{k+1}) A(t_{k+1}) {K(t_{k+1})}^\top
+\end{align*}
+
+\subsubsection{KF with Parameter Estimation}
+\ptitle{System}
+
+To estimate unknown parameters $p$, augment the state:
+\begin{equation*}
+    z(t) =
+    \begin{bmatrix}
+        x(t) \\
+        p(t)
+    \end{bmatrix}
+\end{equation*}
+Augmented system with $p$ constant but uncertain:
+\begin{align*}
+    \dot{x}(t) & = f(x(t), u(t), p(t)) + w_1(t) \\
+    \dot{p}(t) & = 0 + w_2(t)                   \\
+    y(t_k)     & = h(x(t_k), p(t_k)) + v(t_k)
+\end{align*}
+with covariances
+\begin{align*}
+    Q & = \mathbb{E}[w_1 w_1^\top], \quad Q_{pp} = \mathbb{E}[w_2 w_2^\top], \quad R = \mathbb{E}[v v^\top]
+\end{align*}
+
+\newpar{}
+\ptitle{Prior Update (Prediction)}
+
+Covariance propagation:
+\begin{align*}
+    \dot{P}_{xx} & = A P_{xx} + P_{xx} A^\top + G P_{xp}^\top + P_{xp} G^\top + Q \\
+    \dot{P}_{xp} & = A P_{xp} + G P_{pp}                                          \\
+    \dot{P}_{pp} & = Q_{pp}
+\end{align*}
+
+\newpar{}
+\ptitle{Posterior Update (Measurement Update)}
+Innovation:
+\begin{gather*}
+    e(t_{k+1}) = y(t_{k+1}) - \hat{y}(t_{k+1})\\
+    \hat{y}(t_{k+1}) = h(\hat{x}(t_{k+1}^-), u(t_{k+1}), \hat{p}(t_{k+1}^-))
+\end{gather*}
+\newpar{}
+Linearization:
+\begin{align*}
+    K(t_{k+1}) & = \left( P_{xx}(t_{k+1}^-) \frac{\partial h}{\partial x}^\top + P_{xp}(t_{k+1}^-) \frac{\partial h}{\partial p}^\top \right) A(t_{k+1})^{-1}      \\
+    L(t_{k+1}) & = \left( P_{xp}(t_{k+1}^-)^\top \frac{\partial h}{\partial x}^\top + P_{pp}(t_{k+1}^-) \frac{\partial h}{\partial p}^\top \right) A(t_{k+1})^{-1}
+\end{align*}
+Posterior update:
+\begin{align*}
+    \hat{x}(t_{k+1}^+) & = \hat{x}(t_{k+1}^-) + K(t_{k+1}) e(t_{k+1}) \\
+    \hat{p}(t_{k+1})   & = \hat{p}(t_k) + L(t_{k+1}) e(t_{k+1})
+\end{align*}
+
+
+\subsection{Moving Horizon Estimation (MHE)}
+\begin{center}
+    \includegraphics[width=0.8\linewidth]{12_MHE.png}
+\end{center}
+
+Moving Horizon Estimation (MHE) is based on optimization over a moving time window to estimate system states.
+
+\begin{itemize}
+    \item Collect recent inputs $u_M(\tau)$ and outputs $y_M(\tau)$ over the interval $[t - M, t]$
+    \item Minimize a cost function involving model prediction errors and measurement residuals
+\end{itemize}
+The idea is to calculate the trajectory of states $x(\tau), \tau \in [t-M : t]$ that better ``explains'' the given history and the model.
+
+\subsubsection{Standard MHE Formulation}
+
+Given a nonlinear system:
+\begin{align*}
+    x_{k+1} & = f(x_k, u_k) + w_k \\
+    y_k     & = h(x_k) + v_k
+\end{align*}
+
+With measurements $y_{t-M}, \dots, y_t$ and known inputs $u_{t-M}, \dots, u_{t-1}$, the MHE estimates the trajectory by solving the optimization problem:
+\begin{gather*}
+    \min_{\{{x_k}\}_{k=t-M}^{t}} \|x_{t-M} - \bar{x}_{t-M}\|^2_{P^{-1}}\\ % ChkTex 3
+    + \sum_{k=t-M}^{t-1} \|x_{k+1} - f(x_k, u_k)\|^2_{Q^{-1}} + \sum_{k=t-M}^{t} \|y_k - h(x_k)\|^2_{R^{-1}}
+\end{gather*}
+
+Subject to:
+\begin{itemize}
+    \item $x_k \in \mathcal{X}$: state constraints (optional)
+    \item $\bar{x}_{t-M}$: prior state (arrival cost) with covariance $P$
+    \item $Q$, $R$: process and measurement noise covariances
+\end{itemize}
+The tuning parameters characterize the degree uf trust into the mesurements and the model.
+
+\paragraph{Properties and Benefits of MHE}
+
+\begin{itemize}
+    \item [+] Can explicitly enforce constraints (e.g.\ energy balances, physical bounds). Reduces ambiguity and improves estimation quality.
+    \item [+] Well suited to nonlinear systems or when constraints are critical
+    \item [+] Robust
+    \item Converges to the Kalman Filter as $M \to \infty$ in linear systems
+\end{itemize}
+
+\newpar{}
+\ptitle{Remarks on MHE and Stability}
+
+Stability of MHE and MPC requires:
+\begin{enumerate}
+    \item MHE must converge rapidly (i.e.\ tight error bounds after few iterations)
+    \item MPC must maintain a continuous value function (robustness to perturbations)
+\end{enumerate}
+
+\subsection{High Gain Observers (Not in Lecture!)}
+
+\ptitle{System}
+
+Consider the system of the \textit{form}:
+\begin{align*}
+    \dot{x}_1 & = x_2        \\
+    \dot{x}_2 & = \phi(x, u) \\
+    y         & = x_1
+\end{align*}
+
+Assume a locally Lipschitz state feedback $u = \gamma(x)$ stabilizes the origin $x = 0$ of the closed-loop system:
+\begin{align*}
+    \dot{x}_1 & = x_2                \\
+    \dot{x}_2 & = \phi(x, \gamma(x)) \\
+    y         & = x_1
+\end{align*}
+\newpar{}
+\ptitle{Observer}
+
+To implement this control using only output $y$, define the observer:
+\begin{align*}
+    \dot{\hat{x}}_1 & = \hat{x}_2 + h_1(y - \hat{x}_1)                        \\
+    \dot{\hat{x}}_2 & = \phi_0(\hat{x}, \gamma(\hat{x})) + h_2(y - \hat{x}_1)
+\end{align*}
+
+where $\phi_0(x, u)$ is a nominal model of $\phi(x, u)$.
+
+\newpar{}
+\ptitle{Estimation Error}
+
+Define the estimation error $\tilde{x} = x - \hat{x}$, then:
+\begin{align*}
+    \dot{\tilde{x}}_1 & = -h_1 \tilde{x}_1 + \tilde{x}_2        \\
+    \dot{\tilde{x}}_2 & = -h_2 \tilde{x}_1 + \delta(x, \hat{x})
+\end{align*}
+with
+\begin{equation*}
+    \delta(x, \hat{x}) = \phi(x, \gamma(x)) - \phi_0(\hat{x}, \gamma(\hat{x}))
+\end{equation*}
+
+\newpar{}
+\ptitle{Stable Estimation Error}
+
+We aim to choose $(h_1, h_2)$ such that $\tilde{x}(t) \to 0$. In the ideal case $\delta \equiv 0$, this can be done by making the matrix
+\begin{equation*}
+    A_0 =
+    \begin{bmatrix}
+        -h_1 & 1 \\
+        -h_2 & 0
+    \end{bmatrix}
+\end{equation*}
+stable.
+
+\newpar{}
+If $\delta \neq 0$, we minimize the gain of the transfer function $G_0 : \delta \mapsto \tilde{x}$. It takes the form:
+\begin{equation*}
+    G_0 =
+    \frac{1}{s^2 + h_1 s + h_2}
+    \begin{bmatrix}
+        1 \\
+        s + h_1
+    \end{bmatrix}
+\end{equation*}
+This gain can be made arbitrarily small by setting $h_2 \gg h_1 \gg 1$. For instance, with
+\begin{equation*}
+    h_1 = \frac{\alpha_1}{\varepsilon}, \quad h_2 = \frac{\alpha_2}{\varepsilon^2}, \quad \varepsilon \ll 1
+\end{equation*}
+we have
+\begin{equation*}
+    \lim_{\varepsilon \to 0} \|G_0(s)\| = 0
+\end{equation*}
+
+\newpar{}
+\ptitle{Peaking Phenomenon}
+
+However, the $(2,1)$ entry of $\exp(A_0 t)$ grows with $h_1, h_2$, causing a peaking phenomenon. That is, $\tilde{x}(t)$ becomes arbitrarily large temporarily, which may result in a large control input $u = \gamma(\hat{x})$, potentially pushing the system outside the region of attraction (unstable error dynamics).
+\newpar{}
+Solution: \textbf{saturating} the control action. Since the peaking is short-lived, we assume that $\hat{x}(t)$ converges faster than the system diverges, and the resulting feedback remains stabilizing.
+
+\subsubsection{SISO HGO Theorem}
+\ptitle{System}
+\begin{align*}
+    \dot{x} & = A_C x + B_C \phi(x, u) \\
+    y       & = C_C x
+\end{align*}
+\newpar{}
+\ptitle{Controller}
+
+Assume there exists a stabilizing state feedback controller:
+\begin{align*}
+    \dot{v} & = \Gamma(v, x) \\
+    u       & = \gamma(v, x)
+\end{align*}
+with $\Gamma$ and $\gamma$ globally bounded.
+
+Now consider the output feedback implementation:
+\begin{align*}
+    \dot{v}       & = \Gamma(v, \hat{x})                                        \\
+    \dot{\hat{x}} & = A_C \hat{x} + B_C \phi_0(\hat{x}, u) + H(y - C_C \hat{x}) \\
+    u             & = \gamma(v, \hat{x})
+\end{align*}
+
+with ($\rho$ is the relative degree)
+\begin{equation*}
+    H =
+    \begin{bmatrix}
+        \frac{\alpha_1}{\varepsilon}   \\
+        \frac{\alpha_2}{\varepsilon^2} \\
+        \vdots                         \\
+        \frac{\alpha_\rho}{\varepsilon^\rho}
+    \end{bmatrix}
+    \in \mathbb{R}^\rho
+\end{equation*}
+and $\varepsilon>0$ and choose $\alpha_i$ such that
+\begin{equation*}
+    s^\rho + \alpha_1 s^{\rho - 1} + \cdots + \alpha_\rho = 0
+\end{equation*}
+has all its roots in the complex left half plane.
+\newpar{}
+Then, there exists $\varepsilon_0 > 0$ such that for all $\varepsilon < \varepsilon_0$, the closed-loop system is \textbf{exponentially stable}.
+
+\newpar{}
+\textbf{Remark}
+
+This formulation neglects unobserved zero dynamics. If these exist, we assume the original system is minimum phase. Then the stability result holds.
+
+
