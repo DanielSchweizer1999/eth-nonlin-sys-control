@@ -48,18 +48,30 @@ Let $V: \mathcal{D} \subset \mathbb{R}^n \to \mathbb{R}$ be a continuously diffe
                 & = \frac{\partial V}{\partial x} f(x)
 \end{align*}
 
+\newpar{}
+\ptitle{Definiteness}
+
+\begin{itemize}
+    \item If $V (x) > 0, \forall x \in \mathcal{D}\setminus \{0\}$, then $V$ is called locally positive definite.~\textbf{Caution}: In the following we always require positive definiteness.
+    \item If $V (x) \geq 0, \forall x \in \mathcal{D}\setminus \{0\}$, then $V$ is locally positive semi-definite.
+\end{itemize}
+
 \paragraph{Direct Method}
+If the \textbf{stability} conditions are met, then $V$ is called a Lyapunov function for $\dot{x} = f (x)$.
 
 \newpar{}
 \ptitle{Stability}
 
-Let the origin $x = 0 \in \mathcal{D} \subset \mathbb{R}^n$ be an equilibrium point for $\dot{x} = f (x)$. Let $V : \mathcal{D} \to \mathbb{R}$ be a continuously differentiable function such that:
+Let the origin $x = 0 \in \mathcal{D} \subset \mathbb{R}^n$ be an equilibrium point for $\dot{x} = f (x)$.
+
+Let $V : \mathcal{D} \to \mathbb{R}$ be a continuously differentiable function such that:
 \begin{equation*}
     V (0) = 0 \text{ and } V (x) > 0, \quad \forall x \in \mathcal{D} \setminus \{0\},
 \end{equation*}
 \begin{equation*}
     \dot{V} (x) \leq 0, \quad \forall x \in \mathcal{D}.
 \end{equation*}
+
 Then, $x = 0$ is stable.
 
 \newpar{}
@@ -70,33 +82,27 @@ Moreover, if:
     \dot{V} (x) < 0, \quad \forall x \in \mathcal{D} \setminus \{0\},
 \end{equation*}
 then $x = 0$ is asymptotically stable.
-
+\newpar{}
 Note that in the asymptotically stable case,
 \begin{itemize}
     \item $\dot{V} = 0 \iff x=0$
     \item we need $\dot{V}(0)=0$ as $V(0)=0$ (and stay $0$)
+    \item we may still leave the $\delta$-ball
 \end{itemize}
+
+\begin{center}
+    \includegraphics[width = 0.8\linewidth]{3_S_vs_AS.png}
+\end{center}
 
 \newpar{}
 \ptitle{Global Asymptotic Stability}
 
-Let $x = 0$ be an equilibrium point of the system $\dot{x} = f(x)$. Let $V: \mathbb{R}^n \to \mathbb{R}$ be a continuously differentiable function such that:
-\begin{gather*}
-    V (0) = 0 \text{ and } V (x) > 0, \quad \forall x \neq 0,\\
-    \|x\| \to \infty \Rightarrow V (x) \to \infty \text{ (radially unbounded)},\\
-    \dot{V} (x) < 0, \quad \forall x \neq 0.
-\end{gather*}
+If the system is asymptotically and in addition
+\begin{equation*}
+    \|x\| \to \infty \Rightarrow V (x) \to \infty \text{ (radially unbounded)}
+\end{equation*}
+
 Then the origin is \textbf{globally} asymptotically stable.
-
-\newpar{}
-\ptitle{Definiteness}
-
-\begin{itemize}
-    \item If $V (x) > 0, \forall x \in \mathcal{D}\setminus \{0\}$, then $V$ is called locally positive definite.
-    \item If $V (x) \geq 0, \forall x \in \mathcal{D}\setminus \{0\}$, then $V$ is locally positive semi-definite.
-\end{itemize}
-
-If the \textbf{stability} conditions are met, then $V$ is called a Lyapunov function for $\dot{x} = f (x)$.
 
 \subsection{The Invariance Principle}
 \subsubsection{Invariant and Positively Invariant Domains}
@@ -105,7 +111,7 @@ A domain $\mathcal{D} \subseteq \mathbb{R}^n$ is called \textbf{invariant} for $
     \forall x (t_0) \in \mathcal{D} \Rightarrow x (t) \in \mathcal{D}, \quad \forall t \in \mathbb{R}.
 \end{equation*}
 That is, if a solution belongs to $\mathcal{D}$ at some time instant, then it belongs to $\mathcal{D}$ for all future \textit{and past time}.
-
+\newpar{}
 A domain $\mathcal{D} \subseteq \mathbb{R}^n$ is called \textbf{positively invariant} for the system $\dot{x} = f(x)$ if:
 \noindent\begin{equation*}
     \forall x (t_0) \in \mathcal{D} \Rightarrow x (t) \in \mathcal{D}, \quad \forall t \geq t_0.
@@ -114,6 +120,10 @@ A domain $\mathcal{D} \subseteq \mathbb{R}^n$ is called \textbf{positively invar
 Note that invariance is defined wrt.\ a trajectory and \textbf{not} wrt.\ e.g.\ a Lyapunov function candidate.
 
 \subsubsection{LaSalle's Invariance Principle}
+\begin{center}
+    \includegraphics[width = \linewidth]{3_LaSalle.png}
+\end{center}
+
 Let
 \begin{itemize}
     \item $\Omega \subset \mathcal{D}$ be a compact set that is positively invariant with respect to $\dot{x} = f(x)$.
@@ -128,11 +138,18 @@ Let
 Then every solution starting in $\Omega$ approaches $M$ as $t \to \infty$.
 
 \newpar{}
-\ptitle{Remark}
+\ptitle{Remarks}
 
-The theorem can also be used to find limit cycles.
+\begin{itemize}
+    \item The theorem can also be used to find limit cycles.
+    \item Note that we do \textbf{not assume} that $V(x)$ is positive definite or radially unbounded.
+    \item As we must define a \textit{compact} set $\Omega$, global stability requires that each sublevel set of $V(x)$ is invariant.       % TODO: Double-check
+    \item Often in practice: Plug $x\in E$ into $f(x)$ and find conditions for invariance. \textbf{Caution}: Invariance does not necessarily require $f(x)=0$ (e.g.\ find a subspace that fulfills $E$ and on which we remain).
+\end{itemize}
 
 \paragraph{Corollary: Asymptotic Stability of Origin}
+As LaSalle requires the definition of $\Omega$, the following method \textit{can} simplify the proof of asymptotic stability of the origin. % TODO: Right?
+\newpar{}
 Let
 \begin{itemize}
     \item $x = 0 \in \mathcal{D}$ be an equilibrium point of the system $\dot{x} = f(x)$.
@@ -155,7 +172,7 @@ Let
           \noindent\begin{equation*}
               V (0) = 0, \quad \text{and} \quad V (x_0) > 0
           \end{equation*}
-          for some $x_0$ with arbitrarily small $\|x_0\|$.
+          for some $x_0$ with \textbf{arbitrarily small} $\|x_0\|$.
 \end{itemize}
 
 Define the set:
@@ -169,9 +186,17 @@ Suppose that:
 Then $x = 0$ is \textbf{unstable}.
 
 \newpar{}
-\ptitle{Remark}
+\ptitle{Remarks}
 
-The requirements on $V (x)$ in the instability criterion are weaker than those for a Lyapunov function that proves stability.
+\begin{itemize}
+    \item The requirements on $V (x)$ in the instability criterion are weaker than those for a Lyapunov function that proves stability.
+    \item The key is that we must find an unstable region ($\dot{V(x)}>0, V(x)>0$) that reaches arbitrarily close to the origin, i.e.\ an infinitesimal perturbation causes instability.
+\end{itemize}
+
+\begin{examplesection}[Example]
+    \includegraphics[width = \linewidth]{3_instability.png}
+\end{examplesection}
+Notice the key concept: The tip of the gray region must touch the origin (arbitrarily close).
 
 \subsection{Stability of Nonautonomous Systems}
 \subsubsection{Comparison Functions}
