@@ -354,8 +354,31 @@ We have kept $\alpha$ and $\gamma$ expressed in the original coordinates. These 
 \end{equation*}
 but now they are dependent on the choice of the functions $\phi$.
 
+\subsubsection{Stability}
+
+Consider again the input-output linearized system in normal form, and assume that we have designed the feedback control law $u = \alpha(x) + \beta(x)v$ where $\beta(x) = \gamma^{-1}(x)$ and $v = -K \xi$, such that $(A_c - B_c K)$ is Hurwitz resulting in the dynamics according to~\ref{IO_linearization}.
+
+\newpar{}
+\ptitle{Stability Condition}\label{stab_cond}
+
+The origin of the system above is asymptotically stable if the origin of the zero dynamics $\dot{\eta} = f_0(\eta, 0)$ is asymptotically stable (i.e., the system is minimum phase).
+\newpar{}
+The fundamental idea is the following: In the system
+\begin{align*}
+    \dot{\eta} & = f_0(\eta, \xi) \\
+    \dot{\xi}  & = A\xi + Bv      \\
+    y          & = C\xi
+\end{align*}
+we have a linear part in $\xi$ which also determines the desired output according to $y = C\xi$. We can control this part via $v$ ($u$ respectively). Hence, we can find stabilizing and tracking behavior in $\xi$. The issue is the decoupled nonlinear part in $\eta$. If this part is asymptotically stable in $\eta, \xi$, we know that the plant doesn't explode internally. However, our choice of $\eta$ must ensure that $\dot{\eta}$ is \textbf{not influenced by the control input} $u$ as we don't have a handle to control this nonlinear part (only the linear part). If it would be influenced by $u$, the plant could blow up and we would have not chance to control this as our control action is restricted to the linear subsystem.
+
+\newpar{}
+\ptitle{Global Stability}
+
+The result in the last theorem is local and does not extend to the global setup, even if the zero dynamics are globally asymptotically stable. To make the result global, more restrictive requirements on the zero dynamics are needed, such as the notion of input-to-state stability of the zero dynamics, which is beyond the current scope of the course.
+
+
 \subsection{Full State Feedback Linearization (FS FB Lin)}
-Note that for a given system, even if it is FS FB Lin, other output maps $h(x)$ may exist of IO Lin, which may be more suitable for tracking purposes.
+Note that for a given system, even if it is FS FB linearizable, other output maps $h(x)$ may exist of IO Lin, which may be more suitable for tracking purposes.
 \subsubsection{Overview}
 
 If $\textcolor{red}{\rho = n}$, then for every $x_0 \in \mathcal{D}$, a neighborhood $N$ of $x_0$ exists such that the map
@@ -381,12 +404,16 @@ If $\textcolor{red}{\rho = n}$, then for every $x_0 \in \mathcal{D}$, a neighbor
     \end{bmatrix}
 \end{equation*}
 restricted to $N$ is a diffeomorphism on $N$. Note that there is no $\eta$ as $\rho = n$.
+\newpar{}
+Now, exactly the same procedure as in IO Lin is applied.
 
 \subsubsection{Technical Conditions}
 
-We know from the previous section that the system is feedback linearizable if we can find a sufficiently smooth function $h(x)$ in a domain $\mathcal{D}$ such that the system has relative degree $n$ within some region $\mathcal{D}_0 \subset \mathcal{D}$. In that case, the normal form has no zero dynamics.
+We know from the previous section that the system is feedback linearizable if we can find a sufficiently smooth function $h(x)$ in a domain $\mathcal{D}$ such that the system has relative degree $n$ within some region $\mathcal{D}_0 \subset \mathcal{D}$. In that case, the normal form has \textbf{no} zero dynamics.
 
-This result also holds as an \textbf{if and only if} statement. We now formalize the conditions for this to happen.
+This result also holds as an \textbf{if and only if} statement.
+
+The following two conditions are necessary and sufficient for the existence of such a function $h(x)$. Note however, that in practice, trying out a few \textbf{candidate} output maps and differentiating them is also a sufficient condition and may be more efficient.
 
 \paragraph{Fundamentals}
 
@@ -441,7 +468,7 @@ The SISO system
 \begin{equation*}
     \dot{x} = f(x) + g(x)u
 \end{equation*}
-is feedback linearizable if and only if:
+is feedback linearizable \textbf{if and only if}:
 \begin{itemize}
     \item The matrix
           \begin{equation*}
@@ -454,25 +481,3 @@ is feedback linearizable if and only if:
           \end{equation*}
           is involutive on $\mathcal{D}_0$
 \end{itemize}
-
-\subsection{Stability}
-
-Consider again the input-output linearized system in normal form, and assume that we have designed the feedback control law $u = \alpha(x) + \beta(x)v$ where $\beta(x) = \gamma^{-1}(x)$ and $v = -K \xi$, such that $(A_c - B_c K)$ is Hurwitz resulting in the dynamics according to~\ref{IO_linearization}.
-
-\newpar{}
-\ptitle{Stability Condition}\label{stab_cond}
-
-The origin of the system above is asymptotically stable if the origin of the zero dynamics $\dot{\eta} = f_0(\eta, 0)$ is asymptotically stable (i.e., the system is minimum phase).
-\newpar{}
-The fundamental idea is the following: In the system
-\begin{align*}
-    \dot{\eta} & = f_0(\eta, \xi) \\
-    \dot{\xi}  & = A\xi + Bv      \\
-    y          & = C\xi
-\end{align*}
-we have a linear part in $\xi$ which also determines the desired output according to $y = C\xi$. We can control this part via $v$ ($u$ respectively). Hence, we can find stabilizing and tracking behavior in $\xi$. The issue is the decoupled nonlinear part in $\eta$. If this part is asymptotically stable in $\eta, \xi$, we know that the plant doesn't explode internally. However, our choice of $\eta$ must ensure that $\dot{\eta}$ is \textbf{not influenced by the control input} $u$ as we don't have a handle to control this nonlinear part (only the linear part). If it would be influenced by $u$, the plant could blow up and we would have not chance to control this as our control action is restricted to the linear subsystem.
-
-\newpar{}
-\ptitle{Global Stability}
-
-The result in the last theorem is local and does not extend to the global setup, even if the zero dynamics are globally asymptotically stable. To make the result global, more restrictive requirements on the zero dynamics are needed, such as the notion of input-to-state stability of the zero dynamics, which is beyond the current scope of the course.
