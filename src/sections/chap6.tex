@@ -1,4 +1,11 @@
 \section{Lyapunov Based Control Design}
+\textbf{Note}
+
+\begin{itemize}
+    \item that it is preferable to know these formulas and their derivation by heart, e.g.\ on the exam.
+    \item that using the general backstepping recursion~\ref{general_backstepping} is very useful and algorithmic in practice.
+\end{itemize}
+
 \subsection{Control Lyapunov Functions}\label{CLF}
 Consider the stabilization problem for the following system
 \begin{equation*}
@@ -61,11 +68,11 @@ Then, Sontag's formula imposes
 \end{equation*}
 
 \subsection{Backstepping}
-In this subsection, we show how a CLF can be constructed for the special case of systems in strict-feedback form, by using backstepping. It is a recursive approach that constructs a sequence of (simpler) virtual subsystems, each of which is stabilized individually.
+In this subsection, we show how a CLF can be constructed for the special case of systems in \textbf{strict-feedback form}, by using backstepping. It is a recursive approach that constructs a sequence of (simpler) virtual subsystems, each of which is stabilized individually.
 \begin{center}
     \includegraphics[width = \linewidth]{6_integrator_bs.png}
 \end{center}
-\subsubsection{Integrator Backstepping}\label{int_backstepping}
+\subsubsection{Vanilla Backstepping}\label{int_backstepping}
 Consider the following system:
 \begin{align*}
     \dot{x}_1 & = f_1(x_1) + g_1(x_1)x_2 \\
@@ -87,7 +94,7 @@ We know a (smooth) state-FB control $\alpha_1 : \mathbb{R}^{n_1} \to \mathbb{R}$
 \end{align*}
 where $W_1(x)$ is a positive definite function, i.e.\ the origin of $x_1$ is asymptotically stable.
 \newpar{}
-This is the ``only time one has to think in backstepping control'', as fixed formulas exist for the rest of the procedure.
+This is the ``only time one has to think in backstepping control'' (I also had to think afterwards\dots), as fixed formulas exist for the rest of the procedure.
 
 \paragraph{Control Approach}
 \ptitle{Error Coordinates}
@@ -101,9 +108,14 @@ we can introduce the \textbf{error coordinates}
 \begin{equation*}
     (e_1, e_2) := (x_1 - 0, x_2 - \alpha_1(x_1))
 \end{equation*}
+
+\newpar{}
+\ptitle{Error Dynamics}
+
 \begin{align*}
-    \dot{e}_1 & = f_1(e_1) + g_1(e_1)\alpha_1(e_1) + g_1(e_1)e_2                                 \\
-    \dot{e}_2 & = u - \dot{\alpha}_1 = u - \frac{\partial \alpha_1}{\partial e_1} \dot{e}_1 =: v
+    \dot{e}_1 & = f_1(e_1) + g_1(e_1)\alpha_1(e_1) + g_1(e_1)e_2            \\
+    \dot{e}_2 & = u - \dot{\alpha}_1                                        \\
+              & = u - \frac{\partial \alpha_1}{\partial e_1} \dot{e}_1 =: v
 \end{align*}
 Now, find $u = \alpha_2(x_1, x_2)$ such that $(e_1, e_2) \to 0$ as $t \to \infty$. In that case, we have for $\dot{x}_1$ the dynamics according to above reformulation which is asymptotically stable by assumption.
 
@@ -149,10 +161,10 @@ Let us now generalize by including functions $f_2 : \mathbb{R} \times \mathbb{R}
     \dot{x}_2 & = f_2(x_1, x_2) + g_2(x_1, x_2)u
 \end{align*}
 with $x_2, u_2 \in \mathbb{R}, g_2(x_1, x_2) \neq 0, \forall x_1, x_2$ and $g_2$ is known in sign and intensity.
-\paragraph{Control Approach}
-\ptitle{Virtual Control Input}
 
-Using the transformation
+\ptitle{Virtual Control Input}\label{virtual_control_input}
+
+To obtain the same structure as in the vanilla backstepping case~\ref{int_backstepping}, we can use the input transformation
 \begin{equation*}
     u = \frac{1}{g_2(x_1, x_2)} (v - f_2(x_1, x_2)),
 \end{equation*}
@@ -163,21 +175,25 @@ we get:
 \end{align*}
 which matches the structure from~\ref{int_backstepping}.
 
-Therefore, by following the same steps, we define $v$ to render $(x_1, x_2) = (0, 0)$ asymptotically stable:
-{\footnotesize
-\begin{equation*}
-    u = \frac{1}{g_2(x_1, x_2)}\left(\underbrace{-\frac{\partial V_1}{\partial x_1}g_1(x_1) + \dot{\alpha}_1 - k_2(x_2 - \alpha_1(x_1))}_{=:v} - f_2(x_1, x_2)\right)
-\end{equation*}
-}
-Note that
-\begin{itemize}
-    \item $v$ is computed as as shown in~\ref{backstepping_input}.
-    \item $u=\alpha_2$ for~\ref{three_state_bs}.
-\end{itemize}
+\paragraph{Control Approach}
+
+By following the same steps as in~\ref{int_backstepping}, we define $v$ to render $(x_1, x_2) = (0, 0)$ asymptotically stable:
+\begin{align*}
+    \colorbox{green!20}{$v$} & =-\frac{\partial V_1}{\partial x_1}g_1(x_1) + \dot{\alpha}_1 - k_2(x_2 - \alpha_1(x_1)) \\
+    u                        & = \frac{1}{g_2(x_1, x_2)}\left(\colorbox{green!20}{$v$} - f_2(x_1, x_2)\right)
+\end{align*}
+Note that $u=\alpha_2$ for~\ref{three_state_bs}.
 
 \subsubsection{Generalization to Three States}\label{three_state_bs}
 
-In the following we see backstepping through two integrators:   % TODO: Integrators correct?
+\ptitle{Preliminary Note}
+
+It may be easier to directly use the general backstepping recursion, but here we show the three-state case for completeness.
+
+\newpar{}
+\ptitle{System}
+
+In the following we see backstepping through two integrators:
 \begin{align*}
     \dot{x}_1 & = f_1(x_1) + g_1(x_1)x_2                   \\
     \dot{x}_2 & = f_2(x_1, x_2) + g_2(x_1, x_2)x_3         \\
@@ -191,11 +207,13 @@ In the part above, we showed that there exists $u=\alpha_2$ such that for $x_3 =
 \newpar{}
 In other words, we want to define the new input $u$ so that $x_3$ approaches $\alpha_2$, and simultaneously $x_3 \to 0$. Thus, we introduce the error coordinate $e_3 := x_3 - \alpha_2(x_1, x_2)$.
 \newpar{}
-Then, we can use the following input transformation:
+\ptitle{Virtual Control Input}
+
+As in~\ref{virtual_control_input}, we can use
 \begin{equation*}
     u = \frac{1}{g_3(x_1, x_2, x_3)}\left(v - f_3(x_1, x_2, x_3)\right),
 \end{equation*}
-which simplifies the system as follows:
+to obtain
 \begin{align*}
     \dot{x}_1 & = f_1(x_1) + g_1(x_1)x_2           \\
     \dot{x}_2 & = f_2(x_1, x_2) + g_2(x_1, x_2)x_3 \\
@@ -203,7 +221,10 @@ which simplifies the system as follows:
 \end{align*}
 and therefore we can apply integrator backstepping once more.
 
-In "error coordinates", the system reads:
+\newpar{}
+\ptitle{Error Dynamics}
+
+In error coordinates, the system reads:
 \begin{align*}
     \dot{e}_1 & = f_1(e_1) + g_1(e_1)(e_2 + \alpha_1(e_1))                                                 \\
     \dot{e}_2 & = f_2(e_1, e_2 + \alpha_1(e_1))                                                            \\
@@ -213,14 +234,20 @@ In "error coordinates", the system reads:
 \newpar{}
 \ptitle{Lyapunov Function}
 
-Now, define $V_3(e_3) := \frac{1}{2}e_3^2$, and $V(e_1, e_2, e_3) := V_1(e_1) + V_2(e_2) + V_3(e_3)$. One can show that:
+Now, define
+\begin{align*}
+    V_3(e_3)         & := \frac{1}{2}e_3^2               \\
+    V(e_1, e_2, e_3) & := V_1(e_1) + V_2(e_2) + V_3(e_3)
+\end{align*}
+
+One can show that
 \begin{equation*}
     \dot{V} = L_{f_1 + g_1\alpha_1}V_1(e_1) - k_2e_2^2 + e_2g_2(e_1, e_2 + \alpha_1(e_1))e_3 + e_3(v - \dot{\alpha}_2)
 \end{equation*}
 
 Since we want to ensure that $\dot{V}$ is negative definite, then we can choose the variable $v$ based on the same reasoning discussed above, i.e., with some "cancelling terms", and some "stabilizing terms":
 \begin{equation*}
-    v = -\underbrace{e_2g_2(e_1, e_2 + \alpha_1(e_1)) + \dot{\alpha}_2}_{\text{``cancelling terms''}} - \underbrace{k_3e_3}_{\text{``stabilizing term''}}.
+    v = -\underbrace{e_2g_2(e_1, e_2 + \alpha_1(e_1)) + \dot{\alpha}_2}_{\text{``cancelling terms''}} - \underbrace{k_3e_3}_{\text{``stabilizing term''}}
 \end{equation*}
 \newpar{}
 \ptitle{Control Input}
@@ -235,7 +262,7 @@ Then, in original coordinates:
     =: \alpha_3(x_1, x_2, x_3)
 \end{equation*}
 Note that $\alpha_2$ is contained in the formula, which intuitively means that we also track the inner references using this $u$.
-\subsubsection{General Backstepping Recursion}
+\subsubsection{General Backstepping Recursion}\label{general_backstepping}
 
 Based on the two generalizations shown above, it is now possible to employ the backstepping technique to a general system in \textbf{strict-feedback form}:
 \begin{align*}
@@ -267,8 +294,8 @@ The functions $f_i, g_i$ are (sufficiently) smooth, because their derivatives ar
                       (e_1, \ldots, e_i) = (x_1-0, x_2-\alpha_1(x_1), \ldots, x_i-\alpha_{i-1}(x_1,\ldots,x_{i-1}))
                   \end{equation*}
               }
-          with
-              {\footnotesize
+          with (\textbf{most important formula} in backstepping!)
+          {\footnotesize
                   \begin{gather*}
                       \alpha_i(x_1, \ldots, x_i) \\
                       = \frac{1}{g_i}\left( -\frac{\partial V_{i-1}}{\partial e_{i-1}}g_{i-1} + \dot{\alpha}_{i-1} - k_i(x_i - \alpha_{i-1}(x_1, \ldots, x_{i-1})) - f_i \right)
@@ -279,7 +306,14 @@ The functions $f_i, g_i$ are (sufficiently) smooth, because their derivatives ar
               u := \alpha_k(x_1, \ldots, x_k)
           \end{equation*}
 \end{enumerate}
-\textbf{Note} that the function $V = \sum_{i=1}^k V_i$ with $V_i(e_i) = \frac{1}{2}e_i^2$ for $i = 2, \ldots, k$, is a Control Lyapunov Function.
+\newpar{}
+\ptitle{Remarks}
+
+The function
+\begin{equation*}
+    V = \sum_{i=1}^k V_i
+\end{equation*}
+with $V_i(e_i) = \frac{1}{2}e_i^2$ for $i = 2, \ldots, k$, and distinct $V_1$, is a Control Lyapunov Function.
 
 \paragraph{Disturbance Rejection}
 In the part above, we only focused on the case where the system is not affected by disturbances. However, it is important to remark that backstepping can also be used with systems affected by \textbf{bounded disturbances}.

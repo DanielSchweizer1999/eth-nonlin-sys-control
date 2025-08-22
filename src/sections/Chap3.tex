@@ -157,7 +157,7 @@ Let
           \noindent\begin{equation*}
               \dot{V} (x) \leq 0, \quad \forall x \in \mathcal{D}.
           \end{equation*}
-    \item $S \triangleq \{x \in \mathcal{D} \mid \dot{V} (x) = 0\}$ and suppose that no solution can stay identically in $S$, other than $x(t) \equiv 0$.
+    \item $S \triangleq \{x \in \mathcal{D} \mid \dot{V} (x) = 0\}$ and suppose that no solution can stay identically in $S$, other than $x(t) \equiv 0$. Caution: Limit cycles also stay identically.  % TODO: True?
 \end{itemize}
 
 Then, the origin is asymptotically stable.
@@ -197,7 +197,7 @@ Then $x = 0$ is \textbf{unstable}.
     \includegraphics[width = \linewidth]{3_instability.png}
 \end{examplesection}
 Notice the key concept: The tip of the gray region must touch the origin (arbitrarily close).
-
+\newpage
 \subsection{Stability of Nonautonomous Systems}
 \subsubsection{Comparison Functions}
 \begin{center}
@@ -246,7 +246,7 @@ Moreover, $\alpha_2$ belongs to class $\mathcal{K}_\infty$ if $a = \infty$ and:
 For example,
 \begin{itemize}
     \item $\alpha(r) = \tan^{-1}(r)$ belongs to class $\mathcal{K}$ but not to class $\mathcal{K}_\infty$
-    \item The functions $\alpha(r) = r^2$ and $\alpha(r) = \min\{r, r^4\}$ belong to class $\mathcal{K}_\infty$.
+    \item the functions $\alpha(r) = r^2$ and $\alpha(r) = \min\{r, r^4\}$ belong to class $\mathcal{K}_\infty$.
 \end{itemize}
 
 \newpar{}
@@ -260,7 +260,6 @@ A continuous function $\beta : [0, a) \times [0,\infty) \to [0,\infty)$ belongs 
               \beta(r, s) \to 0 \quad \text{as } s \to \infty.
           \end{equation*}
 \end{itemize}
-The functions $\alpha(r) = r^2$ and $\alpha(r) = \min\{r, r^4\}$ belong to class $\mathcal{K}_\infty$.
 Examples of class $\mathcal{K}\mathcal{L}$ functions include:
 \noindent\begin{equation*}
     \beta(r, s) = r^2 e^{-s}, \quad \beta(r, s) = \frac{r}{s r + 1}.
@@ -338,10 +337,11 @@ The equilibrium point $x=0$ is
           \begin{equation*}
               x(t) \to 0 \text{ as } t \to \infty, \quad \forall \|x(t_0)\| < c.
           \end{equation*}
-    \item \textbf{Uniformly Asymptotically Stable (UAS)}: If it is uniformly stable and $c$ is independent of $t_0$, i.e., for each $\eta > 0$, there exists $T = T(\eta) > 0$ such that:
+    \item \textbf{Uniformly Asymptotically Stable (UAS)}: If it is uniformly stable and $c$ is independent of $t_0$, i.e., for \textbf{each} $\eta > 0$, there exists $T = T(\eta) > 0$ such that:
           \noindent\begin{equation*}
               \|x(t)\| < \eta, \quad \forall t \geq t_0 + T(\eta), \quad \forall \|x(t_0)\| < c.
           \end{equation*}
+          I.e.\ we can have $\eta \rightarrow 0$, meaning asymptotic stability.
     \item \textbf{Globally UAS (GUAS)}: If it is uniformly asymptotically stable, and
           \begin{itemize}
               \item $\delta(\epsilon)$ can be chosen to satisfy $\lim_{\epsilon \rightarrow \infty}\delta(\epsilon)=\infty$
@@ -364,6 +364,7 @@ In terms of class $\mathcal{K}$, $\mathcal{K}_\infty$, and $\mathcal{K}\mathcal{
           \noindent\begin{equation*}
               \|x(t)\| \leq \beta(\|x(t_0)\|, t - t_0), \quad \forall t \geq t_0 \geq 0, \forall \|x(t_0)\| < c.
           \end{equation*}
+          I.e.\ the bound tightens as $t$ increases.
     \item \textbf{Globally Uniformly Asymptotically Stable} $\Leftrightarrow$ there exist a function $\beta \in \mathcal{K}\mathcal{L}$ such that:
           \noindent\begin{equation*}
               \|x(t)\| \leq \beta(\|x(t_0)\|, t - t_0), \quad \forall t \geq t_0 \geq 0, \forall x(t_0).
@@ -401,10 +402,7 @@ If instead we have the stronger conditions:
     \dot{V}(t, x) = \frac{\partial V}{\partial t} + \frac{\partial V}{\partial x} f(t, x) \leq -W_3(x),
 \end{gather*}
 where $W_3$ is continuous positive definite on $\mathcal{D}$, then the origin is UAS.\
-
 \newpar{}
-\ptitle{GUAS}
-
 Moreover, if we choose constants $r$ and $c$ such that:
 \noindent\begin{equation*}
     B_r = \{ \|x\| \leq r \} \subset \mathcal{D}, \quad c < \min_{\|x\| = r} W_1(x),
@@ -417,7 +415,12 @@ satisfies the inequality:
 \noindent\begin{equation*}
     \|x(t)\| \leq \beta(\|x_0\|, t - t_0), \quad \forall t \geq t_0 \geq 0,
 \end{equation*}
-for some $\beta \in \mathcal{K}\mathcal{L}$. Finally, if $\mathcal{D} = \mathbb{R}^n$ and $W_1(x)$ is radially unbounded, the origin is GUAS.\
+for some $\beta \in \mathcal{K}\mathcal{L}$.
+
+\newpar{}
+\ptitle{GUAS}
+
+Finally, if $\mathcal{D} = \mathbb{R}^n$ and $W_1(x)$ is radially unbounded, the origin is GUAS.\
 
 \newpar{}
 \ptitle{Exponential Stability}
@@ -503,6 +506,11 @@ Then, the system is ISS with:
     \gamma = \alpha_1^{-1} \circ \alpha_2 \circ \rho.
 \end{equation*}
 If the system is \textbf{autonomous}, these conditions become both necessary and sufficient.
+
+\newpar{}
+\ptitle{Note}
+
+We have an asymptotic stability condition outside $\rho$ given by $-W(x)$.
 
 \subsubsection{ISS of Cascade Systems}
 Consider the cascade system:

@@ -35,7 +35,7 @@ Since $x^T Q x \geq \lambda_{\min}(Q) \|x\|^2_2$, we obtain:
     \dot{V}(x) < -\left( \lambda_{\min}(Q) - 2 \gamma \|P\|^2 \right) \|x\|^2_2, \quad \forall \|x\|^2 < r
 \end{equation*}
 
-In conclusion, in the local neighborhood $\forall \|x\|^2 < r$ we can choose $\gamma < \frac{\lambda_{\min}(Q)}{2 \|P\|^2}$ ensuring that $\dot{V}(x)$ is negative definite locally.
+In conclusion, in the local neighborhood $\|x\|^2 < r$ we can choose $\gamma < \frac{\lambda_{\min}(Q)}{2 \|P\|^2}$ ensuring that $\dot{V}(x)$ is negative definite locally.
 
 \subsection{Linearization-Based Control}
 Consider the nonlinear system:
@@ -188,6 +188,7 @@ The linearization is identical to before but now with $A(w, r), B(w, r), C(w, r)
 \ptitle{Controller}
 
 The PI-like controller $\mathcal{K} = \begin{bmatrix} K_1 & K_2 \end{bmatrix}$ yields
+% TODO: I think it should be u = u_ss - K1(x - x_ss) - K2(sigma - sigma_ss)
 \begin{equation*}
     u = -K_1 x - K_2 \sigma
 \end{equation*}
