@@ -163,14 +163,14 @@ Consider again $\dot{x} = f(x, u), \quad y = h(x, u)$ where
 \newpar{}
 \ptitle{Stability}
 
-Assume that the system is passive with a positive definite storage function $S(x)$.
+Assume that the system is passive with a positive definite (\textbf{not} only nonnegative!) storage function $S(x)$.
 \newpar{}
 Then the origin of $\dot{x} = f(x, 0)$ is stable because $V(x) = S(x)$ is a valid Lyapunov function.
 
 \newpar{}
 \ptitle{Asymptotic Stability}
 
-Assume that the system is strictly passive with some (\textbf{not} necessarily positive definite!) storage function $S(x)$.
+Assume that the system is strictly passive with some positive definite storage function $S(x)$. % TODO: In the script they don't write "positive definite" here, but I think it's needed.
 \newpar{}
 Then the origin of $\dot{x} = f(x, 0)$ is asymptotically stable.
 \newpar{}
@@ -196,7 +196,7 @@ The system is called zero-state observable if no solution of the unforced system
 This means that, whenever we measure $y=0$, we can be sure that the state is at the origin.
 
 \newpar{}
-\ptitle{Global Stabilizability}
+\ptitle{Global Asymptotic Stabilizability}
 
 Assume that the system:
 \begin{itemize}
@@ -204,7 +204,7 @@ Assume that the system:
     \item is zero-state observable
 \end{itemize}
 \newpar{}
-Then the origin can be globally stabilized with a control law
+Then the origin can be globally asymptotically stabilized with a control law
 \begin{equation*}
     u = -\phi(y),
 \end{equation*}

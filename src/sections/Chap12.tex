@@ -5,25 +5,28 @@ Estimate the state $\hat{x}(t)$ and apply $u(t) = u(\hat{x}(t))$.
 
 \subsection{Introduction}
 \subsubsection{LTI Observers}
+\paragraph{Noise-Free Case}
 \ptitle{System}
-
-Given an LTI system:
 \begin{align*}
     \dot{x} & = Ax + Bu \\
     y       & = Cx
 \end{align*}
+
 \newpar{}
 \ptitle{Observer}
-\begin{equation*}
-    \dot{\hat{x}} = A\hat{x} + Bu + L(y - C\hat{x}) = (A - LC)\hat{x} + Bu + Ly
-\end{equation*}
+\begin{align*}
+    \dot{\hat{x}} & = A\hat{x} + Bu + L(y - C\hat{x})                  \\
+                  & = (A - LC)\hat{x} + Bu + Ly \quad \text{(useful?)}
+\end{align*}
+
 \newpar{}
 \ptitle{Error Dynamics}
 
 Define the error $e = x - \hat{x}$
-\begin{equation*}
-    \dot{e} = (Ax + Bu) - (A - LC)\hat{x} - Bu - LCx = (A - LC)e
-\end{equation*}
+\begin{align*}
+    \dot{e} & = (Ax + Bu) - (A - LC)\hat{x} - Bu - LCx \\
+            & = (A - LC)e
+\end{align*}
 
 \newpar{}
 \ptitle{Closed-Loop Stability}
@@ -61,6 +64,75 @@ If $A - BK$ and $A - LC$ are stable, then the closed-loop is stable. Hence, by t
               \item High Gain Observers (HGO)
           \end{itemize}
 \end{itemize}
+\paragraph{Noisy Case}
+
+\ptitle{System}
+\begin{align*}
+    x(k{+}1) & = Ax(k) + Bu(k) + L_w w(k) \\
+    y(k)     & = Cx(k) + v(k)
+\end{align*}
+
+$w(k) \sim \mathcal{N}(0, Q(k))$, \quad $v(k) \sim \mathcal{N}(0, R(k))$
+
+\newpar{}
+\ptitle{Observer}
+\begin{align*}
+    \hat{x}(k{+}1) & = A\hat{x}(k) + Bu(k) + L\big(y(k) - C\hat{x}(k) \big) \\
+    \hat{y}(k)     & = C\hat{x}(k)
+\end{align*}
+
+\newpar{}
+\ptitle{Error Dynamics}
+
+Define the error $e(k) = x(k) - \hat{x}(k)$:
+\begin{align*}
+    e(k{+}1) & = (A - L C)e(k) + \underbrace{L_w w(k) - L v(k)}_{:=\rho(k)\text{ (Gaussian noise)}} \\
+\end{align*}
+
+\newpar{}
+\ptitle{Closed-Loop Stability}
+
+With control $u(k) = -K\hat{x}(k) = -K(x(k) - e(k))$, we have:
+\begin{align*}
+    x(k{+}1) & = (A - BK)x(k) + BKe(k) + L_w w(k)
+\end{align*}
+
+The combined system becomes:
+{\small
+\begin{equation*}
+    \begin{bmatrix}
+        x(k{+}1) \\
+        e(k{+}1)
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        A - BK & BK      \\
+        0      & A - L C
+    \end{bmatrix}
+    \begin{bmatrix}
+        x(k) \\
+        e(k)
+    \end{bmatrix}
+    +
+    \begin{bmatrix}     % TODO: Doesn't this matrix lack an entry?
+        L_w & 0  \\
+        0   & -L
+    \end{bmatrix}
+    \begin{bmatrix}
+        w(k) \\
+        v(k)
+    \end{bmatrix}
+\end{equation*}
+}
+
+\newpar{}
+\ptitle{Remarks}
+\begin{itemize}
+    \item The error dynamics are now driven by Gaussian noise.
+    \item If $A - BK$ and $A - L C$ are stable, the system rejects noise over time.
+    \item The separation principle still applies in this linear stochastic setting.
+\end{itemize}
+
 
 \subsubsection{Estimation of Constant Vectors}
 In this section we look at the estimation of a \textit{constant} vector from \textit{repeated observations}.
@@ -97,7 +169,21 @@ As the cost is a simple quadratic form, the optimal estimate is given by pseudo 
 This static approach introduces averaging. Hence, one must ensure that no undesired averaging happens, e.g.\ of transient and non-transient phases.
 
 \paragraph{Least Squares for Multiple Measurements}
-% TODO
+Consider a process modelled by the simple linear relationship
+\begin{equation*}
+    y = Cx+w
+\end{equation*}
+The actual value of $x$ needs to be reconstructed from the data
+\begin{equation*}
+    Y = [y_1;y_2; \dots ;y_N] = [Cx_1+w_1; Cx_2+w_2; \dots ;Cx + w_N]
+\end{equation*}
+The optimal estimate $\hat{x}$ is given by
+\begin{equation*}
+    \hat{x} = H^{\dagger}Y, \quad H = [C;C; \dots ;C]
+\end{equation*}
+where $H^{\dagger} = {(H^\top H)}^{-1}H^\top$.
+
+The estimate $\hat{x}$ approaches the true value as $N$ grows.
 
 \paragraph{Weighted Least Squares}
 
@@ -160,10 +246,12 @@ We also have the following assumptions on uncorrelatedness
 \subsection{Extended Kalman Filter (EKF) and EKF with Parameter Estimation}
 \subsubsection{EKF}
 \ptitle{System}
+
 The Extended Kalman Filter (EKF) adapts the standard Kalman Filter to nonlinear systems of the form:
 \begin{align*}
-    \dot{x}(t) & = f(x(t)) + w(t)     \\
-    y(t_k)     & = h(x(t_k)) + v(t_k)
+    x(k+1)                               & = f(x(k), u(k)) + w(k)         \\
+    y(t_k)                               & = h(x(t_k)) + v(t_k)           \\
+    w(k) \sim \mathcal{N}(0, Q(k)),\quad & v(k) \sim \mathcal{N}(0, R(k))
 \end{align*}
 
 \newpar{}
@@ -179,16 +267,15 @@ The Extended Kalman Filter (EKF) adapts the standard Kalman Filter to nonlinear 
 \newpar{}
 \ptitle{Prior Update (Prediction)}
 
-For $t \in (t_k, t_{k+1})$: Given $\hat{x}(t_k^+)$, propagate between measurements
+Between $t_k$ and $t_{k+1}$: Given $\hat{x}(t_k^+), P(t_k^+)$, propagate forward using the nonlinear model:
 \begin{align*}
-    \dot{\hat{x}}(t) & = f(\hat{x}(t))                    \\
-    \dot{P}(t)       & = F(t) P(t) + P(t) {F(t)}^\top + Q
+    \hat{x}(t_{k+1}^-) & = f(\hat{x}(t_k^+), u(t_k))            \\
+    P(t_{k+1}^-)       & = F(t_k) P(t_k^+) F(t_k)^\top + Q(t_k)
 \end{align*}
-with Jacobian:
+with the Jacobian:
 \begin{equation*}
-    F(t) = \frac{\partial f}{\partial x} \bigg|_{x = \hat{x}(t)}
+    F(t_k) = \frac{\partial f}{\partial x} \bigg|_{x = \hat{x}(t_k^+)}
 \end{equation*}
-which yields $\hat{x}(t_{k+1}^-), P(t_{k+1}^-)$ for the next step.
 
 \newpar{}
 \ptitle{Posterior Update (Measurement Update)}
@@ -208,6 +295,33 @@ This yields the measurement update
     \hat{x}(t_{k+1}^+) & = \hat{x}(t_{k+1}^-) + K(t_{k+1}) e(t_{k+1})             \\
     P(t_{k+1}^+)       & = P(t_{k+1}^-) - K(t_{k+1}) A(t_{k+1}) {K(t_{k+1})}^\top
 \end{align*}
+
+\subsubsection{Hybrid EKF}
+In practice, the system evolves continuously, but measurements are taken at discrete times $t_k$.
+\begin{align*}
+    \dot{x}(t) & = f(x(t)) + w(t)     \\
+    y(t_k)     & = h(x(t_k)) + v(t_k)
+\end{align*}
+
+\paragraph{Algorithm}
+
+\ptitle{Prior Update (Prediction)}
+
+For $t \in (t_k, t_{k+1})$: Given $\hat{x}(t_k^+)$, propagate between measurements
+\begin{align*}
+    \dot{\hat{x}}(t) & = f(\hat{x}(t))                    \\
+    \dot{P}(t)       & = F(t) P(t) + P(t) {F(t)}^\top + Q
+\end{align*}
+with Jacobian:
+\begin{equation*}
+    F(t) = \frac{\partial f}{\partial x} \bigg|_{x = \hat{x}(t)}
+\end{equation*}
+which yields $\hat{x}(t_{k+1}^-), P(t_{k+1}^-)$ for the next step.
+
+\newpar{}
+\ptitle{Posterior Update (Measurement Update)}
+
+The posterior update is the same as in the standard EKF.
 
 \subsubsection{KF with Parameter Estimation}
 \ptitle{System}

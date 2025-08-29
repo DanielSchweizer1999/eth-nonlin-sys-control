@@ -24,29 +24,49 @@ Solution to the LTI system of equations $\dot{x} = Ax + Bu$:
 \noindent\begin{equation*}
     x(t) = e^{At}\cdot x_0 + \int_0^t e^{A(t-\tau)} Bu(\tau) d\tau
 \end{equation*}
-which is linear is $x_0$ and $u(\cdot)$. Nonlinear systems do in general not share these properties.
+which is linear is $x_0$. Nonlinear systems do in general not share these properties.
 
 \paragraph{Comparison of Further Properties}
 
+\newpar{}
+\ptitle{Finite Escape Time}
+
 \begin{itemize}
-    \item \textbf{Finite Escape Time} A nonlinear system's state, can go to infinity in \textit{finite} time (in contrast to unstable LTI).
-    \item \textbf{Multiple Isolated Equilibrium Points}
-          \begin{itemize}
-              \item LTI can have only one isolated equilibrium point, and thus only one steady-state operating point that attracts or repels the state of the system irrespective of the initial state.
-              \item A nonlinear system can have more than one isolated equilibrium point.
-          \end{itemize}
-    \item \textbf{Limit cycles}
-          \begin{itemize}
-              \item LTI:\ Stable oscillation only for purely imaginary pair of eigenvalues. Amplitude depends on $x_0$.
-              \item A nonlinear system can exhibit an oscillation of fixed amplitude and frequency which appears \textit{independently} of the initial conditions.
-          \end{itemize}
-    \item \textbf{Chaos} Complicated steady-state behavior of nonlinear systems that is not equilibrium or periodic oscillation.
-    \item \textbf{Multiple Modes of Behaviour} A nonlinear system may
-          \begin{itemize}
-              \item exhibit very different forms of behaviour depending on external parameter values
-              \item jump from one form of behaviour to another autonomously
-          \end{itemize}
+    \item A nonlinear system's state, can go to infinity in \textit{finite} time (in contrast to unstable LTI).
 \end{itemize}
+
+\newpar{}
+\ptitle{Multiple Isolated Equilibrium Points}
+
+\begin{itemize}
+    \item LTI can have only one isolated equilibrium point, and thus only one steady-state operating point that attracts or repels the state of the system irrespective of the initial state.
+    \item A nonlinear system can have more than one isolated equilibrium point.
+\end{itemize}
+
+\newpar{}
+\ptitle{Limit cycles}
+
+\begin{itemize}
+    \item LTI:\ Stable oscillation only for purely imaginary pair of eigenvalues. Amplitude depends on $x_0$.
+    \item A nonlinear system can exhibit an oscillation of fixed amplitude and frequency which appears \textit{independently} of the initial conditions.
+\end{itemize}
+
+\newpar{}
+\ptitle{Chaos}
+
+\begin{itemize}
+    \item Complicated \textit{steady-state} behavior of nonlinear systems that is not equilibrium or periodic oscillation.
+\end{itemize}
+
+\newpar{}
+\ptitle{Multiple Modes of Behaviour}
+
+A nonlinear system may
+\begin{itemize}
+    \item exhibit very different forms of behaviour depending on external parameter values
+    \item jump from one form of behaviour to another autonomously
+\end{itemize}
+
 
 \subsubsection{List of Common nonlinearities}
 In memoryless nonlinearities, the output at time $t$ depends only on the $u(t)$, but not on past or future inputs. Some examples are

@@ -29,21 +29,29 @@ A function is radially unbounded, if $\forall c\in \mathbb{R} > 0, \exists r>0 |
 
 A function is smooth if it is infinitely differentiable and the derivatives are continuous.
 
-\subsection{Finding Lyapunov Functions}
+\subsection{Finding Lyapunov Functions}\label{finding_lyapunov_functions}
 % TODO
+The following generic types of Lyapunov functions can be used to try to prove stability.
 
 \begin{equation*}
     V_1(x) = \frac{1}{2}(x_1^2 + x_2^2)
 \end{equation*}
-\begin{equation*}
-    V_{2,3}(x) = \frac{1}{2}(x_1^2 + x_2^2) + \int_0^{x_1 \text{ or }x_2} g(s) \, ds
-\end{equation*}
+\begin{align*}
+    V_{2,3}(x)       & = \frac{1}{2}(x_1^2 + x_2^2) + \int_0^{x_1 \text{ or }x_2} g(s) \, ds                 \\
+    \dot{V_{2,3}}(x) & = x_1 \dot{x}_1 + x_2 \dot{x}_2 + g(\alpha)\dot{\alpha},\quad \alpha \in \{x_1, x_2\}
+\end{align*}
 {\small
 \begin{align*}
     V_4(x)       & = \frac{1}{2}(a x_1^2 + 2b x_1 x_2 + c x_2^2) + d \int_0^{x_1} g(s) \, ds + e \int_0^{x_2} h(s) \, ds  \\
     \dot{V_4}(x) & = ax_1 \dot{x}_1 + b\dot{x}_1 x_2 + bx_1 \dot{x}_2 + cx_2 \dot{x}_2 + g(x_1)\dot{x}_1+ h(x_2)\dot{x}_2
 \end{align*}
 }
+
+\newpar{}
+\ptitle{Remarks}
+\begin{itemize}
+    \item Caution: Finding $g(s), h(s)$ that make $\dot{V}(x)<0$ isn't enough. One must calculate the integral and check if $V(x)$ is still positive definite.
+\end{itemize}
 
 \subsection{Linear Algebra}
 \textbf{Null Space}: $A\cdot x = 0$ is the set of vectors $x$ that is mapped onto the origin. Solve the HLGS.
